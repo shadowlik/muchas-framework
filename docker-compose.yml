@@ -1,0 +1,18 @@
+version: "2"
+
+services:
+  muchas:
+    build: .
+    environment:
+    - NODE_ENV
+    - PORT_DEBUG
+    volumes:
+      - ./:/app/
+    ports:
+      - "${PORT_DEBUG}:${PORT_DEBUG}"
+    networks:
+      - muchas
+    command: npm run debug
+networks:
+  muchas:
+    driver: bridge

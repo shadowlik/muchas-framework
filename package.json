@@ -1,0 +1,38 @@
+{
+  "name": "muchas-framework",
+  "version": "0.0.1",
+  "description": "Muchas Framework - NodeJS Microservice Framework",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsc -w",
+    "debug": "nodemon --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/index.js",
+    "lint": "eslint .",
+    "build": "tsc",
+    "start": "node dist/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/muchas/muchas-framework.git"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "microservice",
+    "framework"
+  ],
+  "author": "Henrique Marques Fernandes <henrique@marquesfernandes.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/muchas/muchas-framework/issues"
+  },
+  "homepage": "https://gitlab.com/muchas/muchas-framework#README",
+  "devDependencies": {
+    "@types/node": "^11.11.6",
+    "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/parser": "^1.5.0",
+    "eslint": "^5.15.3",
+    "nodemon": "^1.18.10",
+    "typescript": "^3.3.4000"
+  }
+}
