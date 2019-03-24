@@ -41,7 +41,7 @@ class Web {
     /**
      *
      */
-    start(): Promise<{ server: Server; app: express.Express }> {
+    init(): Promise<{ server: Server; app: express.Express }> {
         return new Promise((resolve, reject) => {
             try {
                 const server = this.app.listen(this.port, () => { resolve({
@@ -108,4 +108,4 @@ class Web {
 
 }
 
-export { Web };
+export = Web;
