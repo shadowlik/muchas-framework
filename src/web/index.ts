@@ -2,7 +2,6 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 
 import { Server } from 'http';
-import { decode } from 'punycode';
 
 interface CustomExpress extends express.Express {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
