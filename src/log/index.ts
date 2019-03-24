@@ -6,7 +6,7 @@ class Log {
 
     constructor() {
 
-    }
+    };
 
     /**
      *
@@ -29,7 +29,7 @@ class Log {
             ...meta,
         })
         return uid;
-    }
+    };
 };
 
 export = Log;
