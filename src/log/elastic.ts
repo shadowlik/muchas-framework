@@ -6,7 +6,7 @@ import * as Elasticsearch from  'elasticsearch';
 class LoggerElastic {
     elasticsearchClient: Elasticsearch.Client;
 
-    constructor(host: string, log: string) {
+    constructor(host: string, log: string = 'debug') {
         this.elasticsearchClient = new Elasticsearch.Client({
             host,
             log,

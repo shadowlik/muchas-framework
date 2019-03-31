@@ -1,16 +1,34 @@
 import Winston from 'winston';
 import uniqid from 'uniqid';
+import TransportStream from 'winston-transport'
+import ElasticSearch from './elastic';
 
 interface Meta {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     [x: string]: any;
 }
 
+interface LogOptions {
+    elastic?: {
+        host: string;
+        level?: string;
+    };
+    console?: any;
+}
+
 class Log {
     logger = Winston;
+    console: {};
+    elastic: ElasticSearch;
 
-    constructor() {
-
+    constructor(options: LogOptions) {
+        if(options.elastic) {
+            this.elastic = new ElasticSearch(
+                options.elastic.host,
+                options.elastic.level,
+            );
+            this.logger.add(this.elastic as unknown as TransportStream);
+        }
     };
 
     /**
@@ -86,7 +104,6 @@ class Log {
     silly(message: string, meta?: Meta): void {
         this.logger.silly(message, meta);
     };
-
 };
 
 export = Log;
