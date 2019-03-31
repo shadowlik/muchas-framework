@@ -1,4 +1,5 @@
 import Web from './web';
+import Log from './log';
 
 /**
  * Main File
