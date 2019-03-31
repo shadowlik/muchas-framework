@@ -26,12 +26,16 @@ class LoggerElastic {
                 transformed.message = log.message;
                 transformed.severity = log.level;
                 // Log error Code
-                transformed.errorCode = log.meta.errorCode;
-                delete log.meta.errorCode;
+                if (log.meta.errorCode) {
+                    transformed.errorCode = log.meta.errorCode;
+                    delete log.meta.errorCode;
+                }
                 // Log unique ID
-                transformed.uid = log.meta.uid;
-                delete log.meta.uid;
-                transformed.fields = log.meta;
+                if (log.meta.uid) {
+                    transformed.uid = log.meta.uid;
+                    delete log.meta.uid;
+                }
+                transformed.meta = log.meta;
                 return transformed;
             },
         });
