@@ -1,33 +1,46 @@
 import Winston from 'winston';
 import uniqid from 'uniqid';
 import TransportStream from 'winston-transport'
-import ElasticSearch from './elastic';
+import { ElasticLogger, ElasticLoggerOptions } from './elastic';
+import { ConsoleLogger } from './console';
 
 interface Meta {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     [x: string]: any;
 }
 
+/**
+ * @interface LogOptions
+ */
 interface LogOptions {
-    elastic?: {
-        host: string;
-        level?: string;
-    };
-    console?: any;
+    /**
+     * @type {ElasticLoggerOptions}
+     * @memberof LogOptions
+     */
+    elastic?: ElasticLoggerOptions;
 }
 
 class Log {
     logger = Winston;
-    console: {};
-    elastic: ElasticSearch;
+    console: ConsoleLogger;
+    elastic: ElasticLogger;
 
     constructor(options: LogOptions) {
-        if(options.elastic) {
-            this.elastic = new ElasticSearch(
-                options.elastic.host,
-                options.elastic.level,
+        const {
+            elastic,
+        } = options;
+
+        if(elastic && elastic.host && elastic.level) {
+            this.elastic = new ElasticLogger(
+                elastic.host,
+                elastic.level,
             );
-            this.logger.add(this.elastic as unknown as TransportStream);
+            this.logger.add(this.elastic.transport('','') as unknown as TransportStream);
+        };
+
+        if (process.env.NODE_ENV !== 'production') {
+            this.console = new ConsoleLogger('debug');
+            this.logger.add(this.console.transport());
         }
     };
 
@@ -61,9 +74,7 @@ class Log {
      * @param message Human readable message
      * @param meta Any metadata relevant to the log
      */
-    warn(message: string, meta?: Meta): void {
-        this.warn(message, meta);
-    };
+    warn(message: string, meta?: Meta): void { this.warn(message, meta); };
 
     /**
      * Info level logger
@@ -71,9 +82,7 @@ class Log {
      * @param message Human readable message
      * @param meta Any metadata relevant to the log
      */
-    info(message: string, meta?: Meta): void {
-        this.logger.info(message, meta);
-    };
+    info(message: string, meta?: Meta): void { this.logger.info(message, meta); };
 
     /**
      * Verbose logger
@@ -81,9 +90,7 @@ class Log {
      * @param message Human readable message
      * @param meta Any metadata relevant to the log
      */
-    verbose(message: string, meta?: Meta): void {
-        this.logger.verbose(message, meta);
-    };
+    verbose(message: string, meta?: Meta): void { this.logger.verbose(message, meta); };
 
     /**
      *  Debug level logger
@@ -91,9 +98,7 @@ class Log {
      * @param message Human readable message
      * @param meta Any metadata relevant to the log
      */
-    debug(message: string, meta?: Meta): void {
-        this.logger.debug(message, meta);
-    };
+    debug(message: string, meta?: Meta): void { this.logger.debug(message, meta); };
 
     /**
      * Silly level logger
@@ -101,9 +106,7 @@ class Log {
      * @param message Human readable message
      * @param meta Any metadata relevant to the log
      */
-    silly(message: string, meta?: Meta): void {
-        this.logger.silly(message, meta);
-    };
+    silly(message: string, meta?: Meta): void { this.logger.silly(message, meta); };
 };
 
 export = Log;

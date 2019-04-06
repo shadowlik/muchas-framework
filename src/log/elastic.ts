@@ -1,18 +1,27 @@
 import winstonElasticsearch from 'winston-elasticsearch';
-import winston from 'winston';
 import * as Elasticsearch from  'elasticsearch';
 
+interface ElasticLoggerOptions {
+    host: string;
+    level?: string;
+    indexPrefix?: string;
+}
 
-class LoggerElastic {
+class ElasticLogger {
     elasticsearchClient: Elasticsearch.Client;
 
-    constructor(host: string, log: string = 'debug') {
+    constructor(host: string, log: string = 'none') {
         this.elasticsearchClient = new Elasticsearch.Client({
             host,
             log,
         });
     }
 
+    /**
+     *
+     * @param level
+     * @param indexPrefix
+     */
     transport(level: string, indexPrefix: string): winstonElasticsearch {
         return new winstonElasticsearch({
             indexPrefix,
@@ -42,4 +51,4 @@ class LoggerElastic {
     }
 }
 
-export = LoggerElastic;
+export { ElasticLogger, ElasticLoggerOptions, winstonElasticsearch };
