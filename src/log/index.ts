@@ -21,9 +21,9 @@ interface LogOptions {
 }
 
 class Log {
-    logger = Winston;
-    console: ConsoleLogger;
-    elastic: ElasticLogger;
+    private logger = Winston;
+    private console: ConsoleLogger;
+    private elastic: ElasticLogger;
 
     constructor(options: LogOptions) {
         const {

@@ -1,12 +1,18 @@
+import Logger from './log';
+import Database from './database';
 import Web from './web';
-import Log from './log';
+
+// Export Const
+export let log: Logger;
+export let db: Database;
 
 /**
  * Main File
  */
 class Muchas {
+    Log: Logger;
+    Database: Database;
     Web: Web;
-    Log: Log;
 
     /**
      * Creates an instance of Muchas.
@@ -18,16 +24,31 @@ class Muchas {
             LOGGER_ELASTIC_LEVEL
         } = process.env;
 
-        this.Log = new Log({
+        // Logger
+        this.Log = new Logger({
             elastic: {
                 host: LOGGER_ELASTIC_HOST,
                 level: LOGGER_ELASTIC_LEVEL || 'debug'
             }
         });
+
+        log = this.Log;
+
+        // Database
+        this.Database = new Database({
+            uri: '',
+        });
+
+        db = this.Database;
     };
 
-    init (): void {
-        return;
+    async init (): Promise<void> {
+        try {
+            await this.Database.connect();
+
+        } catch (error) {
+            this.Log.error(error.message || error);
+        }
     }
 };
 
