@@ -45,9 +45,21 @@ class Muchas {
         }
     };
 
+    /**
+     * Starts the framework
+     *
+     * @returns {Promise<void>}
+     * @memberof Muchas
+     */
     async init (): Promise<void> {
         try {
+            // Database
+            log.debug('Starting database');
+
             await this.Database.connect();
+
+            log.debug('Database started');
+
 
         } catch (error) {
             this.Log.error(error.message || error);
