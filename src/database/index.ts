@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-import { log } from '../index';
-
 interface DatabaseOptions {
     uri: string;
 };

@@ -6,6 +6,7 @@ services:
     environment:
     - NODE_ENV
     - DEBUG_PORT
+    - DATABASE_URI
     volumes:
       - ./:/app
     ports:
@@ -13,6 +14,16 @@ services:
     networks:
       - muchas
     command: npm run start:dev
+  mongodb:
+    image: mongo
+    logging:
+      driver: none
+    volumes:
+      - /data/db
+    ports:
+      - 27017:27017
+    networks:
+      - muchas
   elastic:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.7.1
     logging:

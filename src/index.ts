@@ -21,7 +21,8 @@ class Muchas {
     constructor() {
         const {
             LOGGER_ELASTIC_HOST,
-            LOGGER_ELASTIC_LEVEL
+            LOGGER_ELASTIC_LEVEL,
+            DATABASE_URI
         } = process.env;
 
         // Logger
@@ -35,11 +36,13 @@ class Muchas {
         log = this.Log;
 
         // Database
-        this.Database = new Database({
-            uri: '',
-        });
+        if (DATABASE_URI) {
+            this.Database = new Database({
+                uri: DATABASE_URI,
+            });
 
-        db = this.Database;
+            db = this.Database;
+        }
     };
 
     async init (): Promise<void> {
