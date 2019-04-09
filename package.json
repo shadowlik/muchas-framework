@@ -6,6 +6,7 @@
   "scripts": {
     "start:dev": "nodemon",
     "build:dev": "ts-node ./src/index.ts",
+    "dev": "tsc -w --skipLibCheck",
     "lint": "eslint .",
     "build:prd": "tsc --skipLibCheck",
     "start:prd": "node dist/"

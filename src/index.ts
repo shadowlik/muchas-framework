@@ -43,6 +43,12 @@ class Muchas {
 
             db = this.Database;
         }
+
+        // Web
+        this.Web = new Web({
+            headers: []
+        });
+
     };
 
     /**
