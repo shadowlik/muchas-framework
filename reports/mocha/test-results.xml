@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.003" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2019-04-17T21:20:22" tests="0" failures="0" time="0">
+  </testsuite>
+  <testsuite name="Web Feature" timestamp="2019-04-17T21:20:22" tests="1" file="/home/shadowlik/Projects/muchas/muchas-framework/src/web/index.test.ts" failures="0" time="0.003">
+    <testcase name="Web Feature Should create a new instance without errors" time="0.003" classname="Should create a new instance without errors">
+    </testcase>
+  </testsuite>
+</testsuites>
