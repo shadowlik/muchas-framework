@@ -19,7 +19,7 @@ jobs:
       - run: npm install
       - run:
           name: Run tests
-          command: npm run testWithCoverage
+          command: npm run test:unit:coverage
 
       - save_cache:
           paths:
