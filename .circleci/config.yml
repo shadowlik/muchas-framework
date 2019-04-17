@@ -19,7 +19,11 @@ jobs:
       - run: npm install
       - run:
           name: Run tests
-          command: npm run test:unit:coverage
+          command: npm run test:unit:coveralls
+
+      - store_artifacts: # upload test coverage as artifact
+          path: ./coverage/lcov.info
+          prefix: tests
 
       - save_cache:
           paths:

@@ -30,7 +30,13 @@ class Web {
     headers: Header[] = [];
     secret: string = '123456789';
     enabled: boolean = false;
+    server: Server;
 
+    /**
+     * Creates an instance of Web.
+     * @param {Options} options
+     * @memberof Web
+     */
     constructor(options: Options) {
         this.app = express();
         this.secret = options.secret;
@@ -39,13 +45,16 @@ class Web {
     }
 
     /**
+     * Starts the Web Server
      *
+     * @returns {Promise<{ server: Server; app: express.Express }>}
+     * @memberof Web
      */
     start(): Promise<{ server: Server; app: express.Express }> {
         return new Promise((resolve, reject) => {
             try {
-                const server = this.app.listen(this.port, () => { resolve({
-                    server,
+                this.server = this.app.listen(this.port, () => { resolve({
+                    server: this.server,
                     app: this.app,
                 }); });
             } catch(e) {
@@ -54,6 +63,30 @@ class Web {
         });
     }
 
+    /**
+     * Gracefully Shutdown Server
+     *
+     * @returns {(Promise<void|Error>)}
+     * @memberof Web
+     */
+    stop(): Promise<void|Error> {
+        return new Promise((resolve, reject) => {
+            this.server.close((error: Error) => {
+                if (error) reject(error);
+                resolve();
+            });
+        });
+    }
+
+    /**
+     * Set express base headers
+     *
+     * @private
+     * @param {express.Request} req
+     * @param {express.Response} res
+     * @param {express.NextFunction} next
+     * @memberof Web
+     */
     private setHeaders(req: express.Request, res: express.Response, next: express.NextFunction): void {
         this.headers.forEach((header: Header) => {
             res.header(header.property, header.value);
@@ -61,6 +94,12 @@ class Web {
         next();
     }
 
+    /**
+     * 403 errors handler
+     *
+     * @private
+     * @memberof Web
+     */
     private _403 = (res: express.Response) => res.status(403).json({
         error: {
             code: 403,
