@@ -17,6 +17,6 @@ describe('Web Feature', () => {
 
     it('Should create a new instance with errors', function() {
         const web = new Web({});
-        expect(web).to.have.property('sada');
+        expect(web).to.not.have.property('sada');
     });
 });
