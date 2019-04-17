@@ -21,8 +21,11 @@ jobs:
           name: Run tests
           command: npm run test:unit:coveralls
 
+      - store_test_results:
+          path: reports
+
       - store_artifacts:
-            path: ./reports/mocha/test-results.xml
+          path: ./reports/mocha/test-results.xml
 
       - store_artifacts: # upload test coverage as artifact
           path: ./coverage/lcov.info
