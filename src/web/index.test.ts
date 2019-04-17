@@ -14,4 +14,9 @@ describe('Web Feature', () => {
         const web = new Web({});
         expect(web).to.have.property('start');
     });
+
+    it('Should create a new instance with errors', function() {
+        const web = new Web({});
+        expect(web).to.have.property('sada');
+    });
 });
