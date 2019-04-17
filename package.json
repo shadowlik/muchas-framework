@@ -11,8 +11,8 @@
     "build:prd": "tsc --skipLibCheck",
     "start:prd": "node dist/",
     "test:unit": "mocha -r ts-node/register src/**/*.test.ts",
-    "test:unit:coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register src/**/*.test.ts",
-    "test:unit:coveralls": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register src/**/*.test.ts && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test:unit:coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register src/**/*.test.ts",
+    "test:unit:coveralls": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register src/**/*.test.ts && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
