@@ -1,0 +1,3 @@
+env: ${NODE_ENV}
+server:
+  port: 9090
