@@ -1,10 +1,7 @@
+import yamlEnv from './libs/yamlEnv';
 import Logger from './log';
 import Database from './database';
 import Web from './web';
-
-// Export Const
-export let log: Logger;
-export let db: Database;
 
 /**
  * Main File
@@ -13,12 +10,16 @@ class Muchas {
     Log: Logger;
     Database: Database;
     Web: Web;
+    Config: {};
 
     /**
      * Creates an instance of Muchas.
      * @memberof Muchas
      */
     constructor() {
+        // Loading configuration
+        this.Config = yamlEnv();
+
         const {
             LOGGER_ELASTIC_HOST,
             LOGGER_ELASTIC_LEVEL,
@@ -33,15 +34,11 @@ class Muchas {
             }
         });
 
-        log = this.Log;
-
         // Database
         if (DATABASE_URI) {
             this.Database = new Database({
                 uri: DATABASE_URI,
             });
-
-            db = this.Database;
         }
 
         // Web
@@ -60,11 +57,11 @@ class Muchas {
     async init (): Promise<void> {
         try {
             // Database
-            log.debug('Starting database');
+            this.Log.debug('Starting database');
 
             await this.Database.connect();
 
-            log.debug('Database started');
+            this.Log.debug('Database started');
 
 
         } catch (error) {
@@ -73,6 +70,6 @@ class Muchas {
     }
 };
 
-if (require.main === module) {
-    (async () => await new Muchas().init())();
-}
+const instance: Muchas = new Muchas();
+
+export = instance;
