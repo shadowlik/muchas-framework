@@ -9,8 +9,12 @@ chai.use(chaiAsPromised);
 
 const expect: any = chai.expect;
 
-describe('Errors', () => {
+describe('Yaml Env', () => {
     it('Should throw an error', () => {
         expect(() => yamlEnv('')).to.throw();
+    });
+
+    it('Should return an object', () => {
+        expect(yamlEnv()).to.be.an('object');;
     });
 });
