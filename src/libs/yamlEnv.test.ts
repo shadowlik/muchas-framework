@@ -7,7 +7,7 @@ import yamlEnv from './yamlEnv';
 
 chai.use(chaiAsPromised);
 
-const expect: any = chai.expect;
+const expect: Chai.ExpectStatic = chai.expect;
 
 describe('Yaml Env', () => {
     it('Should throw an error', () => {
