@@ -34,9 +34,9 @@
     "@types/chai": "^4.1.7",
     "@types/chai-http": "^4.2.0",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.13.4",
-    "@typescript-eslint/eslint-plugin": "^1.6.0",
-    "@typescript-eslint/parser": "^1.6.0",
+    "@types/node": "^11.13.6",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.2.1",
@@ -47,7 +47,7 @@
     "nodemon": "^1.18.11",
     "nyc": "^14.0.0",
     "ts-node": "^8.1.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.4"
   },
   "dependencies": {
     "@types/elasticsearch": "^5.0.32",
@@ -63,6 +63,6 @@
     "mongoose": "^5.5.2",
     "uniqid": "^5.0.3",
     "winston": "^3.2.1",
-    "winston-elasticsearch": "^0.7.9"
+    "winston-elasticsearch": "^0.7.10"
   }
 }
