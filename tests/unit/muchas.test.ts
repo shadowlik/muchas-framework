@@ -9,12 +9,8 @@ chai.use(chaiAsPromised);
 
 const expect: any = chai.expect;
 
-before(async function() {
-    // await Muchas.init();
-});
-
 describe('Muchas init', () => {
-    it('Test logger', function () {
-
+    it('Test Config', function () {
+        expect(Muchas).to.have.property('config');
     });
 });
