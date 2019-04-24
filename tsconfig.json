@@ -19,6 +19,6 @@
         }
     },
     "include": [
-        "src/**/*"
+        "src/**/*", "tests/unit/yamlEnv.test.ts", "tests/unit/index.test.ts", "tests/unit/muchas.test.ts"
     ]
 }

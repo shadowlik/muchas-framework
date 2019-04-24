@@ -51,9 +51,9 @@ class Web {
      * @memberof Web
      */
     start(): Promise<{ server: Server; app: express.Express }> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject): void => {
             try {
-                this.server = this.app.listen(this.port, () => { resolve({
+                this.server = this.app.listen(this.port, (): void => { resolve({
                     server: this.server,
                     app: this.app,
                 }); });
@@ -70,8 +70,8 @@ class Web {
      * @memberof Web
      */
     stop(): Promise<void|Error> {
-        return new Promise((resolve, reject) => {
-            this.server.close((error: Error) => {
+        return new Promise((resolve, reject): void => {
+            this.server.close((error: Error): void => {
                 if (error) reject(error);
                 resolve();
             });
@@ -88,7 +88,7 @@ class Web {
      * @memberof Web
      */
     private setHeaders(req: express.Request, res: express.Response, next: express.NextFunction): void {
-        this.headers.forEach((header: Header) => {
+        this.headers.forEach((header: Header): void => {
             res.header(header.property, header.value);
         });
         next();
@@ -100,7 +100,7 @@ class Web {
      * @private
      * @memberof Web
      */
-    private _403 = (res: express.Response) => res.status(403).json({
+    private _403 = (res: express.Response): express.Response => res.status(403).json({
         error: {
             code: 403,
             message: 'Not authorized',
@@ -127,7 +127,7 @@ class Web {
 
             const token = authorization.replace('Bearer ', '');
 
-            jwt.verify(token, this.secret, (error, decoded) => {
+            jwt.verify(token, this.secret, (error, decoded): void => {
                 req.token = decoded as object;
                 next();
             });

@@ -10,9 +10,10 @@
     "lint": "eslint .",
     "build:prd": "tsc --skipLibCheck",
     "start:prd": "node dist/",
-    "test:unit": "mocha --recursive -r ts-node/register src/**/*.test.ts && nyc report",
-    "test:unit:coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ts-node/register src/**/*.test.ts && nyc report",
-    "test:unit:coveralls": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register src/**/*.test.ts && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "nyc -e '.ts' -x '**/*.test.ts' mocha --exit --recursive -r ts-node/register 'src/**/*.test.ts'",
+    "test:unit": "mocha --recursive -r ts-node/register 'src/**/*.test.ts' && nyc report",
+    "test:unit:coverage": "nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha -r ts-node/register 'src/**/*.test.ts' && nyc report",
+    "test:unit:coveralls": "nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register 'src/**/*.test.ts' && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
     "mocha-junit-reporter": "^1.22.0",
     "nodemon": "^1.18.11",
     "nyc": "^14.0.0",
+    "source-map-support": "^0.5.12",
     "ts-node": "^8.1.0",
     "typescript": "^3.4.4"
   },

@@ -3,7 +3,7 @@
 const chaiAsPromised = require("chai-as-promised");
 import chai from 'chai';
 
-import Muchas from './index';
+import Muchas from '../../src/index';
 
 chai.use(chaiAsPromised);
 

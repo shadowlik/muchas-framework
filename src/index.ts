@@ -7,10 +7,10 @@ import Web from './web';
  * Main File
  */
 class Muchas {
-    Log: Logger;
-    Database: Database;
-    Web: Web;
-    Config: {};
+    log: Logger;
+    database: Database;
+    web: Web;
+    config: {};
 
     /**
      * Creates an instance of Muchas.
@@ -18,7 +18,7 @@ class Muchas {
      */
     constructor() {
         // Loading configuration
-        this.Config = yamlEnv();
+        this.config = yamlEnv();
 
         const {
             LOGGER_ELASTIC_HOST,
@@ -27,7 +27,7 @@ class Muchas {
         } = process.env;
 
         // Logger
-        this.Log = new Logger({
+        this.log = new Logger({
             elastic: {
                 host: LOGGER_ELASTIC_HOST,
                 level: LOGGER_ELASTIC_LEVEL || 'debug'
@@ -36,13 +36,13 @@ class Muchas {
 
         // Database
         if (DATABASE_URI) {
-            this.Database = new Database({
+            this.database = new Database({
                 uri: DATABASE_URI,
             });
         }
 
         // Web
-        this.Web = new Web({
+        this.web = new Web({
             headers: []
         });
 
@@ -57,17 +57,18 @@ class Muchas {
     async init (): Promise<void> {
         try {
             // Database
-            this.Log.debug('Starting database');
+            this.log.debug('Starting database');
 
-            await this.Database.connect();
+            await this.database.connect();
 
-            this.Log.debug('Database started');
+            this.log.debug('Database started');
 
 
         } catch (error) {
-            this.Log.error(error.message || error);
-        }
-    }
+            this.log.error(error.message || error);
+        };
+    };
+
 };
 
 const instance: Muchas = new Muchas();
