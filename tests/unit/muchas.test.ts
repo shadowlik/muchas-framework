@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 const expect: any = chai.expect;
 
 before(async function() {
-    await Muchas.init();
+    // await Muchas.init();
 });
 
 describe('Muchas init', () => {

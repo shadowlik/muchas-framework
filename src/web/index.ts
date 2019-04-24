@@ -39,9 +39,9 @@ class Web {
      */
     constructor(options: Options) {
         this.app = express();
-        this.secret = options.secret;
-        this.port = options.port;
-        this.headers = options.headers;
+        if(options.secret) this.secret = options.secret;
+        if(options.port) this.port = options.port;
+        if(options.headers)this.headers = options.headers;
     }
 
     /**
@@ -113,7 +113,7 @@ class Web {
      * @param res
      * @param next
      */
-    private secureRoute (secure: boolean): Function {
+    protected secureRoute (secure: boolean): Function {
         if (!secure) {
             return (req: express.Request, res: express.Response, next: express.NextFunction): void => next();
         }
@@ -142,7 +142,7 @@ class Web {
      * @param secure
      */
     addRoute(method: string, path: string, controller: Function, secure: boolean = false): void {
-        return this.app[method](path, this.setHeaders, this.secureRoute(secure), controller);
+        this.app[method](path, this.setHeaders, this.secureRoute(secure), controller);
     };
 
 }
