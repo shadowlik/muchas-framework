@@ -5,7 +5,7 @@ interface DatabaseOptions {
 };
 
 export = class Database {
-    private connectionUrl?: string;
+    protected connectionUrl?: string;
 
     /**
      * Creates an instance of Database.
