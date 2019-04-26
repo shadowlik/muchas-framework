@@ -6,7 +6,9 @@ COPY . .
 
 RUN npm i
 
-RUN npm run build
+RUN npm i nodemon --global
+
+RUN npm run build:prd
 
 EXPOSE 2828
 

@@ -6,9 +6,9 @@
   "scripts": {
     "start:dev": "nodemon",
     "build:dev": "ts-node ./src/index.ts",
-    "dev": "tsc -w --skipLibCheck",
+    "dev": "tsc -w",
     "lint": "eslint .",
-    "build:prd": "tsc --skipLibCheck",
+    "build:prd": "tsc",
     "start:prd": "node dist/",
     "test": "nyc -e '.ts' -x '**/*.test.ts' mocha --exit --recursive -r ts-node/register 'tests/unit/**/*.test.ts'",
     "test:unit": "mocha --recursive -r ts-node/register 'src/**/*.test.ts' && nyc report",

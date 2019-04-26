@@ -23,7 +23,7 @@ class Muchas {
         const {
             LOGGER_ELASTIC_HOST,
             LOGGER_ELASTIC_LEVEL,
-            DATABASE_URI
+            DATABASE_URI,
         } = process.env;
 
         // Logger
@@ -63,14 +63,10 @@ class Muchas {
 
             this.log.debug('Database started');
 
-
         } catch (error) {
             this.log.error(error.message || error);
         };
     };
-
 };
 
-const instance: Muchas = new Muchas();
-
-export = instance;
+export = new Muchas();
