@@ -37,7 +37,7 @@ class Web {
      * @param {Options} options
      * @memberof Web
      */
-    constructor(options: Options) {
+    constructor(options?: Options) {
         this.app = express();
         if(options.secret) this.secret = options.secret;
         if(options.port) this.port = options.port;
@@ -108,12 +108,12 @@ class Web {
     });
 
     /**
-     *
+     * Secure route middleware
      * @param req
      * @param res
      * @param next
      */
-    protected secureRoute (secure: boolean): Function {
+    protected secureRouteMiddleware(secure: boolean): Function {
         if (!secure) {
             return (req: express.Request, res: express.Response, next: express.NextFunction): void => next();
         }
@@ -135,16 +135,15 @@ class Web {
     }
 
     /**
-     *
+     * Add route
      * @param method
      * @param path
      * @param controller
      * @param secure
      */
     addRoute(method: string, path: string, controller: Function, secure: boolean = false): void {
-        this.app[method](path, this.setHeaders, this.secureRoute(secure), controller);
+        this.app[method](path, this.setHeaders, this.secureRouteMiddleware(secure), controller);
     };
-
 }
 
 export = Web;

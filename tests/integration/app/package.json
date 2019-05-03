@@ -1,10 +1,10 @@
 {
-  "name": "app",
+  "name": "app2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "tsc -w",
+    "oi": "tsc -w -p tsconfig.json",
     "start:dev": "nodemon",
     "start:prd": "node dist/",
     "build:dev": "ts-node ./src/index.ts",
@@ -14,7 +14,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "muchas-framework": "0.0.1"
+    "lightship": "^3.0.1",
+    "muchas-framework": "0.0.1",
+    "prom-client": "^11.3.0",
+    "ts-node": "^8.1.0"
   },
   "devDependencies": {
     "typescript": "^3.4.5"

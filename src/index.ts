@@ -2,6 +2,7 @@ import yamlEnv from './libs/yamlEnv';
 import Logger from './log';
 import Database from './database';
 import Web from './web';
+import Health from './health';
 
 /**
  * Main File
@@ -10,6 +11,7 @@ class Muchas {
     log: Logger;
     database: Database;
     web: Web;
+    healthServer: Health;
     config: {};
 
     /**
@@ -34,6 +36,9 @@ class Muchas {
             }
         });
 
+        // Health
+        this.healthServer = new Health();
+
         // Database
         if (DATABASE_URI) {
             this.database = new Database({
@@ -45,7 +50,6 @@ class Muchas {
         this.web = new Web({
             headers: []
         });
-
     };
 
     /**
@@ -56,12 +60,41 @@ class Muchas {
      */
     async init (): Promise<void> {
         try {
+            // Health
+            if (this.healthServer) {
+                this.log.debug('Starting');
+
+                await this.healthServer.start();
+
+                this.log.debug(`Health server on ${this.healthServer.port}`);
+            }
+
             // Database
-            this.log.debug('Starting database');
+            if (this.database) {
+                this.log.debug('Starting database');
 
-            await this.database.connect();
+                await this.database.connect();
 
-            this.log.debug('Database started');
+                this.log.debug(`Database started ${this.database}`);
+
+                // Load models
+            }
+
+            // Webserver
+            if (this.web) {
+                this.log.debug('Starting web server');
+
+                await this.web.start();
+
+                this.log.debug(`Web server started on port ${this.web.port}`);
+
+                // Load routes
+
+                // Healthz
+            }
+
+            // Application is up and running
+            this.healthServer.live();
 
         } catch (error) {
             this.log.error(error.message || error);
