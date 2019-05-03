@@ -20,7 +20,7 @@ class WebTest extends Web {
     }
 
     publicSecure(secure: boolean) {
-        return this.secureRoute(secure);
+        return this.secureRouteMiddleware(secure);
     }
 }
 
