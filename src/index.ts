@@ -89,8 +89,6 @@ class Muchas {
                 this.log.debug(`Web server started on port ${this.web.port}`);
 
                 // Load routes
-
-                // Healthz
             }
 
             // Application is up and running
