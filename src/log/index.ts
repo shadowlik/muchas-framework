@@ -12,7 +12,7 @@ interface Meta {
 /**
  * @interface LogOptions
  */
-interface LogOptions {
+export interface LogOptions {
     /**
      * @type {ElasticLoggerOptions}
      * @memberof LogOptions
@@ -109,4 +109,4 @@ class Log {
     silly(message: string, meta?: Meta): void { this.logger.silly(message, meta); };
 };
 
-export = Log;
+export default Log;

@@ -14,6 +14,10 @@
 |debug|4|
 |silly|5|
 
+## Loading Flow
+
+[Google Draw](https://docs.google.com/drawings/d/1d_GYNWtXPEzYliMAQ0X0daqeNN8Kqzk5qS1vwtb5mA8/edit?usp=sharing)
+
 ## Big thanks to
 
 * https://github.com/kelektiv/node-cron

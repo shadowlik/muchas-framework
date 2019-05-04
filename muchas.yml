@@ -3,5 +3,12 @@ debug:
   port: ${DEBUG_PORT}
 logger:
   elasticsearch:
+    host: ${LOGGER_ELASTIC_HOST}
+    level: ${LOGGER_ELASTIC_LEVEL}
+database:
+  uri: mongodb://
 server:
   port: ${SERVER}
+  headers:
+    - teste
+    - teste2

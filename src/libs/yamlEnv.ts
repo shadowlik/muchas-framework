@@ -1,9 +1,13 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
 
-export = (configYamlPath: string = path.join(process.cwd(), 'muchas.yml')): {} => {
+export = (configYamlPath: string = path.join(process.cwd(), 'muchas.yml')): {[x: string]: any} => {
     try {
+        // .env load
+        dotenv.config();
+
         // Checks if the config file exists
         if (!fs.existsSync(configYamlPath)) {
             throw new Error(`Config file not found at ${configYamlPath}`);

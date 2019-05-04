@@ -1,5 +1,5 @@
 import yamlEnv from './libs/yamlEnv';
-import Logger from './log';
+import Logger, { LogOptions } from './log';
 import Database from './database';
 import Web from './web';
 import Health from './health';
@@ -12,7 +12,9 @@ class Muchas {
     database: Database;
     web: Web;
     healthServer: Health;
-    config: {};
+    config: {[x: string]: any};
+    events: any;
+    crons: any;
 
     /**
      * Creates an instance of Muchas.
@@ -22,34 +24,39 @@ class Muchas {
         // Loading configuration
         this.config = yamlEnv();
 
-        const {
-            LOGGER_ELASTIC_HOST,
-            LOGGER_ELASTIC_LEVEL,
-            DATABASE_URI,
-        } = process.env;
-
         // Logger
-        this.log = new Logger({
-            elastic: {
-                host: LOGGER_ELASTIC_HOST,
-                level: LOGGER_ELASTIC_LEVEL || 'debug'
+        if(this.config.logger) {
+            let loggerConfig: LogOptions = {};
+
+            if(this.config.logger.elasticsearch) {
+                loggerConfig.elastic = {
+                    host: this.config.logger.elasticsearch.host,
+                    level: this.config.logger.elasticsearch.level || 'info'
+                }
             }
-        });
+
+            this.log = new Logger(loggerConfig);
+        }
 
         // Health
-        this.healthServer = new Health();
+        this.healthServer = new Health({
+            port: this.config.health.port || null
+        });
 
         // Database
-        if (DATABASE_URI) {
+        if(this.config.database) {
             this.database = new Database({
-                uri: DATABASE_URI,
+                uri: this.config.database.uri,
             });
         }
 
         // Web
-        this.web = new Web({
-            headers: []
-        });
+        if(this.config.server) {
+            this.web = new Web({
+                port: this.config.server.port,
+                headers: this.config.server.headers
+            });
+        }
     };
 
     /**
@@ -78,6 +85,18 @@ class Muchas {
                 this.log.debug(`Database started ${this.database}`);
 
                 // Load models
+            }
+
+            // Events
+            if (this.events) {
+
+                // Load events
+            }
+
+            // Crons
+            if (this.crons) {
+
+                // Load crons
             }
 
             // Webserver

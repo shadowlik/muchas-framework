@@ -69,9 +69,24 @@ class Web {
         });
     }
 
+    /**
+     *
+     *
+     * @memberof Web
+     */
     live(): void {
         this.state = 'up';
         this.code = 200;
+    }
+
+    /**
+     *
+     *
+     * @memberof Web
+     */
+    down(): void {
+        this.state = 'down'
+        this.code = 503;
     }
 
 }
