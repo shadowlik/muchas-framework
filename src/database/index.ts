@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Mongoose, Schema, Model, Document, Query } from 'mongoose';
 
 interface DatabaseOptions {
     uri: string;
@@ -6,6 +6,10 @@ interface DatabaseOptions {
 
 export = class Database {
     connectionUrl?: string;
+    mongoose: Mongoose;
+    models: {
+        [x: string]: Model<Document>;
+    } = {};
 
     /**
      * Creates an instance of Database.
@@ -15,7 +19,13 @@ export = class Database {
         this.connectionUrl = options.uri;
     }
 
+    /**
+     * Connects to the database
+     *
+     * @returns {Promise<mongoose.Mongoose>}
+     */
     async connect(): Promise<mongoose.Mongoose> {
+
         try {
 
             // Avoid deprecated warnings
@@ -23,7 +33,7 @@ export = class Database {
 
             await mongoose.connect(this.connectionUrl, { useNewUrlParser: true });
 
-            return mongoose;
+            return this.mongoose = mongoose;
         } catch (error) {
             const { name, message } = error;
 
@@ -33,5 +43,15 @@ export = class Database {
 
             throw Error(error);
         }
+    }
+
+    /**
+     * Add Model
+     *
+     * @param {string} name
+     * @param {Schema} schema
+     */
+    addModel(name: string, schema: Schema): void {
+        this.models[name] = this.mongoose.model(name, schema);
     }
 };

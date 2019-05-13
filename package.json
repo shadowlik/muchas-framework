@@ -4,12 +4,9 @@
   "description": "Muchas Framework - NodeJS Microservice Framework",
   "main": "dist/index.js",
   "scripts": {
-    "start:dev": "nodemon",
-    "build:dev": "ts-node ./src/index.ts",
     "dev": "tsc -w",
     "lint": "eslint .",
     "build:prd": "tsc",
-    "start:prd": "node dist/",
     "test": "nyc -e '.ts' -x '**/*.test.ts' mocha --exit --recursive -r ts-node/register 'tests/unit/**/*.test.ts'",
     "test:unit": "mocha --recursive -r ts-node/register 'src/**/*.test.ts' && nyc report",
     "test:unit:coverage": "nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha -r ts-node/register 'tests/unit/**/*.test.ts' && nyc report",
@@ -53,6 +50,7 @@
     "sinon-express-mock": "^2.2.0",
     "source-map-support": "^0.5.12",
     "ts-node": "^8.1.0",
+    "ts-node-dev": "^1.0.0-pre.39",
     "typescript": "^3.4.5"
   },
   "dependencies": {

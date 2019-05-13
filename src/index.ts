@@ -1,6 +1,9 @@
 import yamlEnv from './libs/yamlEnv';
 import Logger, { LogOptions } from './log';
+
 import Database from './database';
+import ModelsLoader from './loader/Models';
+
 import Web from './web';
 import Health from './health';
 
@@ -82,9 +85,13 @@ class Muchas {
 
                 await this.database.connect();
 
-                this.log.debug(`Database started ${this.database}`);
+                this.log.debug(`Database started`);
 
                 // Load models
+                const modelsLoader = await new ModelsLoader('src/models').load();
+
+                // Add the model to the mongoose instance
+                Object.keys(modelsLoader.models).forEach((modelName): void => this.database.addModel(modelName, modelsLoader.models[modelName]));
             }
 
             // Events

@@ -8,7 +8,7 @@ logger:
     host: ${LOGGER_ELASTIC_HOST}
     level: ${LOGGER_ELASTIC_LEVEL}
 database:
-  uri: mongodb://
+  uri: mongodb://localhost:27017/muchas
 server:
   port: ${SERVER_PORT}
   headers:
