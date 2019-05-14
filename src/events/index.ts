@@ -16,24 +16,24 @@ export class Tasks implements TasksOptions {
     con: any;
     running: number = 0;
     constructor(options: TasksOptions) {
-      this.enabled = options.enabled;
-      this.host = options.host;
+        this.enabled = options.enabled;
+        this.host = options.host;
     }
     start(): any {
-        return new Promise((resolve, reject) => {
-          if (!this.enabled) return resolve();
+        return new Promise((resolve, reject): void => {
+            if (!this.enabled) return resolve();
             try {
-              amqplib.connect(`amqp://${this.host}`).then((con) => {
-                return con.createChannel().then((ch) => {
-                  this.ch = ch;
-                  this.con = con;
-                  return resolve(this);
-                }).catch((ee) => {
-                  reject(ee);
+                amqplib.connect(`amqp://${this.host}`).then((con): void => {
+                    con.createChannel().then((ch): void => {
+                        this.ch = ch;
+                        this.con = con;
+                        return resolve(this);
+                    }).catch((ee): void => {
+                        reject(ee);
+                    });
+                }).catch((e): void => {
+                    reject(e);
                 });
-              }).catch((e) => {
-                reject(e);
-              });
             } catch (e) {
               reject(e);
             }

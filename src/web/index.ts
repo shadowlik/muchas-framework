@@ -113,10 +113,7 @@ class Web {
      * @param res
      * @param next
      */
-    protected secureRouteMiddleware(secure: boolean): Function {
-        if (!secure) {
-            return (req: express.Request, res: express.Response, next: express.NextFunction): void => next();
-        }
+    protected secureRouteMiddleware(): Function {
         // Route is secure, check the bearer token
         return (req: RequestPrivate, res: express.Response, next: express.NextFunction): void => {
             const { authorization } = req.headers;
@@ -142,7 +139,13 @@ class Web {
      * @param secure
      */
     addRoute(method: string, path: string, controller: Function, secure: boolean = false): void {
-        this.app[method](path, this.setHeaders, this.secureRouteMiddleware(secure), controller);
+        // Secure routes
+        if (secure) {
+            this.app[method](path, this.setHeaders, this.secureRouteMiddleware(), controller);
+            return;
+        }
+        // Public routes
+        this.app[method](path, this.setHeaders, controller);
     };
 }
 
