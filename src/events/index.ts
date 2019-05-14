@@ -35,7 +35,7 @@ export class Tasks implements TasksOptions {
                     reject(e);
                 });
             } catch (e) {
-              reject(e);
+                reject(e);
             }
         });
     }
@@ -43,7 +43,7 @@ export class Tasks implements TasksOptions {
     /* Send message to exchange abstraction */
     send(exchange: string, routeKey: string, message: string, options: any = {}): TaskSend {
         if (!this.enabled) throw Error('Tasks feature is not enabled');
-        const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
+        // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
 
         // Check if it's an object, if true convert to json
         const parsedMsg = (
@@ -52,7 +52,7 @@ export class Tasks implements TasksOptions {
 
         // Sends the message to the queue
         const status = this.ch.publish(exchange, routeKey, Buffer.from(parsedMsg));
-        trans.end();
+        // trans.end();
         return status;
     }
 }

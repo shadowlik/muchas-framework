@@ -7,6 +7,8 @@ import ModelsLoader from './loader/Models';
 import Web from './web';
 import Health from './health';
 
+import ComponentsLoader from './loader/Components';
+
 /**
  * Main File
  */
@@ -113,15 +115,20 @@ class Muchas {
                 await this.web.start();
 
                 this.log.debug(`Web server started on port ${this.web.port}`);
-
-                // Load routes
             }
+
+            // Components
+            const Components = await new ComponentsLoader({
+                path: './src/components',
+                web: this.web || false,
+            }).load();
 
             // Application is up and running
             this.healthServer.live();
 
         } catch (error) {
             this.log.error(error.message || error);
+            process.exit(1);
         };
     };
 };

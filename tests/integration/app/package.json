@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start:dev": "ts-node-dev --notify false ./src/index.ts",
+    "start": "ts-node-dev --notify false ./src/index.ts",
     "build:prd": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

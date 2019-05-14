@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 
 import { Server } from 'http';
+import { NextFunction } from 'connect';
 
 interface CustomExpress extends express.Express {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -41,7 +42,7 @@ class Web {
         this.app = express();
         if(options.secret) this.secret = options.secret;
         if(options.port) this.port = options.port;
-        if(options.headers)this.headers = options.headers;
+        if(options.headers) this.headers = options.headers || [];
     }
 
     /**
@@ -87,11 +88,15 @@ class Web {
      * @param {express.NextFunction} next
      * @memberof Web
      */
-    private setHeaders(req: express.Request, res: express.Response, next: express.NextFunction): void {
-        this.headers.forEach((header: Header): void => {
-            res.header(header.property, header.value);
-        });
-        next();
+    private setHeaders(): Function {
+        return (req: Request, res: Response, next: NextFunction): void => {
+            console.log()
+            next();
+            // this.headers.forEach((header: Header): void => {
+            //     res.header(header.property, header.value);
+            // });
+
+        }
     }
 
     /**
@@ -141,11 +146,11 @@ class Web {
     addRoute(method: string, path: string, controller: Function, secure: boolean = false): void {
         // Secure routes
         if (secure) {
-            this.app[method](path, this.setHeaders, this.secureRouteMiddleware(), controller);
+            this.app[method](path, this.setHeaders(), this.secureRouteMiddleware(), controller);
             return;
         }
         // Public routes
-        this.app[method](path, this.setHeaders, controller);
+        this.app[method](path, this.setHeaders(), controller);
     };
 }
 
