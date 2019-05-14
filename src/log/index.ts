@@ -21,6 +21,7 @@ export interface LogOptions {
 }
 
 class Log {
+    [x: string]: any;
     private logger = Winston;
     private console: ConsoleLogger;
     private elastic: ElasticLogger;

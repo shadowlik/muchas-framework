@@ -1,6 +1,8 @@
 import yamlEnv from './libs/yamlEnv';
 import Logger, { LogOptions } from './log';
 
+import Events from './events';
+
 import Database from './database';
 import ModelsLoader from './loader/Models';
 
@@ -8,12 +10,13 @@ import Web from './web';
 import Health from './health';
 
 import ComponentsLoader from './loader/Components';
+import { debug } from 'util';
 
 /**
  * Main File
  */
 class Muchas {
-    log: Logger;
+    log: Logger | Console;
     database: Database;
     web: Web;
     healthServer: Health;
@@ -30,6 +33,7 @@ class Muchas {
         this.config = yamlEnv();
 
         // Logger
+        this.log = console;
         if(this.config.logger) {
             let loggerConfig: LogOptions = {};
 
@@ -62,6 +66,7 @@ class Muchas {
                 headers: this.config.server.headers
             });
         }
+
     };
 
     /**
@@ -74,11 +79,7 @@ class Muchas {
         try {
             // Health
             if (this.healthServer) {
-                this.log.debug('Starting');
-
                 await this.healthServer.start();
-
-                this.log.debug(`Health server on ${this.healthServer.port}`);
             }
 
             // Database
@@ -118,10 +119,14 @@ class Muchas {
             }
 
             // Components
-            const Components = await new ComponentsLoader({
+            this.log.debug('Loading components');
+
+            await new ComponentsLoader({
                 path: './src/components',
                 web: this.web || false,
             }).load();
+
+            this.log.debug('Components loaded');
 
             // Application is up and running
             this.healthServer.live();
