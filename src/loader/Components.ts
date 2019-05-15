@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Request, Response, NextFunction } from 'express';
 import Web from '../web';
+import Broker from '../broker';
 
 export interface Controller {
     (req: Request, res: Response, next: NextFunction): void;
@@ -30,6 +31,7 @@ export class Component implements ComponentOptions {
 interface ComponentsLoaderOptions {
     path: string;
     web: Web | false;
+    broker: Broker | false;
 }
 
 export default class ComponentsLoader {
@@ -37,9 +39,11 @@ export default class ComponentsLoader {
     componentsFiles: string[];
     components: Component[] = [];
     web: Web;
+    broker: Broker;
 
     constructor(options: ComponentsLoaderOptions) {
         if (options.web) this.web = options.web;
+        if (options.broker) this.broker = options.broker;
         if (options.path) this.path = options.path;
 
         // The component folder exists?

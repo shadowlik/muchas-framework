@@ -108,7 +108,11 @@ class Muchas {
 
             // Broker
             if (this.broker) {
+                this.log.debug('Connection broker');
+
                 await this.broker.start();
+
+                this.log.debug('Broker connected');
             }
 
             // Webserver
@@ -126,6 +130,7 @@ class Muchas {
             await new ComponentsLoader({
                 path: this.config.components.path || './src/components',
                 web: this.web || false,
+                broker: this.broker || false,
             }).load();
 
             this.log.debug('Components loaded');
