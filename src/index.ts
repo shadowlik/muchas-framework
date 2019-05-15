@@ -1,16 +1,14 @@
 import yamlEnv from './libs/yamlEnv';
 import Logger, { LogOptions } from './log';
 
-import Events from './events';
-
 import Database from './database';
 import ModelsLoader from './loader/Models';
 
+import Broker from './broker';
 import Web from './web';
 import Health from './health';
 
 import ComponentsLoader from './loader/Components';
-import { debug } from 'util';
 
 /**
  * Main File
@@ -21,8 +19,8 @@ class Muchas {
     web: Web;
     healthServer: Health;
     config: {[x: string]: any};
-    events: any;
     crons: any;
+    broker: Broker;
 
     /**
      * Creates an instance of Muchas.
@@ -59,6 +57,13 @@ class Muchas {
             });
         }
 
+        // Broker
+        if(this.config.broker) {
+            this.broker = new Broker({
+                host: this.config.broker.host
+            });
+        }
+
         // Web
         if(this.config.server) {
             this.web = new Web({
@@ -88,25 +93,22 @@ class Muchas {
 
                 await this.database.connect();
 
-                this.log.debug(`Database started`);
+                this.log.debug('Database started');
 
                 // Load models
+                this.log.debug('Loading models');
+
                 const modelsLoader = await new ModelsLoader('src/models').load();
 
                 // Add the model to the mongoose instance
                 Object.keys(modelsLoader.models).forEach((modelName): void => this.database.addModel(modelName, modelsLoader.models[modelName]));
+
+                this.log.debug('Models loaded');
             }
 
-            // Events
-            if (this.events) {
-
-                // Load events
-            }
-
-            // Crons
-            if (this.crons) {
-
-                // Load crons
+            // Broker
+            if (this.broker) {
+                this.broker.start();
             }
 
             // Webserver

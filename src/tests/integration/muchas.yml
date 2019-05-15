@@ -11,3 +11,5 @@ database:
   uri: mongodb://localhost:27017/muchas
 server:
   port: ${SERVER_PORT}
+broker:
+  host: rabbit

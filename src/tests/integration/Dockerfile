@@ -10,4 +10,4 @@ RUN npm i nodemon --global
 
 EXPOSE 2828
 
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "start" ]

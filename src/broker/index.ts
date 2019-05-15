@@ -1,7 +1,6 @@
-import amqplib from 'amqplib';
+import amqplib, { Connection, Channel } from 'amqplib';
 
 interface TasksOptions {
-    enabled?: boolean;
     host?: string;
 }
 
@@ -9,19 +8,29 @@ interface TaskSend {
     (exchange: string, routeKey: string, message: string, options?: any): void;
 }
 
-export class Tasks implements TasksOptions {
-    enabled?: boolean;
+export default class Tasks implements TasksOptions {
     host?: string;
-    ch: any;
-    con: any;
+    ch: Channel;
+    con: Connection;
     running: number = 0;
+
+    /**
+     * Creates an instance of Tasks.
+     * @param {TasksOptions} options
+     * @memberof Tasks
+     */
     constructor(options: TasksOptions) {
-        this.enabled = options.enabled;
         this.host = options.host;
     }
-    start(): any {
+
+    /**
+     *
+     *
+     * @returns {Promise<any>}
+     * @memberof Tasks
+     */
+    start(): Promise<any> {
         return new Promise((resolve, reject): void => {
-            if (!this.enabled) return resolve();
             try {
                 amqplib.connect(`amqp://${this.host}`).then((con): void => {
                     con.createChannel().then((ch): void => {
@@ -40,9 +49,18 @@ export class Tasks implements TasksOptions {
         });
     }
 
-    /* Send message to exchange abstraction */
-    send(exchange: string, routeKey: string, message: string, options: any = {}): TaskSend {
-        if (!this.enabled) throw Error('Tasks feature is not enabled');
+    /**
+     * Send message
+     *
+     * @param {string} exchange
+     * @param {string} routeKey
+     * @param {string} message
+     * @param {*} [options={}]
+     * @returns {*}
+     * @memberof Tasks
+     */
+    send(exchange: string, routeKey: string, message: string, options: any = {}): any {
+        // if (!this.enabled) throw Error('Tasks feature is not enabled');
         // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
 
         // Check if it's an object, if true convert to json

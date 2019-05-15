@@ -3,7 +3,7 @@
 const chaiAsPromised = require("chai-as-promised");
 import chai from 'chai';
 
-import yamlEnv from '../../src/libs/yamlEnv';
+import yamlEnv from '../../libs/yamlEnv';
 
 chai.use(chaiAsPromised);
 

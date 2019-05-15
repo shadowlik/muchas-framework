@@ -5,7 +5,7 @@ import chai from 'chai';
 import { mockReq, mockRes } from 'sinon-express-mock'
 import sinonChai from 'sinon-chai'
 
-import Web from '../../src/web/index';
+import Web from '../../web/index';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -20,7 +20,7 @@ class WebTest extends Web {
     }
 
     publicSecure(secure: boolean) {
-        return this.secureRouteMiddleware(secure);
+        return this.secureRouteMiddleware();
     }
 }
 

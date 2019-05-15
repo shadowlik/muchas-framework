@@ -1,8 +1,7 @@
-import express from 'express';
+import express, { Response, Request, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { Server } from 'http';
-import { NextFunction } from 'connect';
 
 interface CustomExpress extends express.Express {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -91,12 +90,10 @@ class Web {
      */
     private setHeaders(): Function {
         return (req: Request, res: Response, next: NextFunction): void => {
-            console.log()
+            this.headers.forEach((header: Header): void => {
+                res.set(header.property, header.value);
+            });
             next();
-            // this.headers.forEach((header: Header): void => {
-            //     res.header(header.property, header.value);
-            // });
-
         }
     }
 

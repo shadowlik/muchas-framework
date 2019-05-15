@@ -1,4 +1,4 @@
-import Muchas from '../../../../src';
+import Muchas from '../../../..';
 
 (async (): Promise<void> => {
     console.log('Starting test example application');
