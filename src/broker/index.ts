@@ -32,11 +32,11 @@ export default class Tasks implements TasksOptions {
     start(): Promise<any> {
         return new Promise((resolve, reject): void => {
             try {
-                amqplib.connect(`amqp://${this.host}`).then((con): void => {
-                    con.createChannel().then((ch): void => {
+                amqplib.connect(`amqp://${this.host}`).then((con): any => {
+                    return con.createChannel().then((ch): void => {
                         this.ch = ch;
                         this.con = con;
-                        return resolve(this);
+                        resolve(this);
                     }).catch((ee): void => {
                         reject(ee);
                     });

@@ -8,14 +8,14 @@ services:
     - DEBUG_PORT
     - DATABASE_URI
     volumes:
-      - ./:/app
+      - .:/app
     ports:
       - 6028:6028
     networks:
       - muchas
-    command: npm run start:dev
+    command: npm run start:integration
   # MongoDB
-  mongodb:
+  mongo:
     image: mongo
     logging:
       driver: none

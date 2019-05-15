@@ -1,14 +1,19 @@
 env: ${NODE_ENV}
 debug:
   port: ${DEBUG_PORT}
+health:
+  port: 9000
 logger:
   elasticsearch:
     host: ${LOGGER_ELASTIC_HOST}
     level: ${LOGGER_ELASTIC_LEVEL}
 database:
-  uri: mongodb://
+  uri: ${DATABASE_URI}
+  model:
+    path: ${MODELS_PATH}
 server:
-  port: ${SERVER}
-  headers:
-    - teste
-    - teste2
+  port: ${SERVER_PORT}
+broker:
+  host: ${BROKER_HOST}
+components:
+  path: ${COMPONENTS_PATH}

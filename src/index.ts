@@ -98,7 +98,7 @@ class Muchas {
                 // Load models
                 this.log.debug('Loading models');
 
-                const modelsLoader = await new ModelsLoader('src/models').load();
+                const modelsLoader = await new ModelsLoader(this.config.database.model.path || 'src/models').load();
 
                 // Add the model to the mongoose instance
                 Object.keys(modelsLoader.models).forEach((modelName): void => this.database.addModel(modelName, modelsLoader.models[modelName]));
@@ -108,7 +108,7 @@ class Muchas {
 
             // Broker
             if (this.broker) {
-                this.broker.start();
+                await this.broker.start();
             }
 
             // Webserver
@@ -124,7 +124,7 @@ class Muchas {
             this.log.debug('Loading components');
 
             await new ComponentsLoader({
-                path: './src/components',
+                path: this.config.components.path || './src/components',
                 web: this.web || false,
             }).load();
 
@@ -135,7 +135,7 @@ class Muchas {
 
         } catch (error) {
             this.log.error(error.message || error);
-            process.exit(1);
+            // process.exit(1);
         };
     };
 };
