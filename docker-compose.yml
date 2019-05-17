@@ -11,9 +11,10 @@ services:
       - .:/app
     ports:
       - 6028:6028
+      - 6029:6029
     networks:
       - muchas
-    command: npm run start:integration
+    command: npm run start:it
   # MongoDB
   mongo:
     image: mongo

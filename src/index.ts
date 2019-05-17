@@ -98,7 +98,7 @@ class Muchas {
                 // Load models
                 this.log.debug('Loading models');
 
-                const modelsLoader = await new ModelsLoader(this.config.database.model.path || 'src/models').load();
+                const modelsLoader = await new ModelsLoader(this.config.database.model.path || 'dist/models').load();
 
                 // Add the model to the mongoose instance
                 Object.keys(modelsLoader.models).forEach((modelName): void => this.database.addModel(modelName, modelsLoader.models[modelName]));
@@ -140,6 +140,8 @@ class Muchas {
 
         } catch (error) {
             this.log.error(error.message || error);
+            // Application is up and running
+            this.healthServer.down();
             // process.exit(1);
         };
     };
