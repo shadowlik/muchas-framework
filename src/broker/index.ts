@@ -1,4 +1,5 @@
 import amqplib, { Connection, Channel } from 'amqplib';
+import uniqid from 'uniqid';
 
 export interface Task {
     queue: string;
@@ -10,8 +11,17 @@ export interface Task {
     action(payload: any, done: Done): any;
 }
 
+interface RPC {
+    queue: string;
+    action(payload: any, done: DoneRPC): any;
+}
+
 interface Done {
     (nack?: any, requeue?: boolean, allUpTo?: boolean): void;
+}
+
+interface DoneRPC {
+    (reply?: any): void;
 }
 
 interface BrokerOptions {
@@ -88,7 +98,43 @@ export default class Broker implements BrokerOptions {
         return status;
     }
 
-    async bindTask(task: Task): Promise<any> {
+    async sendRPC(): Promise<void> {
+        const ch = await this.con.createChannel();
+        const q = await ch.assertQueue('', { exclusive: true });
+        const uid = uniqid();
+
+        // Wait the reply here
+        ch.consume(q.queue, function(msg): void {
+            if (msg.properties.correlationId == uid) {
+                console.log(' [.] Got %s', msg.content.toString());
+            }
+        }, {
+            noAck: true
+        });
+
+        // Send the message
+        ch.sendToQueue('rpc_queue',
+            Buffer.from('num.toString()'),{
+                correlationId: uid,
+                replyTo: q.queue });
+    }
+
+    async bindRPC(rpc: RPC): Promise<void> {
+        const ch = await this.con.createChannel();
+        await ch.assertQueue(rpc.queue, { durable: false });
+        ch.consume(rpc.queue, function(msg): void {
+            rpc.action(msg, (reply): void => {
+                ch.sendToQueue(msg.properties.replyTo,
+                    Buffer.from(reply.toString()), {
+                        correlationId: msg.properties.correlationId
+                    });
+            });
+
+            ch.ack(msg);
+        });
+    }
+
+    async bindTask(task: Task): Promise<void> {
         try {
             const ch = await this.con.createChannel();
             /* Debug */
@@ -133,12 +179,11 @@ export default class Broker implements BrokerOptions {
                      */
                     task.action(parsedMsg, (nack: any, requeue = true, allUpTo = false): void => {
                     // Check if APM is enabled to end the trasaction treacking
-                        // apmTransaction.end();
-                        // counter.taskDown();
                         if (typeof nack !== 'undefined') {
                             ch.nack(msg, allUpTo, requeue);
                             return;
                         }
+
                         // Sends the ack to the message at Rabbit
                         ch.ack(msg);
                     });
