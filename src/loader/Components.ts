@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Request, Response, NextFunction } from 'express';
 import Web from '../web';
-import Broker from '../broker';
+import Broker, { RPC } from '../broker';
 
 export interface Controller {
     (req: Request, res: Response, next: NextFunction): void;
@@ -17,13 +17,17 @@ export interface Route {
 
 interface ComponentOptions {
     routes?: Route[];
+    rpc?: RPC[];
 }
 
 export class Component implements ComponentOptions {
     routes?: Route[];
+    rpc?: RPC[];
     alias?: string;
+
     constructor(options: ComponentOptions) {
         if (options.routes) this.routes = options.routes;
+        if (options.rpc) this.rpc = options.rpc;
     }
 }
 
@@ -73,6 +77,7 @@ export default class ComponentsLoader {
     async load(): Promise<void> {
         await this.loadComponents();
         if (this.web) this.loadRoutes();
+        if (this.broker) this.loadRPC();
     };
 
     /**
@@ -106,8 +111,19 @@ export default class ComponentsLoader {
      */
     private loadRoutes(): Promise<void> {
         this.components.forEach((component: Component): void  => {
+            if (!component.routes) return;
             component.routes.forEach((route: Route): void => {
                 this.web.addRoute(route.method, path.join('/', component.alias, route.path), route.controller, route.secure);
+            });
+        });
+        return;
+    }
+
+    private loadRPC(): Promise<void> {
+        this.components.forEach((component: Component): void  => {
+            if (!component.rpc) return;
+            component.rpc.forEach((rpc: RPC): void => {
+                this.broker.bindRPC(rpc);
             });
         });
         return;

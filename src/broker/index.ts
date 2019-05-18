@@ -11,7 +11,7 @@ export interface Task {
     action(payload: any, done: Done): any;
 }
 
-interface RPC {
+export interface RPC {
     queue: string;
     action(payload: any, done: DoneRPC): any;
 }
@@ -98,38 +98,54 @@ export default class Broker implements BrokerOptions {
         return status;
     }
 
-    async sendRPC(): Promise<void> {
-        const ch = await this.con.createChannel();
-        const q = await ch.assertQueue('', { exclusive: true });
-        const uid = uniqid();
+    async sendRPC(queue: string, message: any): Promise<any> {
+        return new Promise(async (resolve, reject): Promise<any> => {
+            try {
+                const ch = await this.con.createChannel();
+                const q = await ch.assertQueue('', { exclusive: true });
+                const uid = uniqid();
 
-        // Wait the reply here
-        ch.consume(q.queue, function(msg): void {
-            if (msg.properties.correlationId == uid) {
-                console.log(' [.] Got %s', msg.content.toString());
+                // Wait the reply here
+                ch.consume(q.queue, function(msg): void {
+                    if (msg.properties.correlationId == uid) {
+                        resolve(msg.content.toString());
+                    }
+                }, {
+                    noAck: true
+                });
+
+                // Send the message
+                ch.sendToQueue(queue,
+                    Buffer.from(message.toString()),{
+                        correlationId: uid,
+                        replyTo: q.queue });
+            } catch (error) {
+                reject(error);
             }
-        }, {
-            noAck: true
         });
 
-        // Send the message
-        ch.sendToQueue('rpc_queue',
-            Buffer.from('num.toString()'),{
-                correlationId: uid,
-                replyTo: q.queue });
     }
 
     async bindRPC(rpc: RPC): Promise<void> {
         const ch = await this.con.createChannel();
         await ch.assertQueue(rpc.queue, { durable: false });
         ch.consume(rpc.queue, function(msg): void {
-            rpc.action(msg, (reply): void => {
+            // Lets threat the message
+            const stringMsg = msg.content.toString();
+            let parsedMsg;
+            // Tries to parse to object
+            try {
+                parsedMsg = JSON.parse(stringMsg);
+            } catch (e) {
+            // If it fails send as a string
+                parsedMsg = stringMsg;
+            }
+            rpc.action(parsedMsg, (reply): void => {
                 ch.sendToQueue(msg.properties.replyTo,
                     Buffer.from(reply.toString()), {
                         correlationId: msg.properties.correlationId
                     });
             });
-
             ch.ack(msg);
         });
     }
