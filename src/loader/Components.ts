@@ -19,7 +19,6 @@ interface ComponentOptions {
     routes?: Route[];
 }
 
-
 export class Component implements ComponentOptions {
     routes?: Route[];
     alias?: string;
@@ -41,6 +40,11 @@ export default class ComponentsLoader {
     web: Web;
     broker: Broker;
 
+    /**
+     * Creates an instance of ComponentsLoader.
+     * @param {ComponentsLoaderOptions} options
+     * @memberof ComponentsLoader
+     */
     constructor(options: ComponentsLoaderOptions) {
         if (options.web) this.web = options.web;
         if (options.broker) this.broker = options.broker;
@@ -60,11 +64,23 @@ export default class ComponentsLoader {
         }
     };
 
+    /**
+     * Start the component loading process
+     *
+     * @returns {Promise<void>}
+     * @memberof ComponentsLoader
+     */
     async load(): Promise<void> {
         await this.loadComponents();
         if (this.web) this.loadRoutes();
     };
 
+    /**
+     * Load the components
+     *
+     * @returns {Promise<void>}
+     * @memberof ComponentsLoader
+     */
     async loadComponents(): Promise<void> {
         for(let i = 0; this.componentsFiles.length > i; i += 1) {
             let component = this.componentsFiles[i];
@@ -81,6 +97,13 @@ export default class ComponentsLoader {
         }
     };
 
+    /**
+     * Load the components routes
+     *
+     * @private
+     * @returns {Promise<void>}
+     * @memberof ComponentsLoader
+     */
     private loadRoutes(): Promise<void> {
         this.components.forEach((component: Component): void  => {
             component.routes.forEach((route: Route): void => {

@@ -4,9 +4,15 @@ import Muchas from '../../../../';
 export = new Component({
     routes: [
         {
-            path: '/teste',
+            path: '/',
             method: 'get',
             controller: (req, res) => { res.json({a : 1})}
-        }
+        },
+        {
+            path: '/private',
+            method: 'get',
+            secure: true,
+            controller: (req, res) => { res.json({a : 1})}
+        },
     ]
 })

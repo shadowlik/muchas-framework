@@ -91,6 +91,7 @@ class Web {
         return (req: Request, res: Response, next: NextFunction): void => {
             this.headers.forEach((header: Header): void => {
                 res.set(header.property, header.value);
+
             });
             next();
         }
