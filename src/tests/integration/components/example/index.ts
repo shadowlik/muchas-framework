@@ -27,15 +27,15 @@ export = new Component({
     ],
     rpc: [
         {
-            queue: 'teste',
+            queue: 'rpc_teste',
             action: (payload, done) => { done(`Oii ${payload}`) }
         }
     ],
     tasks: [
         {
             exchange: 'teste',
-            queue: 'oi',
-            routeKey: 'oi',
+            queue: 'users',
+            routeKey: 'new',
             action: (payload, done): void => {
                 Muchas.log.error('teste');
                 done();
@@ -45,6 +45,6 @@ export = new Component({
 });
 
 setTimeout(async (): Promise<void> => {
-    await Muchas.broker.rpc('teste', 'henriquedsadsa');
-    Muchas.log.error('teste');
+    const res = await Muchas.broker.rpc('rpc_teste', 'henriquedsadsa');
+    Muchas.log.error(res);
 }, 3000);
