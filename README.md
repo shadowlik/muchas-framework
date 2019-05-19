@@ -34,8 +34,8 @@ The web application uses [express](https://github.com/expressjs/express) under t
 
 ## Big thanks to
 
-* https://github.com/kelektiv/node-cron
 * https://github.com/Automattic/mongoose
 * https://github.com/timisbusy/node-amqp-stats
 * https://github.com/expressjs/express
 * https://github.com/squaremo/amqp.node
+* https://github.com/agenda/agenda
