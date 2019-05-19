@@ -1,5 +1,18 @@
 import yamlEnv from './libs/yamlEnv';
 import Logger, { LogOptions } from './log';
+import apm from './Apm';
+
+const config = yamlEnv();
+
+let Apm: any;
+// Config
+if (config.apm) {
+    try {
+        Apm = apm(config.name, config.apm.logLevel, config.env, config.apm.host);
+    } catch(e) {
+        console.log(e);
+    }
+}
 
 import Database from './Database';
 import ModelsLoader from './Models';
@@ -8,6 +21,7 @@ import ComponentsLoader, { Component } from './Components';
 import Broker from './Broker';
 import Web from './Web';
 import Health from './Health';
+
 
 export {
     Database,
@@ -29,6 +43,7 @@ class Muchas {
     healthServer: Health;
     // eslint-disable-next-line
     config: { [x: string]: any }
+    apm: any;
 
     /**
      * Creates an instance of Muchas.
@@ -36,8 +51,11 @@ class Muchas {
      */
     constructor() {
         // Loading configuration
-        this.config = yamlEnv();
+        this.config = config;
 
+        if (Apm) {
+            this.apm = Apm;
+        }
         // Logger
         this.log = console;
         if(this.config.logger) {

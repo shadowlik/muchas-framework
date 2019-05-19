@@ -69,6 +69,7 @@
     "agenda": "^2.0.2",
     "amqplib": "^0.5.3",
     "dotenv": "^8.0.0",
+    "elastic-apm-node": "^2.11.1",
     "elasticsearch": "^15.4.1",
     "express": "^4.16.4",
     "js-yaml": "^3.13.1",

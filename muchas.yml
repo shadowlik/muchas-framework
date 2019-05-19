@@ -1,8 +1,12 @@
-env: ${NODE_ENV}
+env: ${NODE_ENV} # Enviroment (development, production)
+name: ${PROJECT_NAME} # Project name
+apm:
+  host: ${APM_HOST}
+  logLevel: ${APM_LEVEL}
 debug:
-  port: ${DEBUG_PORT}
+  port: ${DEBUG_PORT} # NodeJS debug port
 health:
-  port: 9000
+  port: 9000 # Health web server port
 logger:
   elasticsearch:
     host: ${LOGGER_ELASTIC_HOST}

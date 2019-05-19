@@ -44,7 +44,6 @@ export = new Component({
     ]
 });
 
-
 setTimeout(async (): Promise<void> => {
     await Muchas.broker.rpc('teste', 'henriquedsadsa');
     Muchas.log.error('teste');
