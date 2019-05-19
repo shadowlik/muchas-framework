@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import Web, { Route } from '../web';
-import Broker, { RPC, Task } from '../broker';
-import Routines, { Routine } from '../routines';
+import Web, { Route } from '../Web';
+import Broker, { RPC, Task } from '../Broker';
+import Routines, { Routine } from '../Routines';
 
 interface ComponentOptions {
     routes?: Route[];

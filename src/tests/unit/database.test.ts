@@ -3,7 +3,7 @@
 const chaiAsPromised = require("chai-as-promised");
 import chai from 'chai';
 
-import Database from '../../database';
+import Database from '../../Database';
 
 chai.use(chaiAsPromised);
 
