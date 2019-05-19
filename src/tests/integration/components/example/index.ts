@@ -20,7 +20,7 @@ export = new Component({
             cron: '*/1 * * * *',
             action: (done): void =>
             {
-                console.log('oi3223');
+                Muchas.log.error('teste');
                 done();
             }
         }
@@ -37,7 +37,7 @@ export = new Component({
             queue: 'oi',
             routeKey: 'oi',
             action: (payload, done): void => {
-                console.log(payload);
+                Muchas.log.error('teste');
                 done();
             }
         }
@@ -47,4 +47,5 @@ export = new Component({
 
 setTimeout(async (): Promise<void> => {
     await Muchas.broker.rpc('teste', 'henriquedsadsa');
+    Muchas.log.error('teste');
 }, 3000);

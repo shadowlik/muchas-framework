@@ -36,7 +36,8 @@ class Log {
                 elastic.host,
                 elastic.level,
             );
-            this.logger.add(this.elastic.transport('','') as unknown as TransportStream);
+
+            this.logger.add(this.elastic.transport(elastic.level,`logs-${elastic.indexPrefix || 'devapp'}`) as unknown as TransportStream);
         };
 
         if (process.env.NODE_ENV !== 'production') {

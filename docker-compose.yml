@@ -28,7 +28,7 @@ services:
       - muchas
   # Elasticsearch
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
     logging:
       driver: none
     environment:
@@ -36,8 +36,34 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
       - 9200:9200
+    networks:
+      - muchas
+  # Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.0.1
+    logging:
+      driver: none
+    environment:
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+    ports:
+      - 5601:5601
+    networks:
+      - muchas
+  # Elastic Search APM
+  elastic-apm:
+    image: docker.elastic.co/apm/apm-server:7.0.1
+    logging:
+      driver: none
+    ports:
+      - 8200:8200
+    volumes:
+      - ./apm-server.yml:/usr/share/apm-server/apm-server.yml
     networks:
       - muchas
   # RabbitMQ

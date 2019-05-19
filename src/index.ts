@@ -4,12 +4,10 @@ import Logger, { LogOptions } from './log';
 import Database from './Database';
 import ModelsLoader from './Models';
 import Routines from './Routines';
-import ComponentLoader, { Component } from './Components';
+import ComponentsLoader, { Component } from './Components';
 import Broker from './Broker';
 import Web from './Web';
 import Health from './Health';
-
-import ComponentsLoader from './Components';
 
 export {
     Database,
@@ -25,12 +23,12 @@ export {
 class Muchas {
     log: Logger | Console;
     database: Database;
-    web: Web;
-    healthServer: Health;
+    web: Web
     routines: Routines;
-    config: {[x: string]: any};
-    crons: any;
     broker: Broker;
+    healthServer: Health;
+    // eslint-disable-next-line
+    config: { [x: string]: any }
 
     /**
      * Creates an instance of Muchas.
@@ -57,7 +55,7 @@ class Muchas {
 
         // Health
         this.healthServer = new Health({
-            port: this.config.health.port || null
+            port: this.config.health.port || null,
         });
 
         // Database
@@ -68,9 +66,11 @@ class Muchas {
         }
 
         // Routines
-        this.routines = new Routines({
-            mongoConString: this.config.database.uri || null,
-        });
+        if(this.config.database) {
+            this.routines = new Routines({
+                mongoConString: this.config.database.uri || null,
+            });
+        }
 
         // Broker
         if(this.config.broker) {
@@ -100,6 +100,7 @@ class Muchas {
      */
     async init (): Promise<void> {
         try {
+            this.log.debug('Starting application');
             // Health
             if (this.healthServer) {
                 await this.healthServer.start();
@@ -156,6 +157,8 @@ class Muchas {
 
             // Application is up and running
             this.healthServer.live();
+
+            this.log.debug('Application is live');
 
         } catch (error) {
             this.log.error(error.message || error);
