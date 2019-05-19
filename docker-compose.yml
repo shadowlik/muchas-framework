@@ -12,6 +12,7 @@ services:
     ports:
       - 6028:6028
       - 6029:6029
+      - 9000:9000
     networks:
       - muchas
     command: npm run start:it

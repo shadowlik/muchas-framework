@@ -73,7 +73,7 @@ class Muchas {
 
         // Health
         this.healthServer = new Health({
-            port: this.config.health.port || null,
+            port: this.config.health.port || 9000,
         });
 
         // Database
@@ -119,6 +119,7 @@ class Muchas {
     async init (): Promise<void> {
         try {
             this.log.debug('Starting application');
+
             // Health
             if (this.healthServer) {
                 await this.healthServer.start();
@@ -173,7 +174,7 @@ class Muchas {
 
             this.log.debug('Components loaded');
 
-            // Application is up and running
+            // Application is up and running /
             this.healthServer.live();
 
             this.log.debug('Application is live');
