@@ -7,6 +7,7 @@ export interface Routine {
     action: RoutineAction;
     startup?: boolean;
     concurrency?: number;
+    lockLimit?: number;
     priority?: string;
 }
 
@@ -41,13 +42,15 @@ export default class Routines {
         const {
             id,
             cron,
-            action
+            action,
+            concurrency =20,
+            lockLimit = 20,
         } = routine;
 
         try {
             this.Agenda.define(id, {
-                concurrency: 1,
-                lockLimit: 1,
+                concurrency,
+                lockLimit,
             }, (job, done): void => {
                 action(done);
             });
