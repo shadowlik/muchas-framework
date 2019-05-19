@@ -79,6 +79,9 @@ class Muchas {
             });
         }
 
+        // Bind the graceful shutdown
+        process.on('SIGTERM', this.shutdown);
+        process.on('SIGINT' , this.shutdown);
     };
 
     /**
@@ -153,6 +156,19 @@ class Muchas {
             // process.exit(1);
         };
     };
+
+    /**
+     * Graceful shutdown
+     *
+     * @returns {Promise<void>}
+     * @memberof Muchas
+     */
+    async shutdown(): Promise<void> {
+        await this.web.stop();
+        await this.routines.stop();
+        await this.broker.stop();
+        this.healthServer.down();
+    }
 };
 
 export = new Muchas();

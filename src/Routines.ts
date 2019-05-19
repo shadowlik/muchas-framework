@@ -60,4 +60,8 @@ export default class Routines {
             throw new Error(e);
         }
     }
+
+    async stop(): Promise<void> {
+        await this.Agenda.stop();
+    }
 }

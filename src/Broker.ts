@@ -37,6 +37,7 @@ export default class Broker implements BrokerOptions {
     ch: Channel;
     con: Connection;
     running: number = 0;
+    consumerTags: any[] = [];
 
     /**
      * Creates an instance of Tasks.
@@ -173,7 +174,7 @@ export default class Broker implements BrokerOptions {
             const consumerTag = `${Date.now()}${process.pid}${Math.random()}`;
 
             ch.consume(task.queue, (msg: any): void => {
-                // counter.taskUp();
+                this.running += 1;
                 try {
                 // Check if APM is enabled to track the transaction
                 // const apmTransaction = apm.startTransaction(task.queue, 'Tasks');
@@ -194,7 +195,7 @@ export default class Broker implements BrokerOptions {
                      * @return {type} Description.
                      */
                     task.action(parsedMsg, (nack: any, requeue = true, allUpTo = false): void => {
-                    // Check if APM is enabled to end the trasaction treacking
+                        this.running -= 1;
                         if (typeof nack !== 'undefined') {
                             ch.nack(msg, allUpTo, requeue);
                             return;
@@ -204,16 +205,41 @@ export default class Broker implements BrokerOptions {
                         ch.ack(msg);
                     });
                 } catch (e) {
-                //   counter.taskDown();
+                    this.running -= 1;
                 }
             }, {
                 consumerTag,
             });
-            // counter.consumerTags.push({ consumerTag, ch });
+            this.consumerTags.push({ consumerTag, ch });
         } catch (e) {
             console.log(e);
         }
     }
+
+    stop(): Promise<void> {
+        return new Promise(async (resolve: any, reject): Promise<void> => {
+            console.log('[Tasks] Stopping and closing tasks...');
+
+            // Close the channel so we won't recieve any more tasks
+            this.consumerTags.forEach(async ({ consumerTag, ch }): Promise<void> => {
+                await ch.cancel(consumerTag);
+            });
+
+            // Loop interval until all tasks are finished
+            const s = setInterval(async (): Promise<void> => {
+                if (this.running > 0) {
+                    console.log(`[Tasks] Waiting ${this.running}...`);
+                    return;
+                }
+
+                // Disable Tasks
+                await this.con.close();
+
+                console.log('[Tasks] Stopped and connection is closed!');
+                resolve(clearInterval(s));
+            }, 5000);
+        });
+    };
 }
 
 export { BrokerOptions, BrokerSend };
