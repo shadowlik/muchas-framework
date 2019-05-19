@@ -1,4 +1,4 @@
-import { Component } from '../../../../loader/Components';
+import { Component } from '../../../../Components';
 import Muchas from '../../../../';
 
 export = new Component({

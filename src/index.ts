@@ -2,14 +2,14 @@ import yamlEnv from './libs/yamlEnv';
 import Logger, { LogOptions } from './log';
 
 import Database from './Database';
-import ModelsLoader from './loader/Models';
+import ModelsLoader from './Models';
 import Routines from './Routines';
 
 import Broker from './Broker';
 import Web from './Web';
 import Health from './Health';
 
-import ComponentsLoader from './loader/Components';
+import ComponentsLoader from './Components';
 
 /**
  * Main File
