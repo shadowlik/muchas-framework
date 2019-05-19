@@ -98,7 +98,7 @@ export default class Broker implements BrokerOptions {
         return status;
     }
 
-    async sendRPC(queue: string, message: any): Promise<any> {
+    async rpc(queue: string, message: any): Promise<any> {
         return new Promise(async (resolve, reject): Promise<any> => {
             try {
                 const ch = await this.con.createChannel();

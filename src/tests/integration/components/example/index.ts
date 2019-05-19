@@ -20,9 +20,21 @@ export = new Component({
             queue: 'teste',
             action: (payload, done) => { done(`Oii ${payload}`) }
         }
+    ],
+    tasks: [
+        {
+            exchange: 'teste',
+            queue: 'oi',
+            routeKey: 'oi',
+            action: (payload, done): void => {
+                console.log(payload);
+                done();
+            }
+        }
     ]
-})
+});
+
 
 setTimeout(async (): Promise<void> => {
-    const response = await Muchas.broker.sendRPC('teste', 'henriquedsadsa')
+    await Muchas.broker.rpc('teste', 'henriquedsadsa');
 }, 3000);

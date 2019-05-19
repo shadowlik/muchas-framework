@@ -79,11 +79,6 @@ export default class ComponentsLoader {
      */
     async load(): Promise<void> {
         await this.loadComponents();
-        if (this.web) this.loadRoutes();
-        if (this.broker) {
-            this.loadRPC();
-            this.loadBroker();
-        }
     };
 
     /**
@@ -103,45 +98,31 @@ export default class ComponentsLoader {
             if (!(componentModule instanceof Component)) {
                 throw Error(`${component} is not a instance of Component`);
             }
+
             componentModule.alias = component;
             this.components.push(componentModule);
+
+            // Load routes
+            if (this.web && componentModule.routes) {
+                componentModule.routes.forEach((route: Route): void => {
+                    this.web.addRoute(route.method, path.join('/', componentModule.alias, route.path), route.controller, route.secure);
+                });
+            }
+
+            // Load broker and RPC
+            if (this.broker) {
+                if (componentModule.tasks) {
+                    componentModule.tasks.forEach((task: Task): void => {
+                        this.broker.bindTask(task);
+                    });
+                }
+
+                if (componentModule.rpc) {
+                    componentModule.rpc.forEach((rpc: RPC): void => {
+                        this.broker.bindRPC(rpc);
+                    });
+                }
+            }
         }
     };
-
-    /**
-     * Load the components routes
-     *
-     * @private
-     * @returns {Promise<void>}
-     * @memberof ComponentsLoader
-     */
-    private loadRoutes(): Promise<void> {
-        this.components.forEach((component: Component): void  => {
-            if (!component.routes) return;
-            component.routes.forEach((route: Route): void => {
-                this.web.addRoute(route.method, path.join('/', component.alias, route.path), route.controller, route.secure);
-            });
-        });
-        return;
-    }
-
-    private loadBroker(): Promise<void> {
-        this.components.forEach((component: Component): void  => {
-            if (!component.tasks) return;
-            component.tasks.forEach((task: Task): void => {
-                this.broker.bindTask(task);
-            });
-        });
-        return;
-    }
-
-    private loadRPC(): Promise<void> {
-        this.components.forEach((component: Component): void  => {
-            if (!component.rpc) return;
-            component.rpc.forEach((rpc: RPC): void => {
-                this.broker.bindRPC(rpc);
-            });
-        });
-        return;
-    }
 }
