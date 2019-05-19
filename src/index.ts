@@ -4,12 +4,20 @@ import Logger, { LogOptions } from './log';
 import Database from './Database';
 import ModelsLoader from './Models';
 import Routines from './Routines';
-
+import ComponentLoader, { Component } from './Components';
 import Broker from './Broker';
 import Web from './Web';
 import Health from './Health';
 
 import ComponentsLoader from './Components';
+
+export {
+    Database,
+    Routines,
+    Broker,
+    Web,
+    Component
+}
 
 /**
  * Main File
@@ -171,4 +179,4 @@ class Muchas {
     }
 };
 
-export = new Muchas();
+export default new Muchas();

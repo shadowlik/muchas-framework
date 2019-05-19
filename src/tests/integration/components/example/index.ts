@@ -1,5 +1,4 @@
-import { Component } from '../../../../Components';
-import Muchas from '../../../../';
+import Muchas, { Component } from '../../../../';
 
 export = new Component({
     routes: [
