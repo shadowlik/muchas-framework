@@ -1,9 +1,12 @@
 import agenda from 'agenda';
+import os from 'os';
 
 export interface Routine {
     cron: string;
     startup: boolean;
-    action: Function;
+    concurrency: number;
+    priority: string;
+    action: RoutineAction;
 }
 
 export interface RoutineAction {
@@ -13,7 +16,6 @@ export interface RoutineAction {
 interface RoutinesOptions {
     mongoConString: string;
 }
-
 
 export default class Routines {
     Agenda: agenda;
@@ -25,5 +27,7 @@ export default class Routines {
                 collection: 'agenda',
             }
         });
+
+        this.Agenda.name(`${os.hostname}-${process.pid}`);
     }
 }
