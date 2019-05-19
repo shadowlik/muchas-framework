@@ -3,6 +3,7 @@ import Logger, { LogOptions } from './log';
 
 import Database from './database';
 import ModelsLoader from './loader/Models';
+import Routines from './routines';
 
 import Broker from './broker';
 import Web from './web';
@@ -18,6 +19,7 @@ class Muchas {
     database: Database;
     web: Web;
     healthServer: Health;
+    routines: Routines;
     config: {[x: string]: any};
     crons: any;
     broker: Broker;
@@ -56,6 +58,11 @@ class Muchas {
                 uri: this.config.database.uri,
             });
         }
+
+        // Routines
+        this.routines = new Routines({
+            mongoConString: this.config.database.uri || null,
+        });
 
         // Broker
         if(this.config.broker) {
@@ -131,6 +138,7 @@ class Muchas {
                 path: this.config.components.path || './src/components',
                 web: this.web || false,
                 broker: this.broker || false,
+                routine: this.routines || false,
             }).load();
 
             this.log.debug('Components loaded');

@@ -15,6 +15,17 @@ export = new Component({
             controller: (req, res) => { res.json({a : 1})}
         },
     ],
+    routines: [
+        {
+            id: 'teste2',
+            cron: '*/1 * * * *',
+            action: (done): void =>
+            {
+                console.log('oi3223');
+                done();
+            }
+        }
+    ],
     rpc: [
         {
             queue: 'teste',

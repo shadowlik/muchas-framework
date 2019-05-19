@@ -3,6 +3,17 @@ import jwt from 'jsonwebtoken';
 
 import { Server } from 'http';
 
+export interface Controller {
+    (req: Request, res: Response, next: NextFunction): void;
+}
+
+export interface Route {
+    path: string;
+    method: string;
+    controller: Controller;
+    secure?: boolean;
+}
+
 interface CustomExpress extends express.Express {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     [prop: string]: any;
@@ -152,4 +163,4 @@ class Web {
     };
 }
 
-export = Web;
+export default Web;

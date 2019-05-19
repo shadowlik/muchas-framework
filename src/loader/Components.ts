@@ -1,36 +1,28 @@
 import fs from 'fs';
 import path from 'path';
-import { Request, Response, NextFunction } from 'express';
-import Web from '../web';
+import Web, { Route } from '../web';
 import Broker, { RPC, Task } from '../broker';
-
-export interface Controller {
-    (req: Request, res: Response, next: NextFunction): void;
-}
-
-export interface Route {
-    path: string;
-    method: string;
-    controller: Controller;
-    secure?: boolean;
-}
+import Routines, { Routine } from '../routines';
 
 interface ComponentOptions {
     routes?: Route[];
     rpc?: RPC[];
     tasks?: Task[];
+    routines?: Routine[];
 }
 
 export class Component implements ComponentOptions {
     routes?: Route[];
     rpc?: RPC[];
     tasks: Task[];
+    routines?: Routine[];
     alias?: string;
 
     constructor(options: ComponentOptions) {
         if (options.routes) this.routes = options.routes;
         if (options.rpc) this.rpc = options.rpc;
         if (options.tasks) this.tasks = options.tasks;
+        if (options.routines) this.routines = options.routines;
     }
 }
 
@@ -38,6 +30,7 @@ interface ComponentsLoaderOptions {
     path: string;
     web: Web | false;
     broker: Broker | false;
+    routine: Routines | false;
 }
 
 export default class ComponentsLoader {
@@ -46,6 +39,7 @@ export default class ComponentsLoader {
     components: Component[] = [];
     web: Web;
     broker: Broker;
+    routine: Routines;
 
     /**
      * Creates an instance of ComponentsLoader.
@@ -55,6 +49,7 @@ export default class ComponentsLoader {
     constructor(options: ComponentsLoaderOptions) {
         if (options.web) this.web = options.web;
         if (options.broker) this.broker = options.broker;
+        if (options.routine) this.routine = options.routine;
         if (options.path) this.path = options.path;
 
         // The component folder exists?
@@ -122,6 +117,13 @@ export default class ComponentsLoader {
                         this.broker.bindRPC(rpc);
                     });
                 }
+            }
+
+            // Load routines
+            if (this.routine && componentModule.routines) {
+                componentModule.routines.forEach((routine: Routine): void => {
+                    this.routine.addJob(routine);
+                })
             }
         }
     };
