@@ -5,6 +5,7 @@ import apm from './Apm';
 const config = yamlEnv();
 
 let Apm: any;
+
 // Config
 if (config.apm) {
     try {
@@ -21,7 +22,6 @@ import ComponentsLoader, { Component } from './Components';
 import Broker from './Broker';
 import Web from './Web';
 import Health from './Health';
-
 
 export {
     Database,
