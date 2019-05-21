@@ -2,6 +2,7 @@
 /* eslint-disable import/no-dynamic-require */
 import fs from 'fs';
 import path from 'path';
+import MuchasEvents from './Events';
 
 /**
  * Plugins Class
@@ -9,7 +10,7 @@ import path from 'path';
  * @export
  * @class Plugins
  */
-export class Plugins {
+export default class Plugins {
     pluginsFolderPath: string;
     pluginsPaths: string[] = [];
     plugins: { [x: string]: any } = {};
@@ -32,7 +33,8 @@ export class Plugins {
      */
     private getPlugins(): void {
         if (!fs.existsSync(this.pluginsFolderPath)) {
-            throw Error(`Plugins folder not found in path ${this.pluginsFolderPath}`);
+            MuchasEvents.debug(`Plugins folder not found in path ${this.pluginsFolderPath}`);
+            return;
         }
 
         this.pluginsPaths =

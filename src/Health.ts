@@ -1,3 +1,4 @@
+import MuchasEvents from './Events';
 import express, { Request, Response } from 'express';
 import { Server } from 'http';
 
@@ -35,6 +36,8 @@ class Web {
      */
     start(): Promise<{ server: Server; app: express.Express }> {
         return new Promise((resolve, reject): void => {
+            MuchasEvents.debug('Starting health server');
+
             try {
                 this.server = this.app.listen(this.port, (): void => { resolve({
                     server: this.server,
@@ -48,6 +51,8 @@ class Web {
                         code: this.code,
                     });
                 });
+
+                MuchasEvents.debug(`Health server started on port ${this.port}`);
             } catch(e) {
                 reject(e);
             }

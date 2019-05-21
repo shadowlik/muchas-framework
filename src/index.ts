@@ -22,6 +22,8 @@ import ComponentsLoader, { Component } from './Components';
 import Broker from './Broker';
 import Web from './Web';
 import Health from './Health';
+import MuchasEvents from './Events';
+import Plugins from './Plugins';
 
 export {
     Database,
@@ -105,6 +107,11 @@ class Muchas {
             });
         }
 
+        // Console via event
+        MuchasEvents.events.on('debug', (message: string): void => {
+            this.log.debug(message);
+        });
+
         // Bind the graceful shutdown
         process.on('SIGTERM', this.shutdown);
         process.on('SIGINT' , this.shutdown);
@@ -162,6 +169,9 @@ class Muchas {
                 this.log.debug(`Web server started on port ${this.web.port}`);
             }
 
+            // Plugins
+            await new Plugins(this.config.plugins || './dist/plugins').start();
+
             // Components
             this.log.debug('Loading components');
 
@@ -174,7 +184,7 @@ class Muchas {
 
             this.log.debug('Components loaded');
 
-            // Application is up and running /
+            // Application is up and running
             this.healthServer.live();
 
             this.log.debug('Application is live');
