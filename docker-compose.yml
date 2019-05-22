@@ -1,0 +1,82 @@
+version: "2"
+
+services:
+  muchas:
+    build: .
+    environment:
+    - NODE_ENV
+    - DEBUG_PORT
+    - DATABASE_URI
+    volumes:
+      - .:/app
+    ports:
+      - 6028:6028
+      - 6029:6029
+      - 9000:9000
+    networks:
+      - muchas
+    command: npm run start:it
+  # MongoDB
+  mongo:
+    image: mongo
+    logging:
+      driver: none
+    volumes:
+      - /data/db
+    ports:
+      - 27017:27017
+    networks:
+      - muchas
+  # Elasticsearch
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+    logging:
+      driver: none
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks:
+      - muchas
+  # Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.0.1
+    logging:
+      driver: none
+    environment:
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+    ports:
+      - 5601:5601
+    networks:
+      - muchas
+  # Elastic Search APM
+  elastic-apm:
+    image: docker.elastic.co/apm/apm-server:7.0.1
+    logging:
+      driver: none
+    ports:
+      - 8200:8200
+    volumes:
+      - ./apm-server.yml:/usr/share/apm-server/apm-server.yml
+    networks:
+      - muchas
+  # RabbitMQ
+  rabbit:
+    image: rabbitmq:3.7-management
+    logging:
+      driver: none
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - muchas
+networks:
+  muchas:
+    driver: bridge
