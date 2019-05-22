@@ -3,7 +3,9 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 
-export = (configYamlPath: string = path.join(process.cwd(), 'muchas.yml')): {[x: string]: any} => {
+export = (basePath: string =  ''): {[x: string]: any} => {
+    const configYamlPath = path.join(process.cwd(), basePath, 'muchas.yml');
+
     try {
         // .env load
         dotenv.config();

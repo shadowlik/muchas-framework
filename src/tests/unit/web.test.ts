@@ -66,7 +66,9 @@ describe('Web Feature', () => {
     });
 
     it('Test server', async() => {
-        const web = new WebTest({});
+        const web = new WebTest({
+            port: 9001,
+        });
         await web.start();
         expect(web.server).to.have.property('listen');
     });

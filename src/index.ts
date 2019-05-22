@@ -2,7 +2,7 @@ import yamlEnv from './libs/yamlEnv';
 import Logger, { LogOptions } from './log';
 import apm from './Apm';
 
-const config = yamlEnv();
+const config = yamlEnv(process.env.MUCHASYML || undefined);
 
 let Apm: any;
 
@@ -204,10 +204,10 @@ class Muchas {
      * @memberof Muchas
      */
     async shutdown(): Promise<void> {
-        await this.web.stop();
-        await this.routines.stop();
-        await this.broker.stop();
-        this.healthServer.down();
+        if (this.web) await this.web.stop();
+        if (this.routines) await this.routines.stop();
+        if (this.broker) await this.broker.stop();
+        if (this.healthServer) this.healthServer.down();
     }
 };
 

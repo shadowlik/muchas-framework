@@ -11,7 +11,7 @@ const expect: Chai.ExpectStatic = chai.expect;
 
 describe('Yaml Env', () => {
     it('Should throw an error', () => {
-        expect(() => yamlEnv('')).to.throw();
+        expect(() => yamlEnv('hoho')).to.throw();
     });
 
     it('Should return an object', () => {
