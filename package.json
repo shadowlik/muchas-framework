@@ -1,6 +1,6 @@
 {
   "name": "muchas-framework",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Muchas Framework - NodeJS Microservice Framework",
   "main": "dist/index.js",
   "scripts": {
