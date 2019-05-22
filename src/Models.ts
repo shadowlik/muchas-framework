@@ -7,6 +7,10 @@ export = class ModelsLoader {
     modelsFiles: string[] = [];
     models: { [x: string]: any } = {};
 
+    /**
+     * Creates an instance of ModelsLoader.
+     * @param {string} basePath
+     */
     constructor(basePath: string) {
         this.path = path.join(process.cwd(), basePath);
 
@@ -35,6 +39,4 @@ export = class ModelsLoader {
         }
         return this;
     }
-
-
 };

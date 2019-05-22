@@ -100,7 +100,14 @@ export default class ComponentsLoader {
             // Load routes
             if (this.web && componentModule.routes) {
                 componentModule.routes.forEach((route: Route): void => {
-                    this.web.addRoute(route.method, path.join('/', componentModule.alias, route.path), route.controller, route.secure);
+                    let routePath = path.join('/', componentModule.alias, route.path)
+
+                    // If is a root component
+                    if (componentModule.alias === 'root') {
+                        routePath = path.join('/', route.path)
+                    }
+
+                    this.web.addRoute(route.method, path.join('/', routePath), route.controller, route.secure);
                 });
             }
 
