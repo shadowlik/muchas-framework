@@ -9,7 +9,7 @@ let Apm: any;
 // Config
 if (config.apm) {
     try {
-        Apm = apm(config.name, config.apm.logLevel, config.env, config.apm.host);
+        Apm = apm(config.name, config.apm.logLevel, config.env, config.apm.host, config.apm.sample || 0.2);
     } catch(e) {
         console.log(e);
     }
@@ -100,10 +100,10 @@ class Muchas {
         }
 
         // Web
-        if(this.config.server) {
+        if(this.config.web) {
             this.web = new Web({
-                port: this.config.server.port,
-                headers: this.config.server.headers
+                port: this.config.web.port,
+                headers: this.config.web.headers
             });
         }
 

@@ -1,12 +1,19 @@
 env: ${NODE_ENV} # Enviroment (development, production)
 name: ${PROJECT_NAME} # Project name
-apm:
-  host: ${APM_HOST}
-  logLevel: ${APM_LEVEL}
-debug:
+debug: # Debug options
   port: ${DEBUG_PORT} # NodeJS debug port
-health:
+web: # Web server
+  port: ${SERVER_PORT} # Web server port
+  headers: # Web server default response headers
+    Access-Control-Allow-Origin: '*'
+    Access-Control-Allow-Methods: '*'
+    Access-Control-Allow-Headers: '*'
+health: # Health web server
   port: 9000 # Health web server port
+apm: # Application performance management
+  host: ${APM_HOST} # Host
+  logLevel: ${APM_LEVEL} # Level
+  sample: 0.2 # Sample rate
 logger:
   elasticsearch:
     host: ${LOGGER_ELASTIC_HOST}
@@ -15,8 +22,6 @@ database:
   uri: ${DATABASE_URI}
   model:
     path: ${MODELS_PATH}
-server:
-  port: ${SERVER_PORT}
 broker:
   host: ${BROKER_HOST}
 components:

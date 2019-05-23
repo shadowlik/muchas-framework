@@ -38,7 +38,7 @@ interface Options {
 class Web {
     app: CustomExpress;
     port: number = 8000;
-    headers: Header[] = [];
+    headers: {[x: string]: any} = {};
     secret: string = '123456789';
     enabled: boolean = false;
     server: Server;
@@ -100,9 +100,9 @@ class Web {
      */
     private setHeaders(): Function {
         return (req: Request, res: Response, next: NextFunction): void => {
-            this.headers.forEach((header: Header): void => {
-                res.set(header.property, header.value);
-
+            Object.keys(this.headers).forEach((key: string): void => {
+                const header: Header = this.headers[key];
+                res.set(key, header as unknown as string);
             });
             next();
         }
