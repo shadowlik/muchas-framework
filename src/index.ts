@@ -163,7 +163,7 @@ class Muchas {
                 path: this.config.components.path || './dist/components',
                 web: this.web || false,
                 broker: this.broker || false,
-                routine: this.routines || false,
+                routine: this.RoutineLoader || false,
             }).load();
 
             // Application is up and running
@@ -186,7 +186,7 @@ class Muchas {
      */
     async shutdown(): Promise<void> {
         if (this.web) await this.web.stop();
-        if (this.routines) await this.routines.stop();
+        if (this.RoutineLoader) await this.RoutineLoader.stop();
         if (this.broker) await this.broker.stop();
         if (this.healthServer) this.healthServer.down();
     }

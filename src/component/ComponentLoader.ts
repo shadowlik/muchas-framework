@@ -1,9 +1,13 @@
 
 import fs from 'fs';
 import path from 'path';
-import Web, { Route } from '../web/Server';
+import Web from '../web/Server';
+import Route from '../web/Route';
+
 import Broker, { RPC, Task } from '../broker/Broker';
-import Routines, { RoutineLoader } from '../routine/RoutineLoader';
+import RoutineLoader from '../routine/RoutineLoader';
+import Routine from '../routine/Routine';
+
 import Component from './Component';
 
 interface ComponentsLoaderOptions {
@@ -108,7 +112,7 @@ export default class ComponentsLoader {
 
             // Load routines
             if (this.routine && componentModule.routines) {
-                componentModule.routines.forEach((routine: Routines): void => {
+                componentModule.routines.forEach((routine: Routine): void => {
                     this.routine.addJob(routine);
                 })
             }
