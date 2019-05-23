@@ -14,6 +14,7 @@ export { Schema, Model, Document, Query } from 'mongoose';
 // Routines
 import Routine from './routine/Routine';
 import RoutineLoader from './routine/RoutineLoader';
+export { Routine };
 
 // Components
 import Component from './component/Component';
@@ -21,7 +22,8 @@ import ComponentsLoader from './component/ComponentLoader';
 export { Component };
 
 // Broker
-import Broker from './broker/Broker';
+import Broker, { Task, RPC } from './broker/Broker';
+export { Task, RPC };
 
 // Web
 import Web from './web/Server';
@@ -32,8 +34,6 @@ export { Route };
 import Health from './Health';
 import MuchasEvents from './Events';
 import Plugins from './Plugins';
-
-
 
 /**
  * Main File
