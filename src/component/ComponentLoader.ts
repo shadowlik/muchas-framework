@@ -1,36 +1,16 @@
+
 import fs from 'fs';
 import path from 'path';
-import Web, { Route } from './Web';
-import Broker, { RPC, Task } from './Broker';
-import Routines, { Routine } from './Routines';
-
-interface ComponentOptions {
-    routes?: Route[];
-    rpc?: RPC[];
-    tasks?: Task[];
-    routines?: Routine[];
-}
-
-export class Component implements ComponentOptions {
-    routes?: Route[];
-    rpc?: RPC[];
-    tasks: Task[];
-    routines?: Routine[];
-    alias?: string;
-
-    constructor(options: ComponentOptions) {
-        if (options.routes) this.routes = options.routes;
-        if (options.rpc) this.rpc = options.rpc;
-        if (options.tasks) this.tasks = options.tasks;
-        if (options.routines) this.routines = options.routines;
-    }
-}
+import Web, { Route } from '../web/Server';
+import Broker, { RPC, Task } from '../broker/Broker';
+import Routines, { RoutineLoader } from '../routine/RoutineLoader';
+import Component from './Component';
 
 interface ComponentsLoaderOptions {
     path: string;
     web: Web | false;
     broker: Broker | false;
-    routine: Routines | false;
+    routine: RoutineLoader | false;
 }
 
 export default class ComponentsLoader {
@@ -39,7 +19,7 @@ export default class ComponentsLoader {
     components: Component[] = [];
     web: Web;
     broker: Broker;
-    routine: Routines;
+    routine: RoutineLoader;
 
     /**
      * Creates an instance of ComponentsLoader.
@@ -128,7 +108,7 @@ export default class ComponentsLoader {
 
             // Load routines
             if (this.routine && componentModule.routines) {
-                componentModule.routines.forEach((routine: Routine): void => {
+                componentModule.routines.forEach((routine: Routines): void => {
                     this.routine.addJob(routine);
                 })
             }

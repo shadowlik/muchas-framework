@@ -1,25 +1,12 @@
 import agenda from 'agenda';
 import os from 'os';
-
-export interface Routine {
-    id: string;
-    cron: string;
-    action: RoutineAction;
-    startup?: boolean;
-    concurrency?: number;
-    lockLimit?: number;
-    priority?: string;
-}
-
-export interface RoutineAction {
-    (done: Function): void;
-}
+import Routine from './Routine';
 
 interface RoutinesOptions {
     mongoConString: string;
 }
 
-export default class Routines {
+export default class RoutineLoader {
     Agenda: agenda;
 
     /**

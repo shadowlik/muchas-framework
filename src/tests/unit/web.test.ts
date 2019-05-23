@@ -5,7 +5,7 @@ import chai from 'chai';
 import { mockReq, mockRes } from 'sinon-express-mock'
 import sinonChai from 'sinon-chai'
 
-import Web from '../../Web';
+import Web from '../../web/Server';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);

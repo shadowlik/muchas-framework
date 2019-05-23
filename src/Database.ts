@@ -4,7 +4,11 @@ interface DatabaseOptions {
     uri: string;
 };
 
-export = class Database {
+export {
+    Schema, Model, Document, Query
+}
+
+export default class Database {
     connectionUrl?: string;
     mongoose: Mongoose;
     models: {

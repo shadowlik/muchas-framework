@@ -4,35 +4,28 @@ import apm from './Apm';
 
 const config = yamlEnv(process.env.MUCHASYML || undefined);
 
-const Apm: any = apm(config.name, config.env, config.apm);
+let Apm: any;
 
-// Database and Models
-import Database from './Database';
+// Config
+if (config.apm) {
+    try {
+        Apm = apm(config.name, config.env, config.apm);
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+import * as Database from './Database';
 import ModelsLoader from './Models';
-export { Schema, Model, Document, Query } from 'mongoose';
-
-// Routines
-import Routine from './routine/Routine';
-import RoutineLoader from './routine/RoutineLoader';
-
-// Components
+import * as Routines from './routine/RoutineLoader';
 import Component from './component/Component';
-import ComponentsLoader from './component/ComponentLoader';
-export { Component };
-
-// Broker
 import Broker from './broker/Broker';
-
-// Web
 import Web from './web/Server';
-import Route from './web/Route';
-export { Route };
-
-// Health
 import Health from './Health';
 import MuchasEvents from './Events';
 import Plugins from './Plugins';
 
+export { Database, Component, Routines }
 
 
 /**
@@ -40,9 +33,9 @@ import Plugins from './Plugins';
  */
 class Muchas {
     log: Logger | Console;
-    database: Database;
+    database: Database.default;
     web: Web
-    RoutineLoader: RoutineLoader;
+    routines: Routines.RoutineLoader;
     broker: Broker;
     healthServer: Health;
     // eslint-disable-next-line
@@ -82,14 +75,14 @@ class Muchas {
 
         // Database
         if(this.config.database) {
-            this.database = new Database({
+            this.database = new Database.default({
                 uri: this.config.database.uri,
             });
         }
 
         // Routines
         if(this.config.database) {
-            this.RoutineLoader = new RoutineLoader({
+            this.routines = new Routines.RoutineLoader({
                 mongoConString: this.config.database.uri || null,
             });
         }

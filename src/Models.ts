@@ -14,7 +14,11 @@ export = class ModelsLoader {
     constructor(basePath: string) {
         this.path = path.join(process.cwd(), basePath);
 
-        this.modelsFiles = fs.readdirSync(this.path);
+        if (fs.existsSync(this.path)) {
+            this.modelsFiles = fs.readdirSync(this.path);
+        } else {
+            throw Error(`Model path not found at ${this.path}`);
+        }
     }
 
     /**

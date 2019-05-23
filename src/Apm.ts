@@ -1,17 +1,24 @@
 import apm from 'elastic-apm-node';
 
+interface ApmOptions {
+    loglevel: LovLevel;
+    apmHost: string;
+    sample: number;
+};
+
 type LovLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
-export = (name: string, loglevel: LovLevel, nodeEnv: string, apmHost: string, sample: number): any => {
-    const logLevel: LovLevel = loglevel;
+export = (name: string, nodeEnv: string, apmOptions: ApmOptions | undefined): any => {
+    if (!name || nodeEnv || !apmOptions) return undefined;
+
+    const logLevel: LovLevel = apmOptions.loglevel;
 
     return apm.start({
-        transactionSampleRate: sample,
+        transactionSampleRate: apmOptions.sample,
         serviceName: nodeEnv === 'production' ?
             name :
             `${name}-${nodeEnv || 'development'}`,
-        serverUrl: apmHost,
+        serverUrl: apmOptions.apmHost,
         logLevel,
     });
-
 };
