@@ -76,7 +76,7 @@ class Log {
      * @param message Human readable message
      * @param meta Any metadata relevant to the log
      */
-    warn(message: string, meta?: Meta): void { this.warn(message, meta); };
+    warn(message: string, meta?: Meta): void { this.logger.warn(message, meta); };
 
     /**
      * Info level logger

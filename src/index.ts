@@ -186,4 +186,8 @@ class Muchas {
     }
 };
 
-export default new Muchas();
+const muchas = new Muchas();
+
+export default muchas;
+
+export const log = muchas.log;
