@@ -1,8 +1,9 @@
 {
   "name": "muchas-framework",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Muchas Framework - NodeJS Microservice Framework",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "tsc -w",
     "lint": "eslint .",
