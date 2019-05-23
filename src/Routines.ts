@@ -22,6 +22,11 @@ interface RoutinesOptions {
 export default class Routines {
     Agenda: agenda;
 
+    /**
+     * Creates an instance of Routines.
+     * @param {RoutinesOptions} options
+     * @memberof Routines
+     */
     constructor(options: RoutinesOptions) {
         let opt = {};
         if (options.mongoConString) {
@@ -38,6 +43,13 @@ export default class Routines {
     }
 
 
+    /**
+     * Add job
+     *
+     * @param {Routine} routine
+     * @returns {Promise<void>}
+     * @memberof Routines
+     */
     async addJob(routine: Routine): Promise<void> {
         const {
             id,
@@ -61,6 +73,12 @@ export default class Routines {
         }
     }
 
+    /**
+     * Stop the agenda routine
+     *
+     * @returns {Promise<void>}
+     * @memberof Routines
+     */
     async stop(): Promise<void> {
         await this.Agenda.stop();
     }

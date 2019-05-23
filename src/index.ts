@@ -9,7 +9,11 @@ let Apm: any;
 // Config
 if (config.apm) {
     try {
-        Apm = apm(config.name, config.apm.logLevel, config.env, config.apm.host, config.apm.sample || 0.2);
+        Apm = apm(config.name,
+            config.apm.logLevel,
+            config.env,
+            config.apm.host,
+            config.apm.sample || 0.2);
     } catch(e) {
         console.log(e);
     }
@@ -134,47 +138,29 @@ class Muchas {
 
             // Database
             if (this.database) {
-                this.log.debug('Starting database');
-
                 await this.database.connect();
 
-                this.log.debug('Database started');
-
                 // Load models
-                this.log.debug('Loading models');
-
                 const modelsLoader = await new ModelsLoader(this.config.database.model.path || 'dist/models').load();
 
                 // Add the model to the mongoose instance
                 Object.keys(modelsLoader.models).forEach((modelName): void => this.database.addModel(modelName, modelsLoader.models[modelName]));
-
-                this.log.debug('Models loaded');
             }
 
             // Broker
             if (this.broker) {
-                this.log.debug('Connection broker');
-
                 await this.broker.start();
-
-                this.log.debug('Broker connected');
             }
 
             // Webserver
             if (this.web) {
-                this.log.debug('Starting web server');
-
                 await this.web.start();
-
-                this.log.debug(`Web server started on port ${this.web.port}`);
             }
 
             // Plugins
             await new Plugins(this.config.plugins || './dist/plugins').start();
 
             // Components
-            this.log.debug('Loading components');
-
             await new ComponentsLoader({
                 path: this.config.components.path || './src/components',
                 web: this.web || false,
@@ -182,13 +168,10 @@ class Muchas {
                 routine: this.routines || false,
             }).load();
 
-            this.log.debug('Components loaded');
-
             // Application is up and running
             this.healthServer.live();
 
             this.log.debug('Application is live');
-
         } catch (error) {
             this.log.error(error.message || error);
             // Application is up and running

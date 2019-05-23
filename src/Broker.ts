@@ -49,7 +49,7 @@ export default class Broker implements BrokerOptions {
     }
 
     /**
-     *
+     * Start the broker
      *
      * @returns {Promise<any>}
      * @memberof Tasks
@@ -99,6 +99,14 @@ export default class Broker implements BrokerOptions {
         return status;
     }
 
+    /**
+     * Send RPC request
+     *
+     * @param {string} queue
+     * @param {*} message
+     * @returns {Promise<any>}
+     * @memberof Broker
+     */
     async rpc(queue: string, message: any): Promise<any> {
         return new Promise(async (resolve, reject): Promise<any> => {
             try {
@@ -120,6 +128,7 @@ export default class Broker implements BrokerOptions {
                     Buffer.from(message.toString()),{
                         correlationId: uid,
                         replyTo: q.queue });
+
             } catch (error) {
                 reject(error);
             }
@@ -127,6 +136,13 @@ export default class Broker implements BrokerOptions {
 
     }
 
+    /**
+     * Bind RPC listener
+     *
+     * @param {RPC} rpc
+     * @returns {Promise<void>}
+     * @memberof Broker
+     */
     async bindRPC(rpc: RPC): Promise<void> {
         const ch = await this.con.createChannel();
         await ch.assertQueue(rpc.queue, { durable: false });
@@ -151,6 +167,13 @@ export default class Broker implements BrokerOptions {
         });
     }
 
+    /**
+     * Bind task
+     *
+     * @param {Task} task
+     * @returns {Promise<void>}
+     * @memberof Broker
+     */
     async bindTask(task: Task): Promise<void> {
         try {
             const ch = await this.con.createChannel();
@@ -216,6 +239,12 @@ export default class Broker implements BrokerOptions {
         }
     }
 
+    /**
+     * Graceful Stop
+     *
+     * @returns {Promise<void>}
+     * @memberof Broker
+     */
     stop(): Promise<void> {
         return new Promise(async (resolve: any, reject): Promise<void> => {
             console.log('[Tasks] Stopping and closing tasks...');
