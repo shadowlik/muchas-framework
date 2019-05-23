@@ -7,8 +7,8 @@ const config = yamlEnv(process.env.MUCHASYML || undefined);
 const Apm: any = apm(config.name, config.env, config.apm);
 
 // Database and Models
-import Database from './Database';
-import ModelsLoader from './Models';
+import Database from './database/Database';
+import ModelsLoader from './database/Models';
 export { Schema, Model, Document, Query } from 'mongoose';
 
 // Routines
@@ -130,9 +130,7 @@ class Muchas {
             this.log.debug('Starting application');
 
             // Health
-            if (this.healthServer) {
-                await this.healthServer.start();
-            }
+            if (this.healthServer) await this.healthServer.start();
 
             // Database
             if (this.database) {
@@ -146,14 +144,10 @@ class Muchas {
             }
 
             // Broker
-            if (this.broker) {
-                await this.broker.start();
-            }
+            if (this.broker) await this.broker.start();
 
             // Webserver
-            if (this.web) {
-                await this.web.start();
-            }
+            if (this.web) await this.web.start();
 
             // Plugins
             await new Plugins(this.config.plugins || './dist/plugins').start();
