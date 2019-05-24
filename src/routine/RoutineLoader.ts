@@ -13,6 +13,7 @@ interface RoutinesOptions {
 export default class RoutineLoader {
     Agenda: agenda;
     Web: web;
+
     /**
      * Creates an instance of Routines.
      * @param {RoutinesOptions} options

@@ -1,0 +1,10 @@
+env: ${NODE_ENV} # Enviroment (development, production)
+name: ${PROJECT_NAME} # Project name
+debug:
+  port: 9003 # NodeJS debug port
+health:
+  port: 9000 # Health web server port
+server:
+  port: 9003
+components:
+  path: ${COMPONENTS_PATH}
