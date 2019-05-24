@@ -1,14 +1,17 @@
 import agenda from 'agenda';
 import os from 'os';
 import Routine from './Routine';
+import web from '../web/Server';
+const Agendash = require('agendash');
 
 interface RoutinesOptions {
     mongoConString: string;
+    web: web;
 }
 
 export default class RoutineLoader {
     Agenda: agenda;
-
+    Web: web;
     /**
      * Creates an instance of Routines.
      * @param {RoutinesOptions} options
@@ -16,6 +19,7 @@ export default class RoutineLoader {
      */
     constructor(options: RoutinesOptions) {
         let opt = {};
+        this.Web = options.web;
         if (options.mongoConString) {
             opt = {
                 db: {
@@ -30,6 +34,8 @@ export default class RoutineLoader {
         this.Agenda = new agenda(opt);
         this.Agenda.name(`${os.hostname}-${process.pid}`);
         this.Agenda.start();
+
+        this.Web.app.use('/routines', Agendash(this.Agenda));
     }
 
 
@@ -45,16 +51,18 @@ export default class RoutineLoader {
             id,
             cron,
             action,
-            concurrency =20,
-            lockLimit = 20,
+            concurrency,
+            lockLifetime,
         } = routine;
 
         try {
-            this.Agenda.define(id, {
-                concurrency,
-                lockLimit,
-            }, (job, done): void => {
-                action(done);
+            let opt: any = {};
+
+            if(concurrency) opt.concurrency = concurrency;
+            if(lockLifetime) opt.lockLifetime = lockLifetime;
+
+            this.Agenda.define(id, opt, (job, done): void => {
+                action(job, done);
             });
 
             this.Agenda.every(cron, id);

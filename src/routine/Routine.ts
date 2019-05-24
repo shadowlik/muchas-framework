@@ -1,13 +1,15 @@
+import { Job } from 'agenda';
+
 export default interface Routine {
     id: string;
     cron: string;
     action: RoutineAction;
     startup?: boolean;
     concurrency?: number;
-    lockLimit?: number;
+    lockLifetime?: number;
     priority?: string;
 }
 
 interface RoutineAction {
-    (done: Function): void;
+    (job: Job, done: Function): void;
 }

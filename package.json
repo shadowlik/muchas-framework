@@ -68,6 +68,7 @@
     "@types/mongoose": "^5.3.26",
     "@types/uniqid": "^4.1.3",
     "agenda": "^2.0.2",
+    "agendash": "^1.0.0",
     "amqplib": "^0.5.3",
     "dotenv": "^8.0.0",
     "elastic-apm-node": "^2.11.1",

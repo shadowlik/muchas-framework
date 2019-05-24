@@ -16,11 +16,12 @@ export = new Component({
     ],
     routines: [
         {
-            id: 'teste2',
+            id: '1',
             cron: '*/1 * * * *',
-            action: (done): void =>
+            concurrency: 2,
+            action: (job, done): void =>
             {
-                Muchas.log.error('teste');
+                job.fail('teste');
                 done();
             }
         }

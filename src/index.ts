@@ -87,12 +87,7 @@ class Muchas {
             });
         }
 
-        // Routines
-        if(this.config.database) {
-            this.RoutineLoader = new RoutineLoader({
-                mongoConString: this.config.database.uri || null,
-            });
-        }
+
 
         // Broker
         if(this.config.broker) {
@@ -106,6 +101,14 @@ class Muchas {
             this.web = new Web({
                 port: this.config.web.port,
                 headers: this.config.web.headers
+            });
+        }
+
+        // Routines
+        if(this.config.database) {
+            this.RoutineLoader = new RoutineLoader({
+                mongoConString: this.config.database.uri || null,
+                web: this.web,
             });
         }
 
