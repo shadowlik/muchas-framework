@@ -21,6 +21,9 @@ export default class RoutineLoader {
                 db: {
                     address: options.mongoConString || null,
                     collection: 'agenda',
+                    options: {
+                        useNewUrlParser: true,
+                    }
                 }
             }
         }

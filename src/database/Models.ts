@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import mongoose, { Model, Schema } from 'mongoose';
+import MuchasEvents from '../Events';
 
 export = class ModelsLoader {
     path: string;
@@ -27,6 +27,8 @@ export = class ModelsLoader {
      * @returns {Promise<void>}
      */
     async load(): Promise<ModelsLoader> {
+        MuchasEvents.debug('Loading models');
+
         for(let i = 0; i < this.modelsFiles.length; i += 1) {
             let modelFile = this.modelsFiles[i];
             if (
@@ -34,13 +36,18 @@ export = class ModelsLoader {
                 /.js$/ig.test(modelFile) && (modelFile.indexOf('.js') == modelFile.length - 3)
             ) {
                 let modelName = modelFile.replace(/.ts|.js/ig, '');
+
                 let model = await import(path.join(this.path, modelFile));
+                MuchasEvents.debug(`Model ${modelName} loaded`);
 
                 this.models[modelName] = model.default;
 
                 continue;
             }
         }
+
+        MuchasEvents.debug('Models loaded');
+
         return this;
     }
 };

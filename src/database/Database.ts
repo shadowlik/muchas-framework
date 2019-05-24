@@ -1,4 +1,5 @@
 import mongoose, { Mongoose, Schema, Model, Document, Query } from 'mongoose';
+import MuchasEvents from '../Events';
 
 interface DatabaseOptions {
     uri: string;
@@ -29,13 +30,15 @@ export default class Database {
      * @returns {Promise<mongoose.Mongoose>}
      */
     async connect(): Promise<mongoose.Mongoose> {
-
         try {
+            MuchasEvents.debug('Connectind to database');
 
             // Avoid deprecated warnings
             mongoose.set('useCreateIndex', true);
 
             await mongoose.connect(this.connectionUrl, { useNewUrlParser: true });
+
+            MuchasEvents.debug('Database connected');
 
             return this.mongoose = mongoose;
         } catch (error) {

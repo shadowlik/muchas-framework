@@ -168,7 +168,9 @@ class Muchas {
             this.log.error(error.message || error);
             // Application is up and running
             this.healthServer.down();
-            // process.exit(1);
+            if (this.config.env === 'production') {
+                process.exit(1);
+            }
         };
     };
 

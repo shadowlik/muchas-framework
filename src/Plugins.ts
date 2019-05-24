@@ -51,6 +51,10 @@ export default class Plugins {
      * @memberof Plugins
      */
     async loadPlugins(): Promise<void> {
+        if (this.pluginsPaths.length === 0) return;
+
+        MuchasEvents.debug('Loading plugins');
+
         for (let i = 0; this.pluginsPaths.length > i; i += 1) {
             const plugin = this.pluginsPaths[i];
             const pluginName = plugin.replace('.js', '');
@@ -66,6 +70,8 @@ export default class Plugins {
             }
 
             this.plugins[pluginName] = await pluginModule.default;
+
+            MuchasEvents.debug(`Plugin ${pluginName}`);
         }
     }
 

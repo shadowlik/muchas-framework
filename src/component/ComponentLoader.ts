@@ -10,6 +10,8 @@ import Routine from '../routine/Routine';
 
 import Component from './Component';
 
+import MuchasEvents from '../Events';
+
 interface ComponentsLoaderOptions {
     path: string;
     web: Web | false;
@@ -57,6 +59,8 @@ export default class ComponentsLoader {
      * @memberof ComponentsLoader
      */
     async load(): Promise<void> {
+        MuchasEvents.debug('Loading componentes');
+
         await this.loadComponents();
     };
 
@@ -81,6 +85,8 @@ export default class ComponentsLoader {
             componentModule.alias = component;
             this.components.push(componentModule);
 
+            MuchasEvents.debug(`Loading component ${component}`);
+
             // Load routes
             if (this.web && componentModule.routes) {
                 componentModule.routes.forEach((route: Route): void => {
@@ -91,6 +97,8 @@ export default class ComponentsLoader {
                         routePath = path.join('/', route.path)
                     }
 
+                    MuchasEvents.debug(`Loading route ${route.method}:${routePath}`);
+
                     this.web.addRoute(route.method, path.join('/', routePath), route.controller, route.secure);
                 });
             }
@@ -99,12 +107,16 @@ export default class ComponentsLoader {
             if (this.broker) {
                 if (componentModule.tasks) {
                     componentModule.tasks.forEach((task: Task): void => {
+                        MuchasEvents.debug(`Loading task ${task.exchange}:${task.routeKey}:${task.queue}`);
+
                         this.broker.bindTask(task);
                     });
                 }
 
                 if (componentModule.rpc) {
                     componentModule.rpc.forEach((rpc: RPC): void => {
+                        MuchasEvents.debug(`Loading rpc listenner ${rpc.queue}`);
+
                         this.broker.bindRPC(rpc);
                     });
                 }
@@ -113,6 +125,8 @@ export default class ComponentsLoader {
             // Load routines
             if (this.routine && componentModule.routines) {
                 componentModule.routines.forEach((routine: Routine): void => {
+                    MuchasEvents.debug(`Loading routine ${routine.id}`);
+
                     this.routine.addJob(routine);
                 })
             }

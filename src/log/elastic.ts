@@ -10,7 +10,7 @@ interface ElasticLoggerOptions {
 class ElasticLogger {
     elasticsearchClient: Elasticsearch.Client;
 
-    constructor(host: string, log: string = 'none') {
+    constructor(host: string, log: string = 'error') {
         this.elasticsearchClient = new Elasticsearch.Client({
             host,
             log,

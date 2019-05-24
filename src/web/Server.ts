@@ -1,6 +1,6 @@
 import express, { Response, Request, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-
+import MuchasEvents from '../Events';
 import { Server } from 'http';
 
 interface CustomExpress extends express.Express {
@@ -52,11 +52,16 @@ class Web {
      */
     start(): Promise<{ server: Server; app: express.Express }> {
         return new Promise((resolve, reject): void => {
+            MuchasEvents.debug('Starting web server');
             try {
-                this.server = this.app.listen(this.port, (): void => { resolve({
-                    server: this.server,
-                    app: this.app,
-                }); });
+                this.server = this.app.listen(this.port, (): void => {
+                    MuchasEvents.debug(`Web server started on port ${this.port}`);
+
+                    resolve({
+                        server: this.server,
+                        app: this.app,
+                    });
+                });
             } catch(e) {
                 reject(e);
             }

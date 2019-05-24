@@ -1,5 +1,6 @@
 import amqplib, { Connection, Channel } from 'amqplib';
 import uniqid from 'uniqid';
+import MuchasEvents from '../Events';
 
 export interface Task {
     queue: string;
@@ -57,10 +58,15 @@ export default class Broker implements BrokerOptions {
     start(): Promise<any> {
         return new Promise((resolve, reject): void => {
             try {
+                MuchasEvents.debug('Starting broker');
+
                 amqplib.connect(`amqp://${this.host}`).then((con): any => {
                     return con.createChannel().then((ch): void => {
                         this.ch = ch;
                         this.con = con;
+
+                        MuchasEvents.debug('Broker started');
+
                         resolve(this);
                     }).catch((ee): void => {
                         reject(ee);
