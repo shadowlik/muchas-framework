@@ -1,11 +1,15 @@
 # ![Muchas Framework](doc/muchas.png) Muchas Framework
 [![npm version](https://badge.fury.io/js/muchas-framework.svg)](https://badge.fury.io/js/muchas-framework) [![CircleCI](https://circleci.com/gh/shadowlik/muchas-framework.svg?style=shield)](https://circleci.com/gh/shadowlik/muchas-framework) [![Coverage Status](https://coveralls.io/repos/github/shadowlik/muchas-framework/badge.svg?branch=master)](https://coveralls.io/github/shadowlik/muchas-framework?branch=master)
 
-> Muchas is an opinionated microservice nodejs framework
+Muchas is an opinionated microservice nodejs framework. We use a set of other frameworks to build a rich ecoystem with a standard way of building applications.
 
 ## Installing
 
 > npm i -s muchas-framework
+
+## How it works
+
+We are explain using the default folder strucuture. The MuchasFr
 
 ## Quick start
 
@@ -76,15 +80,17 @@ The web application uses [express](https://github.com/expressjs/express) under t
 
 ## Broker
 
-### Tasks
+We support amqp protocol for our message broker and we encourage to use it with [RabbitMQ](https://www.rabbitmq.com/)
 
-### RPC
+### Message Queue
+
+### RPC (Beta)
 
 ## Routines
 
-## Logger
-
 ## Health
+
+## Logger
 
 ### Levels
 
