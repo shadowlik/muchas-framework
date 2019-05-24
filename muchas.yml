@@ -14,15 +14,15 @@ apm: # Application performance management
   host: ${APM_HOST} # Host
   logLevel: ${APM_LEVEL} # Level
   sample: 0.2 # Sample rate
-logger:
-  elasticsearch:
-    host: ${LOGGER_ELASTIC_HOST}
-    level: ${LOGGER_ELASTIC_LEVEL}
-database:
-  uri: ${DATABASE_URI}
-  model:
-    path: ${MODELS_PATH}
-broker:
-  host: ${BROKER_HOST}
-components:
-  path: ${COMPONENTS_PATH}
+logger: # Logger
+  elasticsearch: # Elasticsearch logger
+    host: ${LOGGER_ELASTIC_HOST} # Elastic host
+    level: ${LOGGER_ELASTIC_LEVEL} # Log level
+database: # Database
+  uri: ${DATABASE_URI} # Database URI
+  model: # Models
+    path: ${MODELS_PATH} # Model base path
+broker: # Broker
+  host: ${BROKER_HOST} # Broker Host
+components: # Components
+  path: ${COMPONENTS_PATH} # Components base path
