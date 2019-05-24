@@ -43,7 +43,25 @@ describe('Health Class', () => {
         expect(() => health.down()).to.not.throw();
     });
 
+    it('Test Down Response', function (done) {
+        chai.request(health.app)
+            .get('/')
+            .end((err, res) => {
+                res.should.have.status(503);
+                done();
+            });
+    });
+
     it('Test Stop Function', function () {
         expect(() => health.stop()).to.not.throw();
+    });
+
+    it('Test Stop Response', function (done) {
+        chai.request(health.app)
+            .get('/')
+            .end((err, res) => {
+                res.should.have.status(503);
+                done();
+            });
     });
 });
