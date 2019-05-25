@@ -29,6 +29,7 @@ export { Task, RPC };
 import Web from './web/Server';
 import Route from './web/Route';
 export { Route };
+export { Request, Response, NextFunction } from 'express';
 
 // Health
 import Health from './Health';
@@ -86,8 +87,6 @@ class Muchas {
                 uri: this.config.database.uri,
             });
         }
-
-
 
         // Broker
         if(this.config.broker) {
@@ -196,3 +195,4 @@ const muchas = new Muchas();
 export default muchas;
 
 export const log = muchas.log;
+export const database = muchas.database;
