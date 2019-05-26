@@ -100,7 +100,8 @@ class Muchas {
         if(this.config.web) {
             this.web = new Web({
                 port: this.config.web.port,
-                headers: this.config.web.headers
+                headers: this.config.web.headers,
+                secret: this.config.web.secret,
             });
         }
 
