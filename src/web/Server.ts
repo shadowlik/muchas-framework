@@ -89,6 +89,21 @@ class Web {
     }
 
     /**
+     *
+     *
+     * @memberof Web
+     */
+    options(): void {
+        this.app.options("/*", (req, res, next): void => {
+            Object.keys(this.headers).forEach((key: string): void => {
+                const header: Header = this.headers[key];
+                res.set(key, header as unknown as string);
+            });
+            next();
+        })
+    }
+
+    /**
      * Set express base headers
      *
      * @private

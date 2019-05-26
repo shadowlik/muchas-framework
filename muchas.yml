@@ -6,7 +6,7 @@ web: # Web server
   port: ${SERVER_PORT} # Web server port
   headers: # Web server default response headers
     Access-Control-Allow-Origin: '*'
-    Access-Control-Allow-Methods: '*'
+    Access-Control-Allow-Methods: GET,PUT,POST,DELETE,OPTIONS
     Access-Control-Allow-Headers: '*'
 health: # Health web server
   port: 9000 # Health web server port
