@@ -1,5 +1,7 @@
 import express, { Response, Request, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import bodyParser from 'body-parser';
+
 import MuchasEvents from '../Events';
 import { Server } from 'http';
 
@@ -39,6 +41,9 @@ class Web {
      */
     constructor(options?: Options) {
         this.app = express();
+
+        this.app.use(bodyParser.json());
+
         if(options.secret) this.secret = options.secret;
         if(options.port) this.port = options.port;
         if(options.headers) this.headers = options.headers || [];
