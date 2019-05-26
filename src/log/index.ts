@@ -67,7 +67,7 @@ class Log {
             errorCode,
             ...meta,
         });
-        return uid;
+        return id;
     };
 
     /**

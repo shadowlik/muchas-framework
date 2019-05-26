@@ -197,3 +197,4 @@ export default muchas;
 
 export const log = muchas.log;
 export const database = muchas.database;
+export const broker = muchas.broker;
