@@ -1,11 +1,13 @@
-import Muchas, { Component } from '../../../../';
+import Muchas, { Component, ServerError } from '../../../../';
 
 export = new Component({
     routes: [
         {
             path: '/',
             method: 'get',
-            controller: (req, res) => { res.json({a : 1})}
+            controller: (req, res): void => {
+                res.json({a : 1});
+            }
         },
         {
             path: '/private',

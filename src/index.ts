@@ -30,6 +30,7 @@ import Web from './web/Server';
 import Route from './web/Route';
 export { Route };
 export { Request, Response, NextFunction } from 'express';
+export { ServerError } from './web/ServerError';
 
 // Health
 import Health from './Health';
