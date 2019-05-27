@@ -47,6 +47,8 @@ class Web {
         if(options.secret) this.secret = options.secret;
         if(options.port) this.port = options.port;
         if(options.headers) this.headers = options.headers || [];
+
+        this.options();
     }
 
     /**
