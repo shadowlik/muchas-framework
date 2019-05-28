@@ -13,7 +13,8 @@
     "test:unit:coverage": "export MUCHASYML=src/tests/integration && nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --exit -r ts-node/register 'src/tests/unit/**/*.test.ts' && nyc report",
     "test:unit:coveralls": "export MUCHASYML=src/tests/integration && nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register 'src/tests/unit/**/*.test.ts' && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "start:integration": "ts-node-dev --nolazy --inspect=0.0.0.0:6029 --notify false ./src/tests/integration/index.ts",
-    "start:it": "concurrently \"tsc -w\" \"nodemon --inspect=0.0.0.0:6029 dist/tests/integration\""
+    "start:it": "concurrently \"tsc -w\" \"nodemon --inspect=0.0.0.0:6029 dist/tests/integration\"",
+    "full": "npm version patch && npm run build && npm publish"
   },
   "repository": {
     "type": "git",

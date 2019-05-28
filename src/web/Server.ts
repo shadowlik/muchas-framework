@@ -45,7 +45,7 @@ class Web {
         this.app.use(bodyParser.json());
 
         if(options.secret) this.secret = options.secret;
-        if(options.port) this.port = options.port;
+        if(options.port) this.port = parseInt(options.port as unknown as string);
         if(options.headers) this.headers = options.headers || [];
 
         this.options();
