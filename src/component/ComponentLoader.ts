@@ -99,7 +99,7 @@ export default class ComponentsLoader {
 
                     MuchasEvents.debug(`Loading route ${route.method}:${routePath}`);
 
-                    this.web.addRoute(route.method, path.join('/', routePath), route.controller, route.secure);
+                    this.web.addRoute(route.method, path.join('/', routePath), route.controller, route.secure, route.acl);
                 });
             }
 

@@ -143,7 +143,7 @@ class Web {
      * @param res
      * @param next
      */
-    protected secureRouteMiddleware(): Function {
+    protected secureRouteMiddleware(acl: String[]): Function {
         // Route is secure, check the bearer token
         return (req: RequestPrivate, res: express.Response, next: express.NextFunction): void => {
             const { authorization } = req.headers;
@@ -156,6 +156,14 @@ class Web {
 
             jwt.verify(token, this.secret, (error, decoded): void => {
                 req.token = decoded as object;
+
+                // ACL Check
+                if (acl && acl.length > 0) {
+                    if (acl.indexOf(token) === -1) {
+                        this._403(res);
+                        return;
+                    }
+                }
                 next();
             });
         }
@@ -168,10 +176,10 @@ class Web {
      * @param controller
      * @param secure
      */
-    addRoute(method: string, path: string, controller: Function, secure: boolean = false): void {
+    addRoute(method: string, path: string, controller: Function, secure: boolean = false, acl: String[] = []): void {
         // Secure routes
         if (secure) {
-            this.app[method](path, this.setHeaders(), this.secureRouteMiddleware(), controller);
+            this.app[method](path, this.setHeaders(), this.secureRouteMiddleware(acl), controller);
             return;
         }
         // Public routes

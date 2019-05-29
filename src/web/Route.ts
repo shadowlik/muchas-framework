@@ -9,4 +9,5 @@ export default interface Route {
     method: string;
     controller: Controller;
     secure?: boolean;
+    acl?: String[];
 }
