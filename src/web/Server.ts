@@ -33,6 +33,8 @@ class Web {
     secret: string = '123456789';
     enabled: boolean = false;
     server: Server;
+    private code: number = 503;
+    private state: string = 'starting';
 
     /**
      * Creates an instance of Web.
@@ -49,6 +51,14 @@ class Web {
         if(options.headers) this.headers = options.headers || [];
 
         this.options();
+
+        this.app.get('/healthz', (req: Request, res: Response): void => {
+            res.status(this.code).json({
+                pid: process.pid,
+                state: this.state,
+                code: this.code,
+            });
+        });
     }
 
     /**
@@ -185,6 +195,26 @@ class Web {
         // Public routes
         this.app[method](path, this.setHeaders(), controller);
     };
+
+     /**
+     *
+     *
+     * @memberof Web
+     */
+    live(): void {
+        this.state = 'up';
+        this.code = 200;
+    }
+
+    /**
+     *
+     *
+     * @memberof Web
+     */
+    down(): void {
+        this.state = 'down'
+        this.code = 503;
+    }
 }
 
 export default Web;

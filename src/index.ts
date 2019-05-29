@@ -33,7 +33,6 @@ export { Request, Response, NextFunction } from 'express';
 export { ServerError } from './web/ServerError';
 
 // Health
-import Health from './Health';
 import MuchasEvents from './Events';
 import Plugins from './Plugins';
 
@@ -46,7 +45,6 @@ class Muchas {
     web: Web
     RoutineLoader: RoutineLoader;
     broker: Broker;
-    healthServer: Health;
     // eslint-disable-next-line
     config: { [x: string]: any }
     apm: any;
@@ -76,11 +74,6 @@ class Muchas {
 
             this.log = new Logger(loggerConfig);
         }
-
-        // Health
-        this.healthServer = new Health({
-            port: this.config.health.port || 9000,
-        });
 
         // Database
         if(this.config.database) {
@@ -133,9 +126,6 @@ class Muchas {
         try {
             this.log.debug('Starting application');
 
-            // Health
-            if (this.healthServer) await this.healthServer.start();
-
             // Database
             if (this.database) {
                 await this.database.connect();
@@ -165,13 +155,13 @@ class Muchas {
             }).load();
 
             // Application is up and running
-            this.healthServer.live();
+            this.web.live();
 
             this.log.debug('Application is live');
         } catch (error) {
             this.log.error(error.message || error);
             // Application is up and running
-            this.healthServer.down();
+            this.web.down();
             if (this.config.env === 'production') {
                 process.exit(1);
             }
@@ -188,7 +178,7 @@ class Muchas {
         if (this.web) await this.web.stop();
         if (this.RoutineLoader) await this.RoutineLoader.stop();
         if (this.broker) await this.broker.stop();
-        if (this.healthServer) this.healthServer.down();
+        if (this.web) this.web.down();
     }
 };
 
