@@ -155,11 +155,11 @@ class Web {
             const token = authorization.replace('Bearer ', '');
 
             jwt.verify(token, this.secret, (error, decoded): void => {
-                req.token = decoded as object;
+                req.token = decoded  as {[x: string]: any};
 
                 // ACL Check
                 if (acl && acl.length > 0) {
-                    if (acl.indexOf(token) === -1) {
+                    if (acl.indexOf(req.token.acl) === -1) {
                         this._403(res);
                         return;
                     }
