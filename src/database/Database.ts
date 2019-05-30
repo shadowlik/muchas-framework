@@ -36,6 +36,8 @@ export default class Database {
             // Avoid deprecated warnings
             mongoose.set('useCreateIndex', true);
 
+            mongoose.set('useFindAndModify', false);
+
             await mongoose.connect(this.connectionUrl, { useNewUrlParser: true });
 
             MuchasEvents.debug('Database connected');
