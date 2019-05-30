@@ -9,7 +9,7 @@ interface ApmOptions {
 type LovLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 export = (name: string, nodeEnv: string, apmOptions: ApmOptions | undefined): any => {
-    if (!name || nodeEnv || !apmOptions) return undefined;
+    if (!name || !apmOptions) return undefined;
 
     const logLevel: LovLevel = apmOptions.loglevel;
 
