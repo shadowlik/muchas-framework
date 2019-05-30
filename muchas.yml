@@ -11,7 +11,7 @@ web: # Web server
 health: # Health web server
   port: 9000 # Health web server port
 apm: # Application performance management
-  host: ${APM_HOST} # Host
+  apmHost: ${APM_HOST} # Host
   logLevel: ${APM_LEVEL} # Level
   sample: 0.2 # Sample rate
 logger: # Logger
