@@ -48,6 +48,7 @@ class Muchas {
     // eslint-disable-next-line
     config: { [x: string]: any }
     apm: any;
+    plugins: any;
 
     /**
      * Creates an instance of Muchas.
@@ -144,7 +145,7 @@ class Muchas {
             if (this.web) await this.web.start();
 
             // Plugins
-            await new Plugins(this.config.plugins || './dist/plugins').start();
+            this.plugins = await new Plugins(this.config.plugins || './dist/plugins').start();
 
             // Components
             await new ComponentsLoader({
@@ -189,3 +190,4 @@ export default muchas;
 export const log = muchas.log;
 export const database = muchas.database;
 export const broker = muchas.broker;
+export const plugins = muchas.plugins;
