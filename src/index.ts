@@ -100,7 +100,7 @@ class Muchas {
         }
 
         // Routines
-        if(this.config.database) {
+        if(this.config.database && this.config.routines) {
             this.RoutineLoader = new RoutineLoader({
                 mongoConString: this.config.database.uri || null,
                 web: this.web,
