@@ -18,6 +18,7 @@ logger: # Logger
   elasticsearch: # Elasticsearch logger
     host: ${LOGGER_ELASTIC_HOST} # Elastic host
     level: ${LOGGER_ELASTIC_LEVEL} # Log level
+    indexPrefix: ${PROJECT_NAME} # Log index prefix
 database: # Database
   uri: ${DATABASE_URI} # Database URI
   model: # Models

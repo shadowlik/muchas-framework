@@ -69,7 +69,8 @@ class Muchas {
             if(this.config.logger.elasticsearch) {
                 loggerConfig.elastic = {
                     host: this.config.logger.elasticsearch.host,
-                    level: this.config.logger.elasticsearch.level || 'info'
+                    level: this.config.logger.elasticsearch.level || 'info',
+                    indexPrefix: this.config.logger.elasticsearch.indexPrefix,
                 }
             }
 
