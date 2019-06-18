@@ -193,7 +193,7 @@ class Web {
             return;
         }
         // Public routes
-        this.app[method](path, this.setHeaders(), controller, middleware);
+        this.app[method](path, this.setHeaders(), middleware, controller);
     };
 
      /**
