@@ -186,10 +186,10 @@ class Web {
      * @param controller
      * @param secure
      */
-    addRoute(method: string, path: string, controller: Function, secure: boolean = false, acl: String[] = []): void {
+    addRoute(method: string, path: string, controller: Function, middleware: Function[], secure: boolean = false, acl: String[] = []): void {
         // Secure routes
         if (secure) {
-            this.app[method](path, this.setHeaders(), this.secureRouteMiddleware(acl), controller);
+            this.app[method](path, this.setHeaders(), this.secureRouteMiddleware(acl), middleware, controller);
             return;
         }
         // Public routes

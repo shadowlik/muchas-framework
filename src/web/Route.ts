@@ -8,6 +8,7 @@ export default interface Route {
     path: string;
     method: string;
     controller: Controller;
+    middleware: Controller[];
     secure?: boolean;
     acl?: string[];
 }
