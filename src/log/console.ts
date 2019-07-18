@@ -1,10 +1,17 @@
 import winston from 'winston';
+import moment from 'moment-timezone';
 
 const {
     combine, timestamp, printf,
 } = winston.format;
 
 const logFormat = printf(info => `${info.timestamp} ${info.level}: ${info.message}`);
+
+const appendTimestamp: any = winston.format((info, opts) => {
+    if(opts.tz)
+      info.timestamp = moment().tz(opts.tz).format();
+    return info;
+  });
 
 class ConsoleLogger {
     level: string;
@@ -18,7 +25,7 @@ class ConsoleLogger {
             level: this.level,
             format: combine(
                 winston.format.colorize(),
-                timestamp(),
+                appendTimestamp({ tz: 'America/Sao_Paulo' }),
                 logFormat,
             ),
         });
