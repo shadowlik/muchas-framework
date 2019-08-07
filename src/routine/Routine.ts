@@ -8,6 +8,7 @@ export default interface Routine {
     concurrency?: number;
     lockLifetime?: number;
     priority?: string;
+    timezone?: string;
 }
 
 interface RoutineAction {
