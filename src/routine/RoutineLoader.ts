@@ -2,6 +2,8 @@ import agenda from 'agenda';
 import os from 'os';
 import Routine from './Routine';
 import web from '../web/Server';
+import { Apm } from '../index';
+
 /* eslint-disable-next-line */
 const Agendash = require('agendash');
 
@@ -64,7 +66,12 @@ export default class RoutineLoader {
             if(lockLifetime) opt.lockLifetime = lockLifetime;
 
             this.Agenda.define(id, opt, (job, done): void => {
-                action(job, done);
+                let trans: any;
+                if(Apm) trans = Apm.startTransaction(id, 'routine');
+                action(job, (): void => {
+                    done();
+                    if(Apm && trans) trans.end();
+                });
             });
 
             this.Agenda.every(cron, id);

@@ -1,4 +1,5 @@
 import Muchas, { Component, ServerError } from '../../../../';
+import axios from 'axios';
 
 export = new Component({
     routes: [
@@ -23,8 +24,22 @@ export = new Component({
             concurrency: 2,
             action: (job, done): void =>
             {
-                job.fail('teste');
+                // job.fail('teste');
                 done();
+            }
+        },
+        {
+            id: 'google',
+            cron: '* * * * *',
+            concurrency: 2,
+            action: async (job, done): Promise<any> =>
+            {
+                setTimeout(async (): void => {
+                    const res = await axios.get('https://google.com.br');
+                    console.log(res.status);
+                    // job.fail('teste');
+                    done();
+                }, 10000);
             }
         }
     ],

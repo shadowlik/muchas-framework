@@ -27,3 +27,4 @@ broker: # Broker
   host: ${BROKER_HOST} # Broker Host
 components: # Components
   path: ${COMPONENTS_PATH} # Components base path
+routines: true

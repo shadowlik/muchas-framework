@@ -1,6 +1,7 @@
 import amqplib, { Connection, Channel } from 'amqplib';
 import uniqid from 'uniqid';
 import MuchasEvents from '../Events';
+import { Apm } from '../index';
 
 export interface Task {
     queue: string;
@@ -206,7 +207,9 @@ export default class Broker implements BrokerOptions {
                 this.running += 1;
                 try {
                 // Check if APM is enabled to track the transaction
-                // const apmTransaction = apm.startTransaction(task.queue, 'Tasks');
+                    let trans: any;
+                    if(Apm) trans = Apm.startTransaction(task.queue, 'messages');
+                    // const apmTransaction = apm.startTransaction(task.queue, 'Tasks');
 
                     // Lets threat the message
                     const stringMsg = msg.content.toString();
@@ -232,6 +235,7 @@ export default class Broker implements BrokerOptions {
 
                         // Sends the ack to the message at Rabbit
                         ch.ack(msg);
+                        if(Apm && trans) trans.end();
                     });
                 } catch (e) {
                     this.running -= 1;

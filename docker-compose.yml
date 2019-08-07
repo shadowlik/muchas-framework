@@ -29,7 +29,7 @@ services:
       - muchas
   # Elasticsearch
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
     logging:
       driver: none
     environment:
@@ -47,7 +47,7 @@ services:
       - muchas
   # Kibana
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.0.1
+    image: docker.elastic.co/kibana/kibana:7.3.0
     logging:
       driver: none
     environment:
@@ -58,7 +58,7 @@ services:
       - muchas
   # Elastic Search APM
   elastic-apm:
-    image: docker.elastic.co/apm/apm-server:7.0.1
+    image: docker.elastic.co/apm/apm-server:7.3.0
     logging:
       driver: none
     ports:

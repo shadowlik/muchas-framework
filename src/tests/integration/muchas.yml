@@ -8,3 +8,4 @@ server:
   port: 9001
 components:
   path: ${COMPONENTS_PATH}
+routines: true
