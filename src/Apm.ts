@@ -11,7 +11,6 @@ type LovLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 export = (name: string, nodeEnv: string, apmOptions: ApmOptions | undefined): any | undefined => {
     if (!name || !apmOptions) return undefined;
-
     const logLevel: LovLevel = apmOptions.loglevel;
     const opt: any = {
         transactionSampleRate: apmOptions.sample,
