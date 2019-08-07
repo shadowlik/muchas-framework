@@ -6,6 +6,9 @@ const config = yamlEnv(process.env.MUCHASYML || undefined);
 
 const Apm: any = apm(config.name, config.env, config.apm);
 
+// Apm
+export { Apm };
+
 // Database and Models
 import Database from './database/Database';
 import ModelsLoader from './database/Models';
