@@ -34,7 +34,7 @@ export = new Component({
             concurrency: 2,
             action: async (job, done): Promise<any> =>
             {
-                setTimeout(async (): void => {
+                setTimeout(async (): Promise<any> => {
                     const res = await axios.get('https://google.com.br');
                     console.log(res.status);
                     // job.fail('teste');
