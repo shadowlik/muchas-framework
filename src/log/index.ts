@@ -62,7 +62,7 @@ class Log {
      */
     error(message: string, errorCode?: string, uid?: string, meta?: Meta): string {
         const id = uid || this.errorId();
-        this.logger.error(message, {
+        this.logger.error(errorCode? `${errorCode}: ${message}` : message, {
             uid: id,
             errorCode,
             ...meta,
