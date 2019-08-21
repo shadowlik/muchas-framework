@@ -57,6 +57,7 @@ export default class RoutineLoader {
             action,
             concurrency,
             lockLifetime,
+            timezone,
         } = routine;
 
         try {
@@ -64,6 +65,7 @@ export default class RoutineLoader {
 
             if(concurrency) opt.concurrency = concurrency;
             if(lockLifetime) opt.lockLifetime = lockLifetime;
+            if(timezone) opt.timezone = timezone;
 
             this.Agenda.define(id, opt, (job, done): void => {
                 let trans: any;
