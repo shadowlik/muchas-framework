@@ -76,7 +76,7 @@ export default class RoutineLoader {
                 });
             });
 
-            this.Agenda.every(cron, id);
+            this.Agenda.every(cron, id, opt, opt);
         } catch(e) {
             throw new Error(e);
         }
