@@ -38,7 +38,7 @@ export default class Database {
 
             mongoose.set('useFindAndModify', false);
 
-            await mongoose.connect(this.connectionUrl, { useNewUrlParser: true });
+            await mongoose.connect(this.connectionUrl, { poolSize: 20, useNewUrlParser: true });
 
             MuchasEvents.debug('Database connected');
 
