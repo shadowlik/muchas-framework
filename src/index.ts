@@ -1,13 +1,7 @@
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
-import apm from './Apm';
 
 const config = yamlEnv(process.env.MUCHASYML || undefined);
-
-const Apm: any = apm(config.name, config.env, config.apm);
-
-// Apm
-export { Apm };
 
 // Database and Models
 import Database from './database/Database';
@@ -57,7 +51,7 @@ class Muchas {
      * Creates an instance of Muchas.
      * @memberof Muchas
      */
-    constructor() {
+    constructor(Apm?: any) {
         // Loading configuration
         this.config = config;
 
