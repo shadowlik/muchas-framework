@@ -1,3 +1,5 @@
+import * as Apm from 'elastic-apm-node/start'
+
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
 
@@ -51,7 +53,7 @@ class Muchas {
      * Creates an instance of Muchas.
      * @memberof Muchas
      */
-    constructor(Apm?: any) {
+    constructor() {
         // Loading configuration
         this.config = config;
 
