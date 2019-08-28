@@ -39,6 +39,9 @@ export { ServerError } from './web/ServerError';
 import MuchasEvents from './Events';
 import Plugins from './Plugins';
 
+// Redis
+import Redis from './Redis';
+
 /**
  * Main File
  */
@@ -52,6 +55,7 @@ class Muchas {
     config: { [x: string]: any }
     apm: any;
     plugins: any;
+    redis: Redis
 
     /**
      * Creates an instance of Muchas.
@@ -64,6 +68,12 @@ class Muchas {
         if (Apm) {
             this.apm = Apm;
         }
+
+        // Redis
+        if(this.config.redis) {
+            this.redis = new Redis(this.config.redis.uri);
+        }
+
         // Logger
         this.log = console;
         if(this.config.logger) {
