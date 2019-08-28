@@ -1,10 +1,13 @@
-/* eslint-disable-next-line */
-const Apm = global.apm;
-
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
+import apm from './Apm';
 
 const config = yamlEnv(process.env.MUCHASYML || undefined);
+
+const Apm: any = apm(config.name, config.env, config.apm);
+
+// Apm
+export { Apm };
 
 // Database and Models
 import Database from './database/Database';
