@@ -71,7 +71,7 @@ class Muchas {
 
         // Redis
         if(this.config.redis) {
-            this.redis = new Redis(this.config.redis.uri);
+            this.redis = new Redis(this.config.redis.port, this.config.redis.host);
         }
 
         // Logger

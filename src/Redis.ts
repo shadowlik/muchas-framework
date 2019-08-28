@@ -9,8 +9,8 @@ class Redis {
     get: any;
     set: any;
 
-    constructor(uri: string) {
-        this.redisInstance = redis.createClient(uri);
+    constructor(port: number = 6379, host: string) {
+        this.redisInstance = redis.createClient(port, host);
         this.get = promisify(client.get).bind(this.redisInstance);
         this.set = promisify(client.set).bind(this.redisInstance);
     }
