@@ -2,7 +2,6 @@ import agenda from 'agenda';
 import os from 'os';
 import Routine from './Routine';
 import web from '../web/Server';
-import { Apm } from '../index';
 
 /* eslint-disable-next-line */
 const Agendash = require('agendash');
@@ -15,15 +14,16 @@ interface RoutinesOptions {
 export default class RoutineLoader {
     Agenda: agenda;
     Web: web;
-
+    apm: any;
     /**
      * Creates an instance of Routines.
      * @param {RoutinesOptions} options
      * @memberof Routines
      */
-    constructor(options: RoutinesOptions) {
+    constructor(options: RoutinesOptions, Apm?: any) {
         let opt = {};
         this.Web = options.web;
+        this.apm = Apm;
         if (options.mongoConString) {
             opt = {
                 db: {
@@ -69,10 +69,10 @@ export default class RoutineLoader {
 
             this.Agenda.define(id, opt, (job, done): void => {
                 let trans: any;
-                if(Apm) trans = Apm.startTransaction(id, 'routine');
+                if(this.apm) trans = this.apm.startTransaction(id, 'routine');
                 action(job, (): void => {
                     done();
-                    if(Apm && trans) trans.end();
+                    if(this.apm && trans) trans.end();
                 });
             });
 

@@ -85,7 +85,7 @@ class Muchas {
         if(this.config.broker) {
             this.broker = new Broker({
                 host: this.config.broker.host
-            });
+            }, this.apm);
         }
 
         // Web
