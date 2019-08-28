@@ -10,13 +10,10 @@ class Redis {
     set: any;
 
     constructor(uri: string) {
-        this.redisInstance = redis.createClient({
-            url: uri,
-        });
+        this.redisInstance = redis.createClient(uri);
         this.get = promisify(client.get).bind(this.redisInstance);
         this.set = promisify(client.set).bind(this.redisInstance);
     }
-
 }
 
 export default Redis;
