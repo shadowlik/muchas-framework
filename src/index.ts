@@ -84,6 +84,7 @@ class Muchas {
         if(this.config.database) {
             this.database = new Database({
                 uri: this.config.database.uri,
+                poolSize:  this.config.database.poolSize,
             });
         }
 
