@@ -1,5 +1,5 @@
 /* eslint-disable-next-line */
-const Apm = require('elastic-apm-node/start');
+const Apm = global.apm;
 
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
