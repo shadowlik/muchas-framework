@@ -44,7 +44,7 @@ class Web {
     constructor(options?: Options) {
         this.app = express();
 
-        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.json({limit: '150mb'}));
 
         if(options.secret) this.secret = options.secret;
         if(options.port) this.port = parseInt(options.port as unknown as string);
