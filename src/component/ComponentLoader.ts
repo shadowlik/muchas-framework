@@ -74,7 +74,7 @@ export default class ComponentsLoader {
         for(let i = 0; this.componentsFiles.length > i; i += 1) {
             let component = this.componentsFiles[i];
             const componentPath = path.join(process.cwd(), this.path, component);
-            const componentLoad = await import(componentPath);
+            const componentLoad = require(componentPath);
             const componentModule: Component = componentLoad.default;
 
             // Check if what we're importing is a Component instance
