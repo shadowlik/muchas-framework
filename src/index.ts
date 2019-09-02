@@ -9,10 +9,7 @@ const Apm: any = apm(config.name, config.env, config.apm);
 // Apm
 export { Apm };
 
-// Database and Models
-import Database from './database/Database';
-import ModelsLoader from './database/Models';
-export { Schema, Model, Document, Query } from 'mongoose';
+
 
 // Routines
 import Routine from './routine/Routine';
@@ -34,6 +31,11 @@ import Route from './web/Route';
 export { Route };
 export { Request, Response, NextFunction } from 'express';
 export { ServerError } from './web/ServerError';
+
+// Database and Models
+import Database from './database/Database';
+import ModelsLoader from './database/Models';
+export { Schema, Model, Document, Query } from 'mongoose';
 
 // Health
 import MuchasEvents from './Events';
