@@ -4,6 +4,7 @@ debug: # Debug options
   port: ${DEBUG_PORT} # NodeJS debug port
 web: # Web server
   port: ${SERVER_PORT} # Web server port
+  secret: ${JWT_SECRET} # JWT Secret
   headers: # Web server default response headers
     Access-Control-Allow-Origin: '*'
     Access-Control-Allow-Methods: GET,PUT,POST,DELETE,OPTIONS
