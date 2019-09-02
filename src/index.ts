@@ -9,8 +9,6 @@ const Apm: any = apm(config.name, config.env, config.apm);
 // Apm
 export { Apm };
 
-
-
 // Routines
 import Routine from './routine/Routine';
 import RoutineLoader from './routine/RoutineLoader';
