@@ -1,4 +1,4 @@
-import apm from 'elastic-apm-node';
+import * as apm from 'elastic-apm-node';
 
 interface ApmOptions {
     loglevel: LovLevel;

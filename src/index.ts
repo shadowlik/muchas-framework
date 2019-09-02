@@ -69,6 +69,15 @@ class Muchas {
             this.apm = Apm;
         }
 
+        // Web
+        if(this.config.web) {
+            this.web = new Web({
+                port: this.config.web.port,
+                headers: this.config.web.headers,
+                secret: this.config.web.secret,
+            });
+        }
+
         // Redis
         if(this.config.redis) {
             this.redis = new Redis(this.config.redis.uri);
@@ -103,15 +112,6 @@ class Muchas {
             this.broker = new Broker({
                 host: this.config.broker.host
             }, this.apm);
-        }
-
-        // Web
-        if(this.config.web) {
-            this.web = new Web({
-                port: this.config.web.port,
-                headers: this.config.web.headers,
-                secret: this.config.web.secret,
-            });
         }
 
         // Routines
