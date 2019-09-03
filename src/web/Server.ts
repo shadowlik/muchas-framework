@@ -140,10 +140,11 @@ class Web {
      * @private
      * @memberof Web
      */
-    private _403 = (res: express.Response): express.Response => res.status(403).json({
+    private _403 = (res: express.Response, error?: any): express.Response => res.status(403).json({
         error: {
             code: 403,
             message: 'Not authorized',
+            error,
         },
     });
 
@@ -174,6 +175,14 @@ class Web {
                         return;
                     }
                 }
+
+                // Invalid token
+                if(error) {
+                    this._403(res, error);
+                    return;
+                }
+
+                // Valid token, let it pass
                 next();
             });
         }
