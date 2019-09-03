@@ -24,7 +24,7 @@ import Broker, { Task, RPC } from './broker/Broker';
 export { Task, RPC };
 
 // Web
-import Web from './web/Server';
+import Web, { RequestPrivate } from './web/Server';
 import Route from './web/Route';
 export { Route };
 export { Request, Response, NextFunction } from 'express';
@@ -202,6 +202,7 @@ const muchas = new Muchas();
 
 export default muchas;
 
+export { RequestPrivate };
 export const log = muchas.log;
 export const database = muchas.database;
 export const broker = muchas.broker;

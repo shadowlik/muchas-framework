@@ -227,3 +227,5 @@ class Web {
 }
 
 export default Web;
+
+export { RequestPrivate };
