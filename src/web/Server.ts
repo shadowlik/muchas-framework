@@ -168,18 +168,18 @@ class Web {
             jwt.verify(token, this.secret, (error, decoded): void => {
                 req.token = decoded  as {[x: string]: any};
 
+                // Invalid token
+                if(error) {
+                    this._403(res, error);
+                    return;
+                }
+
                 // ACL Check
                 if (acl && acl.length > 0) {
                     if (acl.indexOf(req.token.acl) === -1) {
                         this._403(res);
                         return;
                     }
-                }
-
-                // Invalid token
-                if(error) {
-                    this._403(res, error);
-                    return;
                 }
 
                 // Valid token, let it pass
