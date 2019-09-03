@@ -90,11 +90,11 @@ export default class ComponentsLoader {
             // Load routes
             if (this.web && componentModule.routes) {
                 componentModule.routes.forEach((route: Route): void => {
-                    let routePath = path.join('/', componentModule.alias, route.path)
+                    let routePath = path.join('/', componentModule.alias, route.path);
 
                     // If is a root component
                     if (componentModule.alias === 'root') {
-                        routePath = path.join('/', route.path)
+                        routePath = path.join('/', route.path);
                     }
 
                     MuchasEvents.debug(`Loading route ${route.method}:${routePath}`);
