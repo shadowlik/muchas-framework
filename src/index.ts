@@ -42,6 +42,9 @@ import Plugins from './Plugins';
 // Redis
 import Redis from './Redis';
 
+// Log
+import Log from './log';
+
 /**
  * Main File
  */
@@ -126,6 +129,9 @@ class Muchas {
         MuchasEvents.events.on('debug', (message: string): void => {
             this.log.debug(message);
         });
+        MuchasEvents.events.on('error', (message: string): void => {
+            this.log.error(message);
+        });
 
         // Bind the graceful shutdown
         process.on('SIGTERM', this.shutdown);
@@ -169,6 +175,9 @@ class Muchas {
                 broker: this.broker || false,
                 routine: this.RoutineLoader || false,
             }).load();
+
+            // Error handler
+            this.web.serverError();
 
             // Application is up and running
             this.web.live();

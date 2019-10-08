@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 
 import MuchasEvents from '../Events';
 import { Server } from 'http';
+import { ServerError } from './ServerError';
 
 interface CustomExpress extends express.Express {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -81,6 +82,31 @@ class Web {
                 });
             } catch(e) {
                 reject(e);
+            }
+        });
+    }
+
+    serverError() {
+        this.app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+
+            // log.error(error.message, String(error.code), error.uid, {
+            //     requestBody: req.body || null,
+            //     errorMessage: error.meta || null,
+            // });
+            // MuchasEvents.debug('Starting web server');
+            if (res.headersSent) {
+                return next(error)
+            }
+            if (error instanceof ServerError) {
+                res.status(error.status).json({
+                    error: {
+                        message: error.message,
+                        status: error.status,
+                        code: error.code,
+                        uid: error.uid,
+                    },
+                });
+                return;
             }
         });
     }

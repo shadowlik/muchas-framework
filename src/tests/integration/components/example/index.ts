@@ -55,7 +55,7 @@ export = new Component({
             queue: 'users',
             routeKey: 'new',
             action: (payload, done): void => {
-                Muchas.log.error('teste');
+                Muchas.log.error('teste', '1111');
                 done();
             }
         }
@@ -64,5 +64,5 @@ export = new Component({
 
 setTimeout(async (): Promise<void> => {
     const res = await Muchas.broker.rpc('rpc_teste', 'henriquedsadsa');
-    Muchas.log.error(res);
+    Muchas.log.error(res, '1111');
 }, 3000);
