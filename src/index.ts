@@ -42,9 +42,6 @@ import Plugins from './Plugins';
 // Redis
 import Redis from './Redis';
 
-// Log
-import Log from './log';
-
 /**
  * Main File
  */
