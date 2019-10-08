@@ -88,7 +88,6 @@ class Web {
 
     serverError() {
         this.app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-
             // log.error(error.message, String(error.code), error.uid, {
             //     requestBody: req.body || null,
             //     errorMessage: error.meta || null,
