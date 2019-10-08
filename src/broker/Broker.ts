@@ -2,7 +2,7 @@ import amqplib, { Connection, Channel } from 'amqplib';
 import uniqid from 'uniqid';
 import MuchasEvents from '../Events';
 
-export interface Task {
+export interface Message {
     queue: string;
     exchange: string;
     routeKey: string;
@@ -182,34 +182,34 @@ export default class Broker implements BrokerOptions {
      * @returns {Promise<void>}
      * @memberof Broker
      */
-    async bindTask(task: Task): Promise<void> {
+    async bindMessage(message: Message): Promise<void> {
         try {
             const ch = await this.con.createChannel();
             /* Debug */
             //   logger.debug(`Loading task ${task.exchange}/${task.queue}`, '');
 
             // TODO: Make each task a channel for better use of the prefetch
-            ch.prefetch(task.prefetch || 1);
+            ch.prefetch(message.prefetch || 1);
 
             /* Listen to messages in the queue abstraction */
             // Assert that this exchange exists
-            task.options = task.options || {};
-            const exchangeOptions = { durable: true, ...task.options };
-            ch.assertExchange(task.exchange, task.type || 'direct', exchangeOptions);
+            message.options = message.options || {};
+            const exchangeOptions = { durable: true, ...message.options };
+            ch.assertExchange(message.exchange, message.type || 'direct', exchangeOptions);
             // Assert that the queue exists
-            ch.assertQueue(task.queue);
+            ch.assertQueue(message.queue);
             // Bind the queue in the exchange by the routing key
-            ch.bindQueue(task.queue, task.exchange, task.routeKey);
+            ch.bindQueue(message.queue, message.exchange, message.routeKey);
 
             // Consumes it
             const consumerTag = `${Date.now()}${process.pid}${Math.random()}`;
 
-            ch.consume(task.queue, (msg: any): void => {
+            ch.consume(message.queue, (msg: any): void => {
                 this.running += 1;
                 try {
                 // Check if APM is enabled to track the transaction
                     let trans: any;
-                    if(this.apm) trans = this.apm.startTransaction(task.queue, 'messages');
+                    if(this.apm) trans = this.apm.startTransaction(message.queue, 'messages');
                     // const apmTransaction = apm.startTransaction(task.queue, 'Tasks');
 
                     // Lets threat the message
@@ -227,7 +227,7 @@ export default class Broker implements BrokerOptions {
                      * so he can ack the message and possibly end the transaction.
                      * @return {type} Description.
                      */
-                    task.action(parsedMsg, (nack: any, requeue = true, allUpTo = false): void => {
+                    message.action(parsedMsg, (nack: any, requeue = true, allUpTo = false): void => {
                         this.running -= 1;
                         if (typeof nack !== 'undefined') {
                             ch.nack(msg, allUpTo, requeue);

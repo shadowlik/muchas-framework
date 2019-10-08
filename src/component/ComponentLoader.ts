@@ -4,7 +4,7 @@ import path from 'path';
 import Web from '../web/Server';
 import Route from '../web/Route';
 
-import Broker, { RPC, Task } from '../broker/Broker';
+import Broker, { RPC, Message } from '../broker/Broker';
 import RoutineLoader from '../routine/RoutineLoader';
 import Routine from '../routine/Routine';
 
@@ -105,11 +105,11 @@ export default class ComponentsLoader {
 
             // Load broker and RPC
             if (this.broker) {
-                if (componentModule.tasks) {
-                    componentModule.tasks.forEach((task: Task): void => {
-                        MuchasEvents.debug(`Loading task ${task.exchange}:${task.routeKey}:${task.queue}`);
+                if (componentModule.messages) {
+                    componentModule.messages.forEach((message: Message): void => {
+                        MuchasEvents.debug(`Loading task ${message.exchange}:${message.routeKey}:${message.queue}`);
 
-                        this.broker.bindTask(task);
+                        this.broker.bindMessage(message);
                     });
                 }
 
