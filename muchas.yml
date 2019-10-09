@@ -29,3 +29,4 @@ broker: # Broker
 components: # Components
   path: ${COMPONENTS_PATH} # Components base path
 routines: true
+plugins: ${PLUGINS_PATH}

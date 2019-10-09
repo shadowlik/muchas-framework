@@ -65,11 +65,13 @@ export default class Plugins {
                 throw Error(`${pluginModulePath} must be exported as default`);
             }
 
-            if (pluginModule.default instanceof Promise === false) {
-                throw Error(`${pluginModulePath} must be a promise`);
-            }
+            const isPromise = pluginModule.default instanceof Promise;
 
-            this.plugins[pluginName] = await pluginModule.default;
+            if(isPromise) {
+                this.plugins[pluginName] = await pluginModule.default;
+            } else {
+                this.plugins[pluginName] = pluginModule.default;
+            }
 
             MuchasEvents.debug(`Plugin ${pluginName}`);
         }

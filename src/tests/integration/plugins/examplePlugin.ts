@@ -1,1 +1,1 @@
-export = new Promise((resolve): void => resolve());
+export = function() {};
