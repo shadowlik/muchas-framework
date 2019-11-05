@@ -60,7 +60,7 @@ class Log {
      * @param errorCode Error identification code
      * @param meta Any metadata relevant to the log
      */
-    error(message: string, errorCode?: string, uid?: string, meta?: Meta): string {
+    error(message: string, errorCode?: string, meta?: Meta, uid?: string): string {
         const id = uid || this.errorId();
         this.logger.error(errorCode? `${errorCode}: ${message}` : message, {
             uid: id,
