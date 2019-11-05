@@ -119,7 +119,7 @@ class Muchas {
             this.RoutineLoader = new RoutineLoader({
                 mongoConString: this.config.database.uri || null,
                 web: this.web,
-            });
+            }, this.apm);
         }
 
         // Console via event
