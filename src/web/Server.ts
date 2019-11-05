@@ -10,7 +10,7 @@ interface CustomExpress extends express.Express {
     [prop: string]: any;
 }
 
-interface RequestPrivate extends express.Request {
+export interface RequestPrivate extends express.Request {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     token: { [x: string]: any };
 }
