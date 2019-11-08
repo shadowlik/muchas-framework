@@ -179,7 +179,7 @@ class Web {
 
                 // ACL Check
                 if (acl && acl.length > 0) {
-                    if (!req.token || req.token.acl || acl.indexOf(req.token.acl) === -1) {
+                    if (!req.token || !req.token.acl || acl.indexOf(req.token.acl) === -1) {
                         this._403(res);
                         return;
                     }
