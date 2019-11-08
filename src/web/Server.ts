@@ -168,12 +168,12 @@ class Web {
                 req.token = decoded  as {[x: string]: any};
 
                 if(error) {
-                    res.json({
+                    res.status(403).json({
                         error: {
                             code: 403,
                             message: error.message,
                         }
-                    })
+                    });
                     return;
                 };
 
