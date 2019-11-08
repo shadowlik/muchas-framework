@@ -167,6 +167,16 @@ class Web {
             jwt.verify(token, this.secret, (error, decoded): void => {
                 req.token = decoded  as {[x: string]: any};
 
+                if(error) {
+                    res.json({
+                        error: {
+                            code: 403,
+                            message: error.message,
+                        }
+                    })
+                    return;
+                };
+
                 // ACL Check
                 if (acl && acl.length > 0) {
                     if (acl.indexOf(req.token.acl) === -1) {
