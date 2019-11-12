@@ -12,5 +12,5 @@ export default interface Routine {
 }
 
 interface RoutineAction {
-    (job: Job, done: Function): void;
+    (job: Job, done: Function): void|Promise<void>;
 }

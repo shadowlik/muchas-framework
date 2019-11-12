@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "tsc -w",
-    "lint": "eslint .",
+    "lint": "eslint --fix .",
     "build:prd": "tsc",
     "test": "export MUCHASYML=src/tests/unit && nyc -e '.ts' -x '**/*.test.ts' mocha --exit --recursive -r ts-node/register 'src/tests/unit/**/*.test.ts'",
     "test:unit": "export MUCHASYML=src/tests/unit && mocha --exit  --recursive -r ts-node/register 'unit/**/*.test.ts' && nyc report",
