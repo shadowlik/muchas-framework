@@ -71,7 +71,7 @@ export default class RoutineLoader {
                 this.Agenda.define(id, opt, async (job, done): Promise<void> => {
                     let trans: any;
                     if(this.apm) trans = this.apm.startTransaction(id, 'routine');
-                    action(job, (): void => {
+                    await action(job, (): void => {
                         done();
                         if(this.apm && trans) trans.end();
                     });
