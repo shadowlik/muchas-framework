@@ -67,7 +67,7 @@ export default class RoutineLoader {
             if(lockLifetime) opt.lockLifetime = lockLifetime;
             if(timezone) opt.timezone = timezone;
 
-            this.Agenda.define(id, opt, async (job, done): Promise<void> => {
+            this.Agenda.define(id, opt, async function (job, done): Promise<void> {
                 let trans: any;
                 if(this.apm) trans = this.apm.startTransaction(id, 'routine');
                 await action(job, (): void => {
