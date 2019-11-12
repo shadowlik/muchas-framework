@@ -63,7 +63,7 @@ export default class RoutineLoader {
         try {
             let opt: any = {};
 
-            if(concurrency) opt.concurrency = concurrency;
+            opt.concurrency = concurrency || 1;
             if(lockLifetime) opt.lockLifetime = lockLifetime;
             if(timezone) opt.timezone = timezone;
 
