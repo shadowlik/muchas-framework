@@ -1,3 +1,4 @@
+import "source-map-support/register"; // Stack trace with source map
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
 import apm from './Apm';

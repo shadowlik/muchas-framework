@@ -102,7 +102,7 @@ export default class Broker implements BrokerOptions {
         this.ch.assertExchange(exchange, options.type || 'direct', { durable: true });
 
         // Sends the message to the queue
-        const status = this.ch.publish(exchange, routeKey, Buffer.from(parsedMsg));
+        const status = this.ch.publish(exchange, routeKey, Buffer.from(parsedMsg), options);
         // trans.end();
         return status;
     }

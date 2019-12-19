@@ -1,62 +1,38 @@
 {
-  "name": "muchas-framework",
-  "version": "0.0.86",
-  "description": "Muchas Framework - NodeJS Microservice Framework",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "dev": "tsc -w",
-    "lint": "eslint --fix .",
-    "build:prd": "tsc",
-    "test": "export MUCHASYML=src/tests/unit && nyc -e '.ts' -x '**/*.test.ts' mocha --exit --recursive -r ts-node/register 'src/tests/unit/**/*.test.ts'",
-    "test:unit": "export MUCHASYML=src/tests/unit && mocha --exit  --recursive -r ts-node/register 'unit/**/*.test.ts' && nyc report",
-    "test:unit:coverage": "export MUCHASYML=src/tests/integration && nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --exit -r ts-node/register 'src/tests/unit/**/*.test.ts' && nyc report",
-    "test:unit:coveralls": "export MUCHASYML=src/tests/integration && nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register 'src/tests/unit/**/*.test.ts' && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "start:integration": "ts-node-dev --nolazy --inspect=0.0.0.0:6029 --notify false ./src/tests/integration/index.ts",
-    "start:it": "concurrently \"tsc -w\" \"nodemon --inspect=0.0.0.0:6029 dist/tests/integration\"",
-    "full": "npm version patch && npm run build:prd && npm publish"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@gitlab.com/muchas/muchas-framework.git"
-  },
-  "keywords": [
-    "nodejs",
-    "javascript",
-    "microservice",
-    "framework"
+  "_args": [
+    [
+      "muchas-framework@0.0.89",
+      "/home/shadowlik/Projects/w16/etl"
+    ]
   ],
-  "author": "Henrique Marques Fernandes <henrique@marquesfernandes.com>",
-  "license": "ISC",
+  "_from": "muchas-framework@0.0.89",
+  "_id": "muchas-framework@0.0.89",
+  "_inBundle": false,
+  "_integrity": "sha512-gY865V+Rbv3/Tf44NJA2xJiaDYtr1x+un+wBHheLzTsBOhS8PCDWXWxIESWZ8KM0INn91TQp1W3l9zIgFNsBqw==",
+  "_location": "/muchas-framework",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "muchas-framework@0.0.89",
+    "name": "muchas-framework",
+    "escapedName": "muchas-framework",
+    "rawSpec": "0.0.89",
+    "saveSpec": null,
+    "fetchSpec": "0.0.89"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/muchas-framework/-/muchas-framework-0.0.89.tgz",
+  "_spec": "0.0.89",
+  "_where": "/home/shadowlik/Projects/w16/etl",
+  "author": {
+    "name": "Henrique Marques Fernandes",
+    "email": "henrique@marquesfernandes.com"
+  },
   "bugs": {
     "url": "https://gitlab.com/muchas/muchas-framework/issues"
-  },
-  "homepage": "https://gitlab.com/muchas/muchas-framework#README",
-  "devDependencies": {
-    "@types/chai": "^4.2.4",
-    "@types/chai-http": "^4.2.0",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^11.15.2",
-    "@types/sinon-chai": "^3.2.3",
-    "@types/sinon-express-mock": "^1.3.7",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "chai-http": "^4.3.0",
-    "concurrently": "^4.1.2",
-    "coveralls": "^3.0.7",
-    "eslint": "^5.16.0",
-    "mocha": "^6.2.2",
-    "mocha-junit-reporter": "^1.23.1",
-    "nodemon": "^1.19.4",
-    "nyc": "^14.1.1",
-    "sinon": "^7.5.0",
-    "sinon-express-mock": "^2.2.1",
-    "source-map-support": "^0.5.16",
-    "ts-node": "^8.4.1",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "typescript": "^3.7.2"
   },
   "dependencies": {
     "@types/agenda": "^2.0.6",
@@ -90,5 +66,60 @@
     "uniqid": "^5.1.0",
     "winston": "^3.2.1",
     "winston-elasticsearch": "^0.7.13"
-  }
+  },
+  "description": "Muchas Framework - NodeJS Microservice Framework",
+  "devDependencies": {
+    "@types/chai": "^4.2.4",
+    "@types/chai-http": "^4.2.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^11.15.2",
+    "@types/sinon-chai": "^3.2.3",
+    "@types/sinon-express-mock": "^1.3.7",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.3.0",
+    "concurrently": "^4.1.2",
+    "coveralls": "^3.0.7",
+    "eslint": "^5.16.0",
+    "mocha": "^6.2.2",
+    "mocha-junit-reporter": "^1.23.1",
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1",
+    "sinon": "^7.5.0",
+    "sinon-express-mock": "^2.2.1",
+    "source-map-support": "^0.5.16",
+    "ts-node": "^8.4.1",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.2"
+  },
+  "homepage": "https://gitlab.com/muchas/muchas-framework#README",
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "microservice",
+    "framework"
+  ],
+  "license": "ISC",
+  "main": "dist/index.js",
+  "name": "muchas-framework",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/muchas/muchas-framework.git"
+  },
+  "scripts": {
+    "build:prd": "tsc",
+    "dev": "tsc -w",
+    "full": "npm version patch && npm run build:prd && npm publish",
+    "lint": "eslint --fix .",
+    "start:integration": "ts-node-dev --nolazy --inspect=0.0.0.0:6029 --notify false ./src/tests/integration/index.ts",
+    "start:it": "concurrently \"tsc -w\" \"nodemon --inspect=0.0.0.0:6029 dist/tests/integration\"",
+    "test": "export MUCHASYML=src/tests/unit && nyc -e '.ts' -x '**/*.test.ts' mocha --exit --recursive -r ts-node/register 'src/tests/unit/**/*.test.ts'",
+    "test:unit": "export MUCHASYML=src/tests/unit && mocha --exit  --recursive -r ts-node/register 'unit/**/*.test.ts' && nyc report",
+    "test:unit:coverage": "export MUCHASYML=src/tests/integration && nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --exit -r ts-node/register 'src/tests/unit/**/*.test.ts' && nyc report",
+    "test:unit:coveralls": "export MUCHASYML=src/tests/integration && nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register 'src/tests/unit/**/*.test.ts' && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "types": "dist/index.d.ts",
+  "version": "0.0.89"
 }
