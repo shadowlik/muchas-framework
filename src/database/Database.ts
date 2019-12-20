@@ -34,7 +34,7 @@ export default class Database {
      */
     async connect(): Promise<mongoose.Mongoose> {
         try {
-            MuchasEvents.debug('Connectind to database');
+            MuchasEvents.debug('Connecting to database');
 
             // Avoid deprecated warnings
             mongoose.set('useCreateIndex', true);

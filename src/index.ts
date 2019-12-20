@@ -174,7 +174,17 @@ class Muchas {
             // Application is up and running
             this.web.live();
 
-            this.log.debug('Application is live');
+            // Useful console information
+            let usefulLog = "Application is live";
+            if (this.web) {
+                usefulLog = `${usefulLog} \nLIVENESS: http://localhost:${muchas.config.web.port}/healthz`;
+                usefulLog = `${usefulLog} \n    REST: http://localhost:${muchas.config.web.port}`;
+            }
+            if (this.RoutineLoader) {
+                usefulLog = `${usefulLog} \nROUTINES: http://localhost:${muchas.config.web.port}/routines`;
+            }
+
+            this.log.debug(usefulLog);
         } catch (error) {
             this.log.error(error.message || error);
             // Application is up and running
