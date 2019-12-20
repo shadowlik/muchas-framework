@@ -2,16 +2,22 @@ import winston from 'winston';
 import moment from 'moment-timezone';
 
 const {
-    combine, timestamp, printf,
+    combine, printf,
 } = winston.format;
 
-const logFormat = printf(info => `${info.timestamp} ${info.level}: ${info.message}`);
+const logFormat = printf((info): string => 
+    info.level.indexOf('error') === -1 ? 
+        `${info.timestamp} ${info.level}: ${info.message}` :
+        `${info.timestamp} ${info.level}: ${info.message}
+${info.stack}
+        `
+);
 
-const appendTimestamp: any = winston.format((info, opts) => {
+const appendTimestamp: any = winston.format((info, opts): any => {
     if(opts.tz)
-      info.timestamp = moment().tz(opts.tz).format();
+        info.timestamp = moment().tz(opts.tz).format();
     return info;
-  });
+});
 
 class ConsoleLogger {
     level: string;

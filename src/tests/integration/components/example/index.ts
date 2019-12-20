@@ -43,26 +43,26 @@ export = new Component({
             }
         }
     ],
-    rpc: [
-        {
-            queue: 'rpc_teste',
-            action: (payload, done) => { done(`Oii ${payload}`) }
-        }
-    ],
+    // rpc: [
+    //     {
+    //         queue: 'rpc_teste',
+    //         action: (payload, done) => { done(`Oii ${payload}`) }
+    //     }
+    // ],
     tasks: [
         {
             exchange: 'teste',
             queue: 'users',
             routeKey: 'new',
             action: (payload, done): void => {
-                Muchas.log.error('teste');
+                Muchas.log.error('teste', new Error());
                 done();
             }
         }
     ]
 });
 
-setTimeout(async (): Promise<void> => {
-    const res = await Muchas.broker.rpc('rpc_teste', 'henriquedsadsa');
+setInterval(async (): Promise<void> => {
+    const res = await Muchas.broker.send('teste', 'new', '');
     Muchas.log.error(res);
 }, 3000);

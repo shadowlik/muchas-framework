@@ -3,6 +3,7 @@ import uniqid from 'uniqid';
 import TransportStream from 'winston-transport'
 import { ElasticLogger, ElasticLoggerOptions } from './elastic';
 import { ConsoleLogger } from './console';
+import { type } from 'os';
 
 interface Meta {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -60,14 +61,33 @@ class Log {
      * @param errorCode Error identification code
      * @param meta Any metadata relevant to the log
      */
-    error(message: string, errorCode?: string, meta?: Meta, uid?: string): string {
-        const id = uid || this.errorId();
-        this.logger.error(errorCode? `${errorCode}: ${message}` : message, {
-            uid: id,
-            errorCode,
+    public error(error: Error, meta?: Meta): string;
+    public error(message: string, error: Error, meta?: Meta): string;
+
+    public error(arg0: Error|string, arg1: Error|Meta, arg2? : Meta): string {
+        const uid = this.errorId();
+
+        let meta;
+        let stack;
+        let message;
+
+        if (typeof arg0 === 'string') {
+            message = arg0;
+            stack = arg1.stack;
+            meta = arg2;
+        } else {
+            message = arg0.message;
+            stack = arg0.stack;
+            meta = arg1;
+        }
+
+        this.logger.error(message, {
+            uid,
+            stack,
             ...meta,
         });
-        return id;
+
+        return uid;
     };
 
     /**
