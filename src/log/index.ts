@@ -66,25 +66,31 @@ class Log {
 
     public error(arg0: Error|string, arg1: Error|Meta, arg2? : Meta): string {
         const uid = this.errorId();
-
-        let meta;
-        let stack;
+        
         let message;
+        let stack;
+        let errorMessage;
+        let meta;
 
         if (typeof arg0 === 'string') {
             message = arg0;
             stack = arg1.stack;
+            errorMessage = arg1.message;
             meta = arg2;
         } else {
             message = arg0.message;
             stack = arg0.stack;
+            errorMessage = arg0.message;
             meta = arg1;
         }
 
         this.logger.error(message, {
             uid,
-            stack,
-            ...meta,
+            error: {
+                stack,
+                message: errorMessage,
+            },
+            ...meta
         });
 
         return uid;
