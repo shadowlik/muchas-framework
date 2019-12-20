@@ -5,12 +5,11 @@ const {
     combine, printf,
 } = winston.format;
 
-const logFormat = printf((info): string => 
-    info.level.indexOf('error') === -1 ? 
-        `${info.timestamp} ${info.level}: ${info.message}` :
-        `${info.timestamp} ${info.level}: ${info.message}
-${info.stack}
-        `
+const logFormat = printf((info): string =>
+    info.level.indexOf("error") !== -1 && info.error.stack
+        ? `${info.timestamp} ${info.level}: ${info.message}
+${info.error.stack}`
+        : `${info.timestamp} ${info.level}: ${info.message}`
 );
 
 const appendTimestamp: any = winston.format((info, opts): any => {

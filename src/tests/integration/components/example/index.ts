@@ -55,7 +55,7 @@ export = new Component({
             queue: 'users',
             routeKey: 'new',
             action: (payload, done): void => {
-                Muchas.log.error('teste', new Error());
+                Muchas.log.error('teste', new Error('oi'));
                 done();
             }
         }
@@ -63,6 +63,5 @@ export = new Component({
 });
 
 setInterval(async (): Promise<void> => {
-    const res = await Muchas.broker.send('teste', 'new', '');
-    Muchas.log.error(res);
+    Muchas.broker.send('teste', 'new', '');
 }, 3000);

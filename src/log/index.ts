@@ -3,7 +3,6 @@ import uniqid from 'uniqid';
 import TransportStream from 'winston-transport'
 import { ElasticLogger, ElasticLoggerOptions } from './elastic';
 import { ConsoleLogger } from './console';
-import { type } from 'os';
 
 interface Meta {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
