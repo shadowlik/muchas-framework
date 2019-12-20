@@ -177,11 +177,11 @@ class Muchas {
             // Useful console information
             let usefulLog = "Application is live";
             if (this.web) {
-                usefulLog = `${usefulLog} \nLIVENESS: http://localhost:${muchas.config.web.port}/healthz`;
-                usefulLog = `${usefulLog} \n    REST: http://localhost:${muchas.config.web.port}`;
+                usefulLog = `${usefulLog} \nLIVENESS: http://localhost:${this.config.web.port}/healthz`;
+                usefulLog = `${usefulLog} \n    REST: http://localhost:${this.config.web.port}`;
             }
             if (this.RoutineLoader) {
-                usefulLog = `${usefulLog} \nROUTINES: http://localhost:${muchas.config.web.port}/routines`;
+                usefulLog = `${usefulLog} \nROUTINES: http://localhost:${this.config.web.port}/routines`;
             }
 
             this.log.debug(usefulLog);
