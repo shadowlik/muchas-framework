@@ -2,10 +2,11 @@ import "source-map-support/register"; // Stack trace with source map
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
 import apm from './Apm';
+import { Agent } from "./Apm.d";
 
 const config = yamlEnv(process.env.MUCHASYML || undefined);
 
-const Apm: any = apm(config.name, config.env, config.apm);
+const Apm: Agent = apm(config.name, config.env, config.apm);
 
 // Apm
 export { Apm };
