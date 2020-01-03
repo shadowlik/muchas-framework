@@ -2,7 +2,7 @@ import "source-map-support/register"; // Stack trace with source map
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
 import apm from './Apm';
-import { Agent } from "./Apm.d";
+import { Agent } from "./Apm.interface";
 
 const config = yamlEnv(process.env.MUCHASYML || undefined);
 
