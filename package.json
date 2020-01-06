@@ -119,5 +119,5 @@
     "test:unit:coveralls": "export MUCHASYML=src/tests/integration && nyc -r lcov -e \".ts\" -x \"*.test.ts\" mocha --recursive --timeout=10000 --exit --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml -r ts-node/register 'src/tests/unit/**/*.test.ts' && nyc report && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "types": "dist/index.d.ts",
-  "version": "0.0.97"
+  "version": "0.0.98"
 }
