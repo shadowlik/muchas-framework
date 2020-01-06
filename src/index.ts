@@ -207,6 +207,7 @@ class Muchas {
         if (this.RoutineLoader) await this.RoutineLoader.stop();
         if (this.broker) await this.broker.stop();
         if (this.web) this.web.down();
+        process.exit(0);
     }
 };
 
