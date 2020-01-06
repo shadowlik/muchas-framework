@@ -54,10 +54,7 @@
     "uniqid": "^5.1.0",
     "winston": "^3.2.1",
     "winston-elasticsearch": "^0.7.13",
-    "source-map-support": "^0.5.16"
-  },
-  "description": "Muchas Framework - NodeJS Microservice Framework",
-  "devDependencies": {
+    "source-map-support": "^0.5.16",
     "@types/chai": "^4.2.4",
     "@types/chai-http": "^4.2.0",
     "@types/mocha": "^5.2.7",
@@ -94,6 +91,7 @@
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.2"
   },
+  "description": "Muchas Framework - NodeJS Microservice Framework",
   "homepage": "https://gitlab.com/muchas/muchas-framework#README",
   "keywords": [
     "nodejs",
