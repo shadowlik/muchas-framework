@@ -44,6 +44,9 @@ import Plugins from './Plugins';
 // Redis
 import Redis from './Redis';
 
+// Elasticsearch
+import { Client as ElasticClient } from "@elastic/elasticsearch";
+
 /**
  * Main File
  */
@@ -58,6 +61,7 @@ class Muchas {
     apm: any;
     plugins: any;
     redis: Redis
+    elastic: Client;
 
     /**
      * Creates an instance of Muchas.
@@ -87,6 +91,10 @@ class Muchas {
                     level: this.config.logger.elasticsearch.level || 'info',
                     indexPrefix: this.config.logger.elasticsearch.indexPrefix,
                 }
+                // Also lets create a elastic instance for any other index needs
+                this.elastic = new ElasticClient({
+                    node: this.config.logger.elasticsearch.host
+                });
             }
 
             this.log = new Logger(loggerConfig);
@@ -220,3 +228,4 @@ export const log = muchas.log;
 export const database = muchas.database;
 export const broker = muchas.broker;
 export const plugins = muchas.plugins;
+export const elastic = muchas.elastic;
