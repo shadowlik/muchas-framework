@@ -53,22 +53,22 @@ import { Client as ElasticClient } from "@elastic/elasticsearch";
 class Muchas {
     log: Logger | Console;
     database: Database;
-    web: Web
+    web: Web;
     RoutineLoader: RoutineLoader;
     broker: Broker;
     // eslint-disable-next-line
-    config: { [x: string]: any }
+    config: { [x: string]: any };
     apm: any;
     plugins: any;
-    redis: Redis
-    elastic: Client;
+    redis: Redis;
+    elastic: ElasticClient;
 
     /**
-     * Creates an instance of Muchas.
-     * @memberof Muchas
-     */
+   * Creates an instance of Muchas.
+   * @memberof Muchas
+   */
     constructor() {
-        // Loading configuration
+    // Loading configuration
         this.config = config;
 
         if (Apm) {
@@ -76,21 +76,21 @@ class Muchas {
         }
 
         // Redis
-        if(this.config.redis) {
+        if (this.config.redis) {
             this.redis = new Redis(this.config.redis.uri);
         }
 
         // Logger
         this.log = console;
-        if(this.config.logger) {
+        if (this.config.logger) {
             let loggerConfig: LogOptions = {};
 
-            if(this.config.logger.elasticsearch) {
+            if (this.config.logger.elasticsearch) {
                 loggerConfig.elastic = {
                     host: this.config.logger.elasticsearch.host,
-                    level: this.config.logger.elasticsearch.level || 'info',
-                    indexPrefix: this.config.logger.elasticsearch.indexPrefix,
-                }
+                    level: this.config.logger.elasticsearch.level || "info",
+                    indexPrefix: this.config.logger.elasticsearch.indexPrefix
+                };
                 // Also lets create a elastic instance for any other index needs
                 this.elastic = new ElasticClient({
                     node: this.config.logger.elasticsearch.host
@@ -101,66 +101,76 @@ class Muchas {
         }
 
         // Database
-        if(this.config.database) {
+        if (this.config.database) {
             this.database = new Database({
                 uri: this.config.database.uri,
-                poolSize:  this.config.database.poolSize,
+                poolSize: this.config.database.poolSize
             });
         }
 
         // Broker
-        if(this.config.broker) {
-            this.broker = new Broker({
-                host: this.config.broker.host
-            }, this.apm);
+        if (this.config.broker) {
+            this.broker = new Broker(
+                {
+                    host: this.config.broker.host
+                },
+                this.apm
+            );
         }
 
         // Web
-        if(this.config.web) {
+        if (this.config.web) {
             this.web = new Web({
                 port: this.config.web.port,
                 headers: this.config.web.headers,
-                secret: this.config.web.secret,
+                secret: this.config.web.secret
             });
         }
 
         // Routines
-        if(this.config.database && this.config.routines) {
-            this.RoutineLoader = new RoutineLoader({
-                mongoConString: this.config.database.uri || null,
-                web: this.web,
-            }, this.apm);
+        if (this.config.database && this.config.routines) {
+            this.RoutineLoader = new RoutineLoader(
+                {
+                    mongoConString: this.config.database.uri || null,
+                    web: this.web
+                },
+                this.apm
+            );
         }
 
         // Console via event
-        MuchasEvents.events.on('debug', (message: string): void => {
+        MuchasEvents.events.on("debug", (message: string): void => {
             this.log.debug(message);
         });
 
         // Bind the graceful shutdown
-        process.on('SIGTERM', this.shutdown);
-        process.on('SIGINT' , this.shutdown);
-    };
+        process.on("SIGTERM", this.shutdown);
+        process.on("SIGINT", this.shutdown);
+    }
 
     /**
-     * Starts the framework
-     *
-     * @returns {Promise<void>}
-     * @memberof Muchas
-     */
-    async init (): Promise<void> {
+   * Starts the framework
+   *
+   * @returns {Promise<void>}
+   * @memberof Muchas
+   */
+    async init(): Promise<void> {
         try {
-            this.log.debug('Starting application');
+            this.log.debug("Starting application");
 
             // Database
             if (this.database) {
                 await this.database.connect();
 
                 // Load models
-                const modelsLoader = await new ModelsLoader(this.config.database.model.path || 'dist/models').load();
+                const modelsLoader = await new ModelsLoader(
+                    this.config.database.model.path || "dist/models"
+                ).load();
 
                 // Add the model to the mongoose instance
-                Object.keys(modelsLoader.models).forEach((modelName): void => this.database.addModel(modelName, modelsLoader.models[modelName]));
+                Object.keys(modelsLoader.models).forEach((modelName): void =>
+                    this.database.addModel(modelName, modelsLoader.models[modelName])
+                );
             }
 
             // Broker
@@ -170,14 +180,16 @@ class Muchas {
             if (this.web) await this.web.start();
 
             // Plugins
-            this.plugins = await new Plugins(this.config.plugins || './dist/plugins').start();
+            this.plugins = await new Plugins(
+                this.config.plugins || "./dist/plugins"
+            ).start();
 
             // Components
             await new ComponentsLoader({
-                path: this.config.components.path || './dist/components',
+                path: this.config.components.path || "./dist/components",
                 web: this.web || false,
                 broker: this.broker || false,
-                routine: this.RoutineLoader || false,
+                routine: this.RoutineLoader || false
             }).load();
 
             // Application is up and running
@@ -198,18 +210,18 @@ class Muchas {
             this.log.error(error.message || error);
             // Application is up and running
             this.web.down();
-            if (this.config.env === 'production') {
+            if (this.config.env === "production") {
                 process.exit(1);
             }
-        };
-    };
+        }
+    }
 
     /**
-     * Graceful shutdown
-     *
-     * @returns {Promise<void>}
-     * @memberof Muchas
-     */
+   * Graceful shutdown
+   *
+   * @returns {Promise<void>}
+   * @memberof Muchas
+   */
     async shutdown(): Promise<void> {
         if (this.web) await this.web.stop();
         if (this.RoutineLoader) await this.RoutineLoader.stop();
