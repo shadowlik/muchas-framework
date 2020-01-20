@@ -207,7 +207,7 @@ class Muchas {
 
             this.log.debug(usefulLog);
         } catch (error) {
-            this.log.error(error.message || error);
+            this.log.error(error);
             // Application is up and running
             this.web.down();
             if (this.config.env === "production") {
