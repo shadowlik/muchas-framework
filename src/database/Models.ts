@@ -17,7 +17,7 @@ export = class ModelsLoader {
         if (fs.existsSync(this.path)) {
             this.modelsFiles = fs.readdirSync(this.path);
         } else {
-            throw Error(`Model path not found at ${this.path}`);
+            console.debug(`Model path not found at ${this.path}`);
         }
     }
 
