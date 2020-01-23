@@ -1,6 +1,7 @@
 import express, { Response, Request, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import bodyParser from 'body-parser';
+import cors from "cors";
 
 import MuchasEvents from '../Events';
 import { Server } from 'http';
@@ -43,7 +44,7 @@ class Web {
      */
     constructor(options?: Options) {
         this.app = express();
-
+        this.app.use(cors());
         this.app.use(bodyParser.json({limit: '150mb'}));
 
         if(options.secret) this.secret = options.secret;
