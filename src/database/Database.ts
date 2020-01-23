@@ -41,7 +41,11 @@ export default class Database {
 
             mongoose.set('useFindAndModify', false);
 
-            await mongoose.connect(this.connectionUrl, { poolSize: this.poolSize, useNewUrlParser: true });
+            await mongoose.connect(this.connectionUrl, {
+                poolSize: this.poolSize,
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            });
 
             MuchasEvents.debug('Database connected');
 
