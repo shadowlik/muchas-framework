@@ -44,7 +44,7 @@ class Web {
      */
     constructor(options?: Options) {
         this.app = express();
-        this.app.use(cors());
+        // this.app.use(cors());
         this.app.use(bodyParser.json({limit: '150mb'}));
 
         if(options.secret) this.secret = options.secret;
