@@ -32,7 +32,7 @@ export = class ModelsLoader {
         for(let i = 0; i < this.modelsFiles.length; i += 1) {
             let modelFile = this.modelsFiles[i];
             if (
-                // /.ts$/ig.test(modelFile) && (modelFile.indexOf('.ts') == modelFile.length - 3) ||
+                /.ts$/ig.test(modelFile) && (modelFile.indexOf('.ts') == modelFile.length - 3) ||
                 /.js$/ig.test(modelFile) && (modelFile.indexOf('.js') == modelFile.length - 3)
             ) {
                 let modelName = modelFile.replace(/.ts|.js/ig, '');
