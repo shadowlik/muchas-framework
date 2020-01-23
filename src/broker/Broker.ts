@@ -30,7 +30,7 @@ interface BrokerOptions {
 }
 
 interface BrokerSend {
-    (exchange: string, routeKey: string, message: string, options?: any): void;
+    (exchange: string, routeKey: string, message: string | { [x: string]: any }, options?: any): void;
 }
 
 export default class Broker implements BrokerOptions {
@@ -46,7 +46,7 @@ export default class Broker implements BrokerOptions {
      * @param {BrokerOptions} options
      * @memberof Tasks
      */
-    constructor(options: BrokerOptions, Apm? :any) {
+    constructor(options: BrokerOptions, Apm?: any) {
         this.host = options.host;
         this.apm = Apm;
     }
