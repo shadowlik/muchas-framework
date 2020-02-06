@@ -99,8 +99,9 @@ export default class Broker implements BrokerOptions {
         // Check if it's an object, if true convert to json
         const parsedMsg = (
             typeof message === 'object' && !Array.isArray(message)) ? JSON.stringify(message) : message;
-        await this.ch.assertExchange(exchange, options.type || 'direct', { durable: true });
-
+        if (options.byPassAssert) {
+            await this.ch.assertExchange(exchange, options.type || 'direct', { durable: true });
+        }
         // Sends the message to the queue
         const status = this.ch.publish(exchange, routeKey, Buffer.from(parsedMsg), options);
         // trans.end();
