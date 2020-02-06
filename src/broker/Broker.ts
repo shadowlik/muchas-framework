@@ -94,14 +94,14 @@ export default class Broker implements BrokerOptions {
      */
     async send(exchange: string, 
         routeKey: string, 
-        message: string, options: {[x: string]: any; byPassAssert?: boolean } = {}): Promise<any> {
+        message: string, options: {[x: string]: any; skipAssert?: boolean } = {}): Promise<any> {
         // if (!this.enabled) throw Error('Tasks feature is not enabled');
         // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
 
         // Check if it's an object, if true convert to json
         const parsedMsg = (
             typeof message === 'object' && !Array.isArray(message)) ? JSON.stringify(message) : message;
-        if (options.byPassAssert) {
+        if (!options.skipAssert) {
             await this.ch.assertExchange(exchange, options.type || 'direct', { durable: true });
         }
         // Sends the message to the queue
