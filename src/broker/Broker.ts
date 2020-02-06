@@ -92,7 +92,9 @@ export default class Broker implements BrokerOptions {
      * @returns {*}
      * @memberof Tasks
      */
-    async send(exchange: string, routeKey: string, message: string, options: any = {}): Promise<any> {
+    async send(exchange: string, 
+        routeKey: string, 
+        message: string, options: {[x: string]: any; byPassAssert?: boolean } = {}): Promise<any> {
         // if (!this.enabled) throw Error('Tasks feature is not enabled');
         // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
 
