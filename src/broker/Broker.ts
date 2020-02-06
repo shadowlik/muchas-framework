@@ -92,14 +92,14 @@ export default class Broker implements BrokerOptions {
      * @returns {*}
      * @memberof Tasks
      */
-    send(exchange: string, routeKey: string, message: string, options: any = {}): any {
+    async send(exchange: string, routeKey: string, message: string, options: any = {}): any {
         // if (!this.enabled) throw Error('Tasks feature is not enabled');
         // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
 
         // Check if it's an object, if true convert to json
         const parsedMsg = (
             typeof message === 'object' && !Array.isArray(message)) ? JSON.stringify(message) : message;
-        this.ch.assertExchange(exchange, options.type || 'direct', { durable: true });
+        await this.ch.assertExchange(exchange, options.type || 'direct', { durable: true });
 
         // Sends the message to the queue
         const status = this.ch.publish(exchange, routeKey, Buffer.from(parsedMsg), options);
