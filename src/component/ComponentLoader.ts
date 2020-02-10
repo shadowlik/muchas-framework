@@ -86,6 +86,12 @@ export default class ComponentsLoader {
             this.components.push(componentModule);
 
             MuchasEvents.debug(`Loading component ${component}`);
+            
+            // Loading init
+            if (componentModule.init) {
+                MuchasEvents.debug(`Init function for component ${component}`);
+                await componentModule.init();
+            }
 
             // Load routes
             if (this.web && componentModule.routes) {
