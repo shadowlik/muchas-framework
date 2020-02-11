@@ -234,6 +234,7 @@ export default class Broker implements BrokerOptions {
                         this.running -= 1;
                         if (typeof nack !== 'undefined') {
                             ch.nack(msg, allUpTo, requeue);
+                            if (this.apm && trans) trans.end();
                             return;
                         }
 
