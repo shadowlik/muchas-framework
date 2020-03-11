@@ -12,7 +12,7 @@ export default class Swagger {
         this.app = app;
         try {
             const OpenAPI = jsyaml.load(
-                fs.readFileSync(path.join(process.cwd(), "docs/OpenAPI.yml"), "utf-8")
+                fs.readFileSync(path.join(process.cwd(), "OpenAPI.yml"), "utf-8")
             );
             this.app.use("/openapi", swaggerUi.serve, swaggerUi.setup(OpenAPI));
             this.status = true;
