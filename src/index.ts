@@ -47,6 +47,9 @@ import Redis from './Redis';
 // Elasticsearch
 import { Client as ElasticClient } from "@elastic/elasticsearch";
 
+// Swagger
+import Swagger from "./swagger";
+
 /**
  * Main File
  */
@@ -62,7 +65,7 @@ class Muchas {
     plugins: any;
     redis: Redis;
     elastic: ElasticClient;
-
+    swagger: Swagger;
     /**
    * Creates an instance of Muchas.
    * @memberof Muchas
@@ -179,6 +182,11 @@ class Muchas {
             // Webserver
             if (this.web) await this.web.start();
 
+            // Swagger/OpenAPI
+            if (this.web && process.env.NODE_ENV !== "production") {
+                this.swagger = new Swagger(this.web.app);
+            }
+
             // Plugins
             this.plugins = await new Plugins(
                 this.config.plugins || "./dist/plugins"
@@ -200,6 +208,9 @@ class Muchas {
             if (this.web) {
                 usefulLog = `${usefulLog} \nLIVENESS: http://localhost:${this.config.web.port}/healthz`;
                 usefulLog = `${usefulLog} \n    REST: http://localhost:${this.config.web.port}`;
+                if(this.swagger.status) {
+                    usefulLog = `${usefulLog} \nOPEN API: http://localhost:${this.config.web.port}/openapi`;
+                }
             }
             if (this.RoutineLoader) {
                 usefulLog = `${usefulLog} \nROUTINES: http://localhost:${this.config.web.port}/routines`;
