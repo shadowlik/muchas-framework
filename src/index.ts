@@ -208,7 +208,7 @@ class Muchas {
             if (this.web) {
                 usefulLog = `${usefulLog} \nLIVENESS: http://localhost:${this.config.web.port}/healthz`;
                 usefulLog = `${usefulLog} \n    REST: http://localhost:${this.config.web.port}`;
-                if(this.swagger.status) {
+                if(this.swagger && this.swagger.status) {
                     usefulLog = `${usefulLog} \nOPEN API: http://localhost:${this.config.web.port}/openapi`;
                 }
             }
