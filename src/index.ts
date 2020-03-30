@@ -218,6 +218,7 @@ class Muchas {
 
             this.log.debug(usefulLog);
         } catch (error) {
+            console.log(error);
             this.log.error(error);
             // Application is up and running
             this.web.down();
