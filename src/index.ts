@@ -27,8 +27,8 @@ import ComponentsLoader from './component/ComponentLoader';
 export { Component };
 
 // Broker
-import Broker, { Task, RPC } from './broker/Broker';
-export { Task, RPC };
+import Broker, { Message, RPC } from "./broker/Broker";
+export { Message, RPC };
 
 // Web
 import Web, { RequestPrivate } from './web/Server';
@@ -100,7 +100,12 @@ class Muchas {
                 });
             }
 
-            this.log = new Logger(loggerConfig);
+            if (this.config.logger.google &&
+              this.config.logger.google.enabled) {
+                loggerConfig.google = this.config.logger.google;
+            }
+
+            this.log = new Logger(loggerConfig, config.name);
         }
 
         // Database

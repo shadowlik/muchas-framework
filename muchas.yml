@@ -11,15 +11,12 @@ web: # Web server
     Access-Control-Allow-Headers: '*'
 health: # Health web server
   port: 9000 # Health web server port
-apm: # Application performance management
-  apmHost: ${APM_HOST} # Host
-  logLevel: ${APM_LEVEL} # Level
-  sample: 0.2 # Sample rate
 logger: # Logger
-  elasticsearch: # Elasticsearch logger
-    host: ${LOGGER_ELASTIC_HOST} # Elastic host
-    level: ${LOGGER_ELASTIC_LEVEL} # Log level
-    indexPrefix: ${PROJECT_NAME} # Log index prefix
+  google:
+    enabled: true
+    projectId: loyall-stage
+    keyFilename: "gcp.json"
+    level: "debug"
 database: # Database
   uri: ${DATABASE_URI} # Database URI
   model: # Models

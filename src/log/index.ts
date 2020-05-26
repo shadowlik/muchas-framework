@@ -3,6 +3,8 @@ import uniqid from 'uniqid';
 import TransportStream from 'winston-transport'
 import { ElasticLogger, ElasticLoggerOptions } from './elastic';
 import { ConsoleLogger } from './console';
+import { GoogleLogger, GoogleLoggerOptions } from "./google";
+import path from "path";
 
 interface Meta {
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -14,10 +16,11 @@ interface Meta {
  */
 export interface LogOptions {
     /**
-     * @type {ElasticLoggerOptions}
-     * @memberof LogOptions
-     */
+   * @type {ElasticLoggerOptions}
+   * @memberof LogOptions
+   */
     elastic?: ElasticLoggerOptions;
+    google?: GoogleLoggerOptions;
 }
 
 class Log {
@@ -25,12 +28,13 @@ class Log {
     private logger = Winston;
     private console: ConsoleLogger;
     private elastic: ElasticLogger;
+    private google: GoogleLogger;
 
-    constructor(options: LogOptions) {
+    constructor(options: LogOptions, projectName: string) {
         const {
             elastic,
+            google,
         } = options;
-
         if(elastic && elastic.host && elastic.level) {
             this.elastic = new ElasticLogger(
                 elastic.host,
@@ -39,6 +43,21 @@ class Log {
 
             this.logger.add(this.elastic.transport(elastic.level,`logs-${elastic.indexPrefix || 'devapp'}`) as unknown as TransportStream);
         };
+
+        if (google && google.enabled) {
+            this.google = new GoogleLogger();
+            this.logger.add(
+                this.google.transport(
+                    projectName,
+                    google.level || "error",
+                    projectName,
+                    google.projectId,
+                    google.keyFilename
+                        ? path.join(process.cwd(), google.keyFilename)
+                        : undefined
+                )
+            );
+        }
 
         if (process.env.NODE_ENV !== 'production') {
             this.console = new ConsoleLogger('debug');
