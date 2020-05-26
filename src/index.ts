@@ -27,8 +27,8 @@ import ComponentsLoader from './component/ComponentLoader';
 export { Component };
 
 // Broker
-import Broker, { Message, RPC } from "./broker/Broker";
-export { Message, RPC };
+import Broker, { Task, RPC } from "./broker/Broker";
+export { Task, RPC };
 
 // Web
 import Web, { RequestPrivate } from './web/Server';

@@ -2,13 +2,13 @@ import amqplib, { Connection, Channel } from 'amqplib';
 import uniqid from 'uniqid';
 import MuchasEvents from '../Events';
 
-export interface Message {
+export interface Task {
     queue: string;
     exchange: string;
     routeKey: string;
     type?: string;
     prefetch?: number;
-    options?: {[x: string]: any};
+    options?: { [x: string]: any };
     action(payload: any, done: Done): any;
 }
 
@@ -218,7 +218,7 @@ export default class Broker implements BrokerOptions {
                   * @returns {Promise<void>}
                   * @memberof Broker
                   */
-    async bindTask(task: Message): Promise<void> {
+    async bindTask(task: Task): Promise<void> {
         try {
             const ch = await this.con.createChannel();
             /* Debug */
