@@ -6,15 +6,6 @@ import { Agent } from "./Apm.interface";
 
 const config = yamlEnv(process.env.MUCHASYML || undefined);
 
-if (config.profiler) {
-    require("@google-cloud/profiler").start({
-        serviceContext: {
-            service: config.name,
-        },
-    });
-}
-
-
 const Apm: Agent = apm(config.name, config.env, config.apm);
 
 // Apm

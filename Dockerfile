@@ -1,7 +1,5 @@
 FROM node:10
 
-RUN npm install @google-cloud/profiler
-
 WORKDIR /app
 
 COPY . .
