@@ -1,5 +1,6 @@
 env: ${NODE_ENV} # Enviroment (development, production)
 name: ${PROJECT_NAME} # Project name
+profiler: true # Profiler enabled
 debug: # Debug options
   port: ${DEBUG_PORT} # NodeJS debug port
 web: # Web server
