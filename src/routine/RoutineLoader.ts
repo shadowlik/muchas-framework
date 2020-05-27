@@ -2,7 +2,7 @@ import agenda from 'agenda';
 import os from 'os';
 import Routine from './Routine';
 import web from '../web/Server';
-const apmGoogle = require("@google-cloud/trace-agent").get();
+const apmtrace = require("@google-cloud/trace-agent").get();
 
 /* eslint-disable-next-line */
 const Agendash = require('agendash');
@@ -71,10 +71,16 @@ export default class RoutineLoader {
             this.Agenda.define(id, opt, async function (job, done): Promise<void> {
                 let trans: any;
                 if(this.apm) trans = this.apm.startTransaction(id, 'routines');
-                await action(job, (): void => {
-                    done();
-                    if(this.apm && trans) trans.end();
-                });
+                apmtrace.runInRootSpan(
+                    { name: `routines.${id}` },
+                    async (rootSpan: any): Promise<void> => {
+                        await action(job, (): void => {
+                            done();
+                            if (this.apm && trans) trans.end();
+                            rootSpan.endSpan();
+                        });
+                    }
+                );
             });
 
             this.Agenda.every(cron, id, opt, opt);
