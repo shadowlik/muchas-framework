@@ -1,4 +1,7 @@
 import "source-map-support/register"; // Stack trace with source map
+if (process.env.NODE_ENV === "production") {
+    require("@google-cloud/trace-agent").start(); // Trace
+}
 import yamlEnv from './libs/YamlEnv';
 import Logger, { LogOptions } from './log';
 import apm from './Apm';

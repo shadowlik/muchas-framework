@@ -10,6 +10,7 @@
     "@elastic/elasticsearch": "^7.6.1",
     "@google-cloud/logging-winston": "^3.0.6",
     "@google-cloud/profiler": "^4.0.0",
+    "@google-cloud/trace-agent": "^4.2.5",
     "@types/agenda": "^2.0.6",
     "@types/amqplib": "^0.5.13",
     "@types/body-parser": "^1.19.0",
