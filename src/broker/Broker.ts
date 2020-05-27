@@ -240,7 +240,7 @@ export default class Broker implements BrokerOptions {
                 task.queue,
                 (msg: any): void => {
                     this.running += 1;
-                    apmtrace.runInRootSpan({ name: `messages.${task.queue}` }, (rootSpan: any): void => {
+                    apmtrace.runInRootSpan({ name: `messages.${task.queue}` }, async (rootSpan: any): void => {
                         try {
                         // Check if APM is enabled to track the transaction
                             let trans: any;
@@ -263,7 +263,7 @@ export default class Broker implements BrokerOptions {
                          * so he can ack the message and possibly end the transaction.
                          * @return {type} Description.
                          */
-                            task.action(
+                            await task.action(
                                 parsedMsg,
                                 (nack: any, requeue = true, allUpTo = false): void => {
                                     this.running -= 1;
