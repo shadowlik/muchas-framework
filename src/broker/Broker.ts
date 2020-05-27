@@ -1,6 +1,7 @@
-import amqplib, { Connection, Channel } from 'amqplib';
-import uniqid from 'uniqid';
-import MuchasEvents from '../Events';
+import amqplib, { Connection, Channel } from "amqplib";
+import uniqid from "uniqid";
+import MuchasEvents from "../Events";
+const apmtrace = require("@google-cloud/trace-agent").get();
 
 export interface Task {
     queue: string;
@@ -30,7 +31,12 @@ interface BrokerOptions {
 }
 
 interface BrokerSend {
-    (exchange: string, routeKey: string, message: string | { [x: string]: any }, options?: any): void;
+    (
+        exchange: string,
+        routeKey: string,
+        message: string | { [x: string]: any },
+        options?: any
+    ): void;
 }
 
 export default class Broker implements BrokerOptions {
@@ -42,21 +48,21 @@ export default class Broker implements BrokerOptions {
     apm: any;
 
     /**
-     * Creates an instance of Tasks.
-     * @param {BrokerOptions} options
-     * @memberof Tasks
-     */
+   * Creates an instance of Tasks.
+   * @param {BrokerOptions} options
+   * @memberof Tasks
+   */
     constructor(options: BrokerOptions, Apm?: any) {
         this.host = options.host;
         this.apm = Apm;
     }
 
     /**
-                  * Start the broker
-                  *
-                  * @returns {Promise<any>}
-                  * @memberof Tasks
-                  */
+   * Start the broker
+   *
+   * @returns {Promise<any>}
+   * @memberof Tasks
+   */
     start(): Promise<any> {
         return new Promise((resolve, reject): void => {
             try {
@@ -89,35 +95,33 @@ export default class Broker implements BrokerOptions {
     }
 
     /**
-                  * Send message
-                  *
-                  * @param {string} exchange
-                  * @param {string} routeKey
-                  * @param {string} message
-                  * @param {*} [options={}]
-                  * @returns {*}
-                  * @memberof Tasks
-                  */
+   * Send message
+   *
+   * @param {string} exchange
+   * @param {string} routeKey
+   * @param {string} message
+   * @param {*} [options={}]
+   * @returns {*}
+   * @memberof Tasks
+   */
     async send(
         exchange: string,
         routeKey: string,
         message: string,
         options: { [x: string]: any; skipAssert?: boolean } = {}
     ): Promise<any> {
-        // if (!this.enabled) throw Error('Tasks feature is not enabled');
-        // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
+    // if (!this.enabled) throw Error('Tasks feature is not enabled');
+    // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
 
         // Check if it's an object, if true convert to json
         const parsedMsg =
-                     typeof message === "object" && !Array.isArray(message)
-                         ? JSON.stringify(message)
-                         : message;
+      typeof message === "object" && !Array.isArray(message)
+          ? JSON.stringify(message)
+          : message;
         if (!options.skipAssert) {
-            await this.ch.assertExchange(
-                exchange,
-                options.type || "direct",
-                { durable: true }
-            );
+            await this.ch.assertExchange(exchange, options.type || "direct", {
+                durable: true,
+            });
         }
         // Sends the message to the queue
         const status = this.ch.publish(
@@ -131,13 +135,13 @@ export default class Broker implements BrokerOptions {
     }
 
     /**
-                  * Send RPC request
-                  *
-                  * @param {string} queue
-                  * @param {*} message
-                  * @returns {Promise<any>}
-                  * @memberof Broker
-                  */
+   * Send RPC request
+   *
+   * @param {string} queue
+   * @param {*} message
+   * @returns {Promise<any>}
+   * @memberof Broker
+   */
     async rpc(queue: string, message: any): Promise<any> {
         return new Promise(
             async (resolve, reject): Promise<any> => {
@@ -162,14 +166,10 @@ export default class Broker implements BrokerOptions {
                     );
 
                     // Send the message
-                    ch.sendToQueue(
-                        queue,
-                        Buffer.from(message.toString()),
-                        {
-                            correlationId: uid,
-                            replyTo: q.queue,
-                        }
-                    );
+                    ch.sendToQueue(queue, Buffer.from(message.toString()), {
+                        correlationId: uid,
+                        replyTo: q.queue,
+                    });
                 } catch (error) {
                     reject(error);
                 }
@@ -178,12 +178,12 @@ export default class Broker implements BrokerOptions {
     }
 
     /**
-                  * Bind RPC listener
-                  *
-                  * @param {RPC} rpc
-                  * @returns {Promise<void>}
-                  * @memberof Broker
-                  */
+   * Bind RPC listener
+   *
+   * @param {RPC} rpc
+   * @returns {Promise<void>}
+   * @memberof Broker
+   */
     async bindRPC(rpc: RPC): Promise<void> {
         const ch = await this.con.createChannel();
         await ch.assertQueue(rpc.queue, { durable: false });
@@ -199,25 +199,21 @@ export default class Broker implements BrokerOptions {
                 parsedMsg = stringMsg;
             }
             rpc.action(parsedMsg, (reply): void => {
-                ch.sendToQueue(
-                    msg.properties.replyTo,
-                    Buffer.from(reply.toString()),
-                    {
-                        correlationId: msg.properties.correlationId,
-                    }
-                );
+                ch.sendToQueue(msg.properties.replyTo, Buffer.from(reply.toString()), {
+                    correlationId: msg.properties.correlationId,
+                });
             });
             ch.ack(msg);
         });
     }
 
     /**
-                  * Bind task
-                  *
-                  * @param {Task} task
-                  * @returns {Promise<void>}
-                  * @memberof Broker
-                  */
+   * Bind task
+   *
+   * @param {Task} task
+   * @returns {Promise<void>}
+   * @memberof Broker
+   */
     async bindTask(task: Task): Promise<void> {
         try {
             const ch = await this.con.createChannel();
@@ -231,72 +227,62 @@ export default class Broker implements BrokerOptions {
             // Assert that this exchange exists
             task.options = task.options || {};
             const exchangeOptions = { durable: true, ...task.options };
-            ch.assertExchange(
-                task.exchange,
-                task.type || "direct",
-                exchangeOptions
-            );
+            ch.assertExchange(task.exchange, task.type || "direct", exchangeOptions);
             // Assert that the queue exists
             ch.assertQueue(task.queue);
             // Bind the queue in the exchange by the routing key
             ch.bindQueue(task.queue, task.exchange, task.routeKey);
 
             // Consumes it
-            const consumerTag = `${Date.now()}${
-                process.pid
-            }${Math.random()}`;
+            const consumerTag = `${Date.now()}${process.pid}${Math.random()}`;
 
             ch.consume(
                 task.queue,
                 (msg: any): void => {
                     this.running += 1;
-                    try {
-                        // Check if APM is enabled to track the transaction
-                        let trans: any;
-                        if (this.apm)
-                            trans = this.apm.startTransaction(
-                                task.queue,
-                                "messages"
-                            );
-                        // const apmTransaction = apm.startTransaction(task.queue, 'Tasks');
-
-                        // Lets threat the message
-                        const stringMsg = msg.content.toString();
-                        let parsedMsg;
-                        // Tries to parse to object
+                    apmtrace.runInRootSpan({ name: `messages.${task.queue}` }, (rootSpan: any): void => {
                         try {
-                            parsedMsg = JSON.parse(stringMsg);
-                        } catch (e) {
-                            // If it fails send as a string
-                            parsedMsg = stringMsg;
-                        }
-                        /**
-                            * We send back to the user only a callback with the payload content and a done fuction
-                            * so he can ack the message and possibly end the transaction.
-                            * @return {type} Description.
-                            */
-                        task.action(
-                            parsedMsg,
-                            (
-                                nack: any,
-                                requeue = true,
-                                allUpTo = false
-                            ): void => {
-                                this.running -= 1;
-                                if (typeof nack !== "undefined") {
-                                    ch.nack(msg, allUpTo, requeue);
-                                    if (this.apm && trans) trans.end();
-                                    return;
-                                }
+                        // Check if APM is enabled to track the transaction
+                            let trans: any;
+                            if (this.apm)
+                                trans = this.apm.startTransaction(task.queue, "messages");
+                            // const apmTransaction = apm.startTransaction(task.queue, 'Tasks');
 
-                                // Sends the ack to the message at Rabbit
-                                ch.ack(msg);
-                                if (this.apm && trans) trans.end();
+                            // Lets threat the message
+                            const stringMsg = msg.content.toString();
+                            let parsedMsg;
+                            // Tries to parse to object
+                            try {
+                                parsedMsg = JSON.parse(stringMsg);
+                            } catch (e) {
+                            // If it fails send as a string
+                                parsedMsg = stringMsg;
                             }
-                        );
-                    } catch (e) {
-                        this.running -= 1;
-                    }
+                            /**
+                         * We send back to the user only a callback with the payload content and a done fuction
+                         * so he can ack the message and possibly end the transaction.
+                         * @return {type} Description.
+                         */
+                            task.action(
+                                parsedMsg,
+                                (nack: any, requeue = true, allUpTo = false): void => {
+                                    this.running -= 1;
+                                    if (typeof nack !== "undefined") {
+                                        ch.nack(msg, allUpTo, requeue);
+                                        if (this.apm && trans) trans.end();
+                                        return;
+                                    }
+
+                                    // Sends the ack to the message at Rabbit
+                                    ch.ack(msg);
+                                    if (this.apm && trans) trans.end();
+                                    rootSpan.endSpan();
+                                }
+                            );
+                        } catch (e) {
+                            this.running -= 1;
+                        }
+                    });
                 },
                 {
                     consumerTag,
@@ -309,11 +295,11 @@ export default class Broker implements BrokerOptions {
     }
 
     /**
-                  * Graceful Stop
-                  *
-                  * @returns {Promise<void>}
-                  * @memberof Broker
-                  */
+   * Graceful Stop
+   *
+   * @returns {Promise<void>}
+   * @memberof Broker
+   */
     stop(): Promise<void> {
         return new Promise(
             async (resolve: any, reject): Promise<void> => {
@@ -336,9 +322,7 @@ export default class Broker implements BrokerOptions {
                     // Disable Tasks
                     await this.con.close();
 
-                    console.log(
-                        "[Tasks] Stopped and connection is closed!"
-                    );
+                    console.log("[Tasks] Stopped and connection is closed!");
                     resolve(clearInterval(s));
                 }, 5000);
             }

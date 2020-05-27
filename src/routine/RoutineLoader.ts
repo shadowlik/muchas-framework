@@ -2,6 +2,7 @@ import agenda from 'agenda';
 import os from 'os';
 import Routine from './Routine';
 import web from '../web/Server';
+const apmGoogle = require("@google-cloud/trace-agent").get();
 
 /* eslint-disable-next-line */
 const Agendash = require('agendash');
