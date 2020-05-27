@@ -24,8 +24,8 @@ class GoogleLogger {
     // Creates a client
         const opt: any = {
             level,
+            logName: projectName,
             prefix: indexPrefix,
-            projectId,
             serviceContext: {
                 service: projectName,
             },
