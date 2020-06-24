@@ -90,7 +90,7 @@
   "scripts": {
     "build:prd": "tsc",
     "dev": "tsc -w",
-    "full": "npm run build:prd && npm version patch && npm publish",
+    "full": "npm run build:prd && npm version patch && npm publish && git push",
     "lint": "eslint --fix .",
     "start:integration": "ts-node-dev --nolazy --inspect=0.0.0.0:6029 --notify false ./src/tests/integration/index.ts",
     "start:it": "concurrently \"tsc -w\" \"nodemon --inspect=0.0.0.0:6029 dist/tests/integration\"",
