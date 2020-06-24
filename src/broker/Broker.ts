@@ -107,7 +107,7 @@ export default class Broker implements BrokerOptions {
     async send(
         exchange: string,
         routeKey: string,
-        message: string,
+        message: string | {[x: string]: any},
         options: { [x: string]: any; skipAssert?: boolean } = {}
     ): Promise<any> {
     // if (!this.enabled) throw Error('Tasks feature is not enabled');
