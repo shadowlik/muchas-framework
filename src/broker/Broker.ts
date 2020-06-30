@@ -9,7 +9,7 @@ export interface Task {
     routeKey: string;
     type?: string;
     prefetch?: number;
-    options?: { [x: string]: any };
+    options?: { [x: string]: any; queue?: { [x: string]: any } };
     action(payload: any, done: Done): any;
 }
 
@@ -108,7 +108,7 @@ export default class Broker implements BrokerOptions {
         exchange: string,
         routeKey: string,
         message: string | {[x: string]: any},
-        options: { [x: string]: any; skipAssert?: boolean } = {}
+        options: { [x: string]: any; skipAssert?: boolean; priority?: number } = {}
     ): Promise<any> {
     // if (!this.enabled) throw Error('Tasks feature is not enabled');
     // const trans = apm.startTransaction(`${exchange} - ${routeKey}`, 'Rabbit');
@@ -229,7 +229,7 @@ export default class Broker implements BrokerOptions {
             const exchangeOptions = { durable: true, ...task.options };
             ch.assertExchange(task.exchange, task.type || "direct", exchangeOptions);
             // Assert that the queue exists
-            ch.assertQueue(task.queue);
+            ch.assertQueue(task.queue, { ...task.options.queue });
             // Bind the queue in the exchange by the routing key
             ch.bindQueue(task.queue, task.exchange, task.routeKey);
 
